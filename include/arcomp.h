@@ -19,8 +19,8 @@
 
 #include <complex>
 
-#ifdef __GNUG__
-  
+#ifdef __cplusplus > 199711L
+
 #define arcomplex std::complex
 
 #endif
