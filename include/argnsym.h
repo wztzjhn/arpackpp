@@ -21,7 +21,7 @@
 #include <string>
 #include "arch.h"
 #include "blas1c.h"
-#include "lapackc.h"
+//#include "lapackc.h"
 #include "arsnsym.h"
 #include "argeig.h"
 #include "arrgnsym.h"
