@@ -79,9 +79,13 @@ extern "C" {
 
 
 // Type conversion.
-
+#if defined(__INTEL_MKL__)
+typedef MKL_INT ARint;
+typedef MKL_INT ARlogical;
+#else
 typedef int ARint;
 typedef int ARlogical;
+#endif
 
 #ifdef __SUNPRO_CC
 
