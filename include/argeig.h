@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARGEig.h.
    Arpack++ class ARGenEig definition.
@@ -62,11 +62,11 @@ class ARGenEig:
 
  // d.1) Function that stores user defined parameters.
 
-  virtual void DefineParameters(int np, int nevp, ARFOP* objOPp,
+  virtual void DefineParameters(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                                 TypeOPx MultOPxp, ARFB* objBp, 
                                 TypeBx MultBxp, const std::string& whichp="LM", 
-                                int ncvp=0, ARFLOAT tolp=0.0,
-                                int maxitp=0, ARTYPE* residp=NULL,
+                                MKL_INT ncvp=0, ARFLOAT tolp=0.0,
+                                MKL_INT maxitp=0, ARTYPE* residp=NULL,
                                 bool ishiftp=true);
   // Set values of problem parameters (also called by constructors).
 
@@ -79,7 +79,7 @@ class ARGenEig:
 
  // d.3) Functions that perform all calculations in one step.
 
-  virtual int FindArnoldiBasis();
+  virtual MKL_INT FindArnoldiBasis();
   // Determines the Arnoldi basis related to the given problem.
 
 
@@ -121,10 +121,10 @@ Copy(const ARGenEig<ARFLOAT, ARTYPE, ARFOP, ARFB>& other)
 
 template<class ARFLOAT, class ARTYPE, class ARFOP, class ARFB>
 void ARGenEig<ARFLOAT, ARTYPE, ARFOP, ARFB>::
-DefineParameters(int np, int nevp, ARFOP* objOPp,
+DefineParameters(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                  void (ARFOP::* MultOPxp)(ARTYPE[], ARTYPE[]), ARFB* objBp,
                  void (ARFB::* MultBxp)(ARTYPE[], ARTYPE[]), const std::string& whichp,
-                 int ncvp, ARFLOAT tolp, int maxitp, ARTYPE* residp, 
+                 MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp, ARTYPE* residp, 
                  bool ishiftp)
 
 {
@@ -156,7 +156,7 @@ ChangeMultBx(ARFB* objBp, void (ARFB::* MultBxp)(ARTYPE[], ARTYPE[]))
 
 
 template<class ARFLOAT, class ARTYPE, class ARFOP, class ARFB>
-int ARGenEig<ARFLOAT, ARTYPE, ARFOP, ARFB>::FindArnoldiBasis()
+MKL_INT ARGenEig<ARFLOAT, ARTYPE, ARFOP, ARFB>::FindArnoldiBasis()
 {
 
   if (!this->BasisOK) this->Restart();

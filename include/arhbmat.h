@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARHBMat.h
    Matrix template that generates a matrix in CSC format
@@ -38,26 +38,26 @@ class ARhbMatrix {
   std::string title;       // Title.
   std::string name;        // Name.
   std::string type;        // Matrix type.
-  int         m;           // Number of rows.
-  int         n;           // Number of columns.
-  int         nnz;         // Number of nonzero variables.
+  MKL_INT         m;           // Number of rows.
+  MKL_INT         n;           // Number of columns.
+  MKL_INT         nnz;         // Number of nonzero variables.
   ARINT*      irow;        // Row indices.
   ARINT*      pcol;        // Column pointers.
   ARTYPE*     val;         // Numerical values of matrix entries.
 
   void ConvertDouble(char* num);
 
-  bool ReadEntry(std::ifstream& file, int nval, int fval, int& j, double& val);
+  bool ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval, MKL_INT& j, double& val);
 
-  bool ReadEntry(std::ifstream& file, int nval, int fval, int& j, float& val);
+  bool ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval, MKL_INT& j, float& val);
 
-  bool ReadEntry(std::ifstream& file, int nval, int fval,
-                 int& j, arcomplex<double>& val);
+  bool ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval,
+                 MKL_INT& j, arcomplex<double>& val);
 
-  bool ReadEntry(std::ifstream& file, int nval, int fval,
-                 int& j, arcomplex<float>& val);
+  bool ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval,
+                 MKL_INT& j, arcomplex<float>& val);
 
-  void ReadFormat(std::ifstream& file, int& n, int& fmt);
+  void ReadFormat(std::ifstream& file, MKL_INT& n, MKL_INT& fmt);
 
  public:
 
@@ -83,11 +83,11 @@ class ARhbMatrix {
 
   const std::string& Type() { return type; }
 
-  int NRows() { return m; }
+  MKL_INT NRows() { return m; }
 
-  int NCols() { return n; }
+  MKL_INT NCols() { return n; }
 
-  int NonZeros() { return nnz; }
+  MKL_INT NonZeros() { return nnz; }
 
   ARINT* RowInd() { return irow; }
 
@@ -132,7 +132,7 @@ inline void ARhbMatrix<ARINT, ARTYPE>::ConvertDouble(char* num)
 
 template<class ARINT, class ARTYPE>
 inline bool ARhbMatrix<ARINT, ARTYPE>::
-ReadEntry(std::ifstream& file, int nval, int fval, int& j, double& val)
+ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval, MKL_INT& j, double& val)
 {
 
   char num[81];
@@ -153,7 +153,7 @@ ReadEntry(std::ifstream& file, int nval, int fval, int& j, double& val)
 
 template<class ARINT, class ARTYPE>
 inline bool ARhbMatrix<ARINT, ARTYPE>::
-ReadEntry(std::ifstream& file, int nval, int fval, int& j, float& val)
+ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval, MKL_INT& j, float& val)
 {
 
   double dval;
@@ -168,8 +168,8 @@ ReadEntry(std::ifstream& file, int nval, int fval, int& j, float& val)
 
 template<class ARINT, class ARTYPE>
 inline bool ARhbMatrix<ARINT, ARTYPE>::
-ReadEntry(std::ifstream& file, int nval, int fval,
-          int& j, arcomplex<double>& val)
+ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval,
+          MKL_INT& j, arcomplex<double>& val)
 {
 
   char num[81], img[81];
@@ -197,8 +197,8 @@ ReadEntry(std::ifstream& file, int nval, int fval,
 
 template<class ARINT, class ARTYPE>
 inline bool ARhbMatrix<ARINT, ARTYPE>::
-ReadEntry(std::ifstream& file, int nval, int fval,
-          int& j, arcomplex<float>& val)
+ReadEntry(std::ifstream& file, MKL_INT nval, MKL_INT fval,
+          MKL_INT& j, arcomplex<float>& val)
 {
 
   // I hope one day c++ will have a standard complex
@@ -228,7 +228,7 @@ ReadEntry(std::ifstream& file, int nval, int fval,
 
 
 template<class ARINT, class ARTYPE>
-void ARhbMatrix<ARINT, ARTYPE>::ReadFormat(std::ifstream& file, int& n, int& fmt)
+void ARhbMatrix<ARINT, ARTYPE>::ReadFormat(std::ifstream& file, MKL_INT& n, MKL_INT& fmt)
 {
 
   char c;
@@ -258,9 +258,9 @@ void ARhbMatrix<ARINT, ARTYPE>::Define(const std::string& filename)
 
   // Declaring variables.
 
-  int    i, j;
-  int    lintot, linptr, linind, linval, linrhs; 
-  int    npcol, fpcol, nirow, firow, nval, fval;
+  MKL_INT    i, j;
+  MKL_INT    lintot, linptr, linind, linval, linrhs; 
+  MKL_INT    npcol, fpcol, nirow, firow, nval, fval;
   char   c;
   char   num[81];
   char   titlechar[73];

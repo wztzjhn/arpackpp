@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE UMFPACKc.h.
    Interface to UMFPACK routines.
@@ -42,10 +42,10 @@ void umfpack_di_defaults
 
 int umfpack_di_symbolic
 (
-    int n_row,
-    int n_col,
-    const int Ap [ ],
-    const int Ai [ ],
+    MKL_INT n_row,
+    MKL_INT n_col,
+    const MKL_INT Ap [ ],
+    const MKL_INT Ai [ ],
     const double Ax [ ],
     void **Symbolic,
     const double Control [UMFPACK_CONTROL],
@@ -54,8 +54,8 @@ int umfpack_di_symbolic
 
 int umfpack_di_numeric
 (
-    const int Ap [ ],
-    const int Ai [ ],
+    const MKL_INT Ap [ ],
+    const MKL_INT Ai [ ],
     const double Ax [ ],
     void *Symbolic,
     void **Numeric,
@@ -75,23 +75,23 @@ void umfpack_di_free_numeric
 
 int umfpack_di_triplet_to_col
 (
-    int n_row,
-    int n_col,
-    int nz,
-    const int Ti [ ],
-    const int Tj [ ],
+    MKL_INT n_row,
+    MKL_INT n_col,
+    MKL_INT nz,
+    const MKL_INT Ti [ ],
+    const MKL_INT Tj [ ],
     const double Tx [ ],
-    int Ap [ ],
-    int Ai [ ],
+    MKL_INT Ap [ ],
+    MKL_INT Ai [ ],
     double Ax [ ],
-    int Map [ ]
+    MKL_INT Map [ ]
 ) ;
 
 int umfpack_di_solve
 (
-    int sys,
-    const int Ap [ ],
-    const int Ai [ ],
+    MKL_INT sys,
+    const MKL_INT Ap [ ],
+    const MKL_INT Ai [ ],
     const double Ax [ ],
     double X [ ],
     const double B [ ],
@@ -102,12 +102,12 @@ int umfpack_di_solve
 
 int umfpack_di_report_matrix
 (
-    int n_row,
-    int n_col,
-    const int Ap [ ],
-    const int Ai [ ],
+    MKL_INT n_row,
+    MKL_INT n_col,
+    const MKL_INT Ap [ ],
+    const MKL_INT Ai [ ],
     const double Ax [ ],
-    int col_form,
+    MKL_INT col_form,
     const double Control [UMFPACK_CONTROL]
 ) ;
 
@@ -118,13 +118,13 @@ int umfpack_di_report_matrix
 //#include "umfpack.h"
 #include <fstream>
 
-inline void Write_Triplet_Matrix(const std::string & fname, int * tripi,
-                                 int * tripj, double* tripx, unsigned int nnz)
+inline void Write_Triplet_Matrix(const std::string & fname, MKL_INT * tripi,
+                                 MKL_INT * tripj, double* tripx, unsigned MKL_INT nnz)
 {
   std::ofstream myfile; 
   myfile.open ( fname.c_str() );
 	myfile.precision(20);
-  for (unsigned int i=0;i<nnz;i++)
+  for (unsigned MKL_INT i=0;i<nnz;i++)
   {
     myfile << tripi[i]+1 << " " << tripj[i]+1 << " " << tripx[i] << std::endl;
   }
@@ -139,9 +139,9 @@ inline void Write_Triplet_Matrix(const std::string & fname, int * tripi,
   cholmod_triplet * T = cholmod_sparse_to_triplet(A,c);
   //std::cout << " [ " << std::endl;
 	myfile.precision(20);
-  for (unsigned int i=0;i<T->nnz;i++)
+  for (unsigned MKL_INT i=0;i<T->nnz;i++)
   {
-    myfile << ((int*)T->i)[i]+1 << " " << ((int*)T->j)[i]+1 << " " << ((double*)T->x)[i] << std::endl;
+    myfile << ((MKL_INT*)T->i)[i]+1 << " " << ((MKL_INT*)T->j)[i]+1 << " " << ((double*)T->x)[i] << std::endl;
   }
   //std::cout << " ] " << std::endl;
   myfile.close();
@@ -151,8 +151,8 @@ inline void Write_Triplet_Matrix(const std::string & fname, int * tripi,
 }
 
 // Create_Cholmod_Sparse_Matrix 
-inline cholmod_sparse* Create_Cholmod_Sparse_Matrix(int m, int n, int nnz,
-      double* a, int* irow, int* pcol, char uplo, cholmod_common *c)
+inline cholmod_sparse* Create_Cholmod_Sparse_Matrix(MKL_INT m, MKL_INT n, MKL_INT nnz,
+      double* a, MKL_INT* irow, MKL_INT* pcol, char uplo, cholmod_common *c)
 {
   
   cholmod_sparse* A = new cholmod_sparse;
@@ -180,7 +180,7 @@ inline cholmod_sparse* Create_Cholmod_Sparse_Matrix(int m, int n, int nnz,
 } // Create_Cholmod_Sparse_Matrix (double).
 
 // Create_Cholmod_Dense_Matrix (from Triplet)
-inline cholmod_dense* Create_Cholmod_Dense_Matrix(int m, int n,
+inline cholmod_dense* Create_Cholmod_Dense_Matrix(MKL_INT m, MKL_INT n,
                                   double* a, cholmod_common *c)
 {
 
@@ -202,11 +202,11 @@ inline cholmod_dense* Create_Cholmod_Dense_Matrix(int m, int n,
 } // Create_Cholmod_Dense_Matrix (double).
 
 // Create_Cholmod_Dense_Matrix (from Triplet)
-inline void Get_Cholmod_Dense_Data(cholmod_dense* A, int n, double* a)
+inline void Get_Cholmod_Dense_Data(cholmod_dense* A, MKL_INT n, double* a)
 {
   memcpy(a,A->x,n*sizeof(double));
   
-//  for (int i = 0;i<n;i++)
+//  for (MKL_INT i = 0;i<n;i++)
 //    a[i] = ((double*)A->x)[i];
   
 } // Create_Cholmod_Dense_Matrix (double).

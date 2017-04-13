@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARRGNSym.h.
    Arpack++ class ARrcNonSymGenEig definition.
@@ -49,7 +49,7 @@ class ARrcNonSymGenEig:
 
  // c) Public functions:
 
- // c.1) Functions that provides access to internal variables' values.
+ // c.1) Functions that provides access to MKL_INTernal variables' values.
 
   ARFLOAT GetShiftImag() { return this->sigmaI; }
   // Returns the imaginary part of the shift (when in shift and invert mode).
@@ -78,21 +78,21 @@ class ARrcNonSymGenEig:
   ARrcNonSymGenEig() { part = 'R'; }
   // Short constructor that does almost nothing.
 
-  ARrcNonSymGenEig(int np, int nevp, const std::string& whichp = "LM",
-                   int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARrcNonSymGenEig(MKL_INT np, MKL_INT nevp, const std::string& whichp = "LM",
+                   MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                    ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARrcNonSymGenEig(int np, int nevp, ARFLOAT sigmap,
-                   const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-                   int maxitp = 0, ARFLOAT* residp = NULL, 
+  ARrcNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFLOAT sigmap,
+                   const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+                   MKL_INT maxitp = 0, ARFLOAT* residp = NULL, 
                    bool ishiftp = true);
   // Long constructor (real shift and invert mode).
 
-  ARrcNonSymGenEig(int np, int nevp,
+  ARrcNonSymGenEig(MKL_INT np, MKL_INT nevp,
                    char partp, ARFLOAT sigmaRp, ARFLOAT sigmaIp,
-                   const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-                   int maxitp = 0, ARFLOAT* residp = NULL, 
+                   const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+                   MKL_INT maxitp = 0, ARFLOAT* residp = NULL, 
                    bool ishiftp = true);
   // Long constructor (complex shift and invert mode).
 
@@ -189,8 +189,8 @@ SetComplexShiftMode(char partp, ARFLOAT sigmaRp, ARFLOAT sigmaIp)
 
 template<class ARFLOAT>
 inline ARrcNonSymGenEig<ARFLOAT>::
-ARrcNonSymGenEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT tolp,
-                 int maxitp, ARFLOAT* residp, bool ishiftp)
+ARrcNonSymGenEig(MKL_INT np, MKL_INT nevp, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+                 MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 {
 
   part = 'R';                // Considering mode = 3 in ChangeShift.
@@ -202,8 +202,8 @@ ARrcNonSymGenEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT 
 
 template<class ARFLOAT>
 inline ARrcNonSymGenEig<ARFLOAT>::
-ARrcNonSymGenEig(int np, int nevp, ARFLOAT sigmap, const std::string& whichp, int ncvp,
-                 ARFLOAT tolp, int maxitp, ARFLOAT* residp, bool ishiftp)
+ARrcNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFLOAT sigmap, const std::string& whichp, MKL_INT ncvp,
+                 ARFLOAT tolp, MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 {
 
   SetShiftInvertMode(sigmap);
@@ -215,9 +215,9 @@ ARrcNonSymGenEig(int np, int nevp, ARFLOAT sigmap, const std::string& whichp, in
 
 template<class ARFLOAT>
 inline ARrcNonSymGenEig<ARFLOAT>::
-ARrcNonSymGenEig(int np, int nevp, char partp, ARFLOAT sigmaRp,
-                 ARFLOAT sigmaIp, const std::string& whichp, int ncvp, ARFLOAT tolp,
-                 int maxitp, ARFLOAT* residp, bool ishiftp)
+ARrcNonSymGenEig(MKL_INT np, MKL_INT nevp, char partp, ARFLOAT sigmaRp,
+                 ARFLOAT sigmaIp, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+                 MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 {
 
   SetComplexShiftMode(partp, sigmaRp, sigmaIp);

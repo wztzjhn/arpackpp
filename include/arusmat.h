@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARUSMat.h.
    Arpack++ class ARumSymMatrix definition.
@@ -47,26 +47,26 @@ class ARumSymMatrix: public ARMatrix<ARTYPE> {
 
   bool    factored;
   char    uplo;
-  int     nnz;
- /* int     fillin;
-  int     lvalue;
-  int     lindex;
-  int     keep[20];
-  int     icntl[20];
-  int     info[40];
+  MKL_INT     nnz;
+ /* MKL_INT     fillin;
+  MKL_INT     lvalue;
+  MKL_INT     lindex;
+  MKL_INT     keep[20];
+  MKL_INT     icntl[20];
+  MKL_INT     info[40];
   ARTYPE  cntl[10];
   ARTYPE  rinfo[20];
-  int*    index;
+  MKL_INT*    index;
   ARTYPE* value;*/
-  int*    irow;
-  int*    pcol;
-  int     status;
+  MKL_INT*    irow;
+  MKL_INT*    pcol;
+  MKL_INT     status;
   double  threshold;
   ARTYPE* a;
   ARhbMatrix<int, ARTYPE> mat;
   void*   Numeric;
-  int*    Ap;
-  int*    Ai;
+  MKL_INT*    Ap;
+  MKL_INT*    Ai;
   ARTYPE* Ax; 
 
   bool DataOK();
@@ -83,9 +83,9 @@ class ARumSymMatrix: public ARMatrix<ARTYPE> {
 
  public:
 
-  int nzeros() { return nnz; }
+  MKL_INT nzeros() { return nnz; }
 
-//  int  FillFact() { return fillin; }
+//  MKL_INT  FillFact() { return fillin; }
 
   bool IsFactored() { return factored; }
 
@@ -97,9 +97,9 @@ class ARumSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                    int* pcolp, char uplop = 'L', double thresholdp = 0.1, 
-                    int fillinp = 9, bool reducible = true, bool check = true);
+  void DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                    MKL_INT* pcolp, char uplop = 'L', double thresholdp = 0.1, 
+                    MKL_INT fillinp = 9, bool reducible = true, bool check = true);
 
   ARumSymMatrix(): ARMatrix<ARTYPE>()
   {
@@ -111,12 +111,12 @@ class ARumSymMatrix: public ARMatrix<ARTYPE> {
   }
   // Short constructor that does nothing.
 
-  ARumSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                int* pcolp, char uplop = 'L', double thresholdp = 0.1,
-                int fillinp = 9, bool reducible = true, bool check = true);
+  ARumSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                MKL_INT* pcolp, char uplop = 'L', double thresholdp = 0.1,
+                MKL_INT fillinp = 9, bool reducible = true, bool check = true);
   // Long constructor.
 
-  ARumSymMatrix(const std::string& name, double thresholdp = 0.1, int fillinp = 9,
+  ARumSymMatrix(const std::string& name, double thresholdp = 0.1, MKL_INT fillinp = 9,
                 bool reducible = true, bool check = true);
   // Long constructor (Harwell-Boeing file).
 
@@ -140,7 +140,7 @@ template<class ARTYPE>
 bool ARumSymMatrix<ARTYPE>::DataOK()
 {
 
-  int i, j, k;
+  MKL_INT i, j, k;
 
   // Checking if pcol is in ascending order.
 
@@ -238,15 +238,15 @@ std::cout <<"ARumSymMatrix::ExpandA(" << sigma << ") ..." << std::flush;
   // Checking if sigma is zero.
   bool subtract = (sigma != (ARTYPE)0);
 
-  int mynnz = 2*nnz;
+  MKL_INT mynnz = 2*nnz;
   if (subtract) mynnz = 2*nnz + this->n; // some space for the diag entries just in case
   
   // create triples (i,j,value)
-  int * tripi = new int[mynnz];
-  int * tripj = new int[mynnz];
+  MKL_INT * tripi = new MKL_INT[mynnz];
+  MKL_INT * tripj = new MKL_INT[mynnz];
   ARTYPE* tripx = new ARTYPE[mynnz];
-  int count = 0;
-  int i,j;
+  MKL_INT count = 0;
+  MKL_INT i,j;
 //  if (uplo == 'U')
   {
     for (i=0; i != this->n; i++)
@@ -291,10 +291,10 @@ std::cout <<"ARumSymMatrix::ExpandA(" << sigma << ") ..." << std::flush;
   }
   
   // convert triples to Ax Ap Ai
-  Ap = new int[this->n+1];
-  Ai = new int[count];
+  Ap = new MKL_INT[this->n+1];
+  Ai = new MKL_INT[count];
   Ax = new ARTYPE[count];
-  status = umfpack_di_triplet_to_col (this->n, this->n, count, tripi, tripj, tripx, Ap, Ai, Ax,  (int *)NULL) ;
+  status = umfpack_di_triplet_to_col (this->n, this->n, count, tripi, tripj, tripx, Ap, Ai, Ax,  (MKL_INT *)NULL) ;
   if (status != UMFPACK_OK)
     throw ArpackError(ArpackError::PARAMETER_ERROR, "ARumSymMatrix::ExpandA");
   if (Ap[this->n] != count)
@@ -322,7 +322,7 @@ void ARumSymMatrix<ARTYPE>::ExpandA(ARTYPE sigma)
 {
 
   bool subtract;
-  int  i, j, k, ki;
+  MKL_INT  i, j, k, ki;
 
   // Checking if sigma is zero.
 
@@ -447,7 +447,7 @@ void ARumSymMatrix<ARTYPE>::ExpandA(ARTYPE sigma)
 inline void ARumSymMatrix<ARTYPE>::CreateStructure()
 {
 
-  int dimfact = (((fillin+1)*nnz*2)<(this->n*this->n)) ? (fillin+1)*nnz*2 : this->n*this->n;
+  MKL_INT dimfact = (((fillin+1)*nnz*2)<(this->n*this->n)) ? (fillin+1)*nnz*2 : this->n*this->n;
 
   ClearMem();
 
@@ -455,7 +455,7 @@ inline void ARumSymMatrix<ARTYPE>::CreateStructure()
   lvalue = dimfact;
 
   value  = new ARTYPE[lvalue];
-  index  = new int[lindex];
+  index  = new MKL_INT[lindex];
 
 } // CreateStructure.
 */
@@ -566,7 +566,7 @@ void ARumSymMatrix<ARTYPE>::MultMv(ARTYPE* v, ARTYPE* w)
 {
 //std::cout <<"ARumSymMatrix::MultMv ..." << std::flush; 
 
-  int    i,j,k;
+  MKL_INT    i,j,k;
   ARTYPE t;
 
   // Quitting the function if A was not defined.
@@ -643,9 +643,9 @@ void ARumSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE>
 inline void ARumSymMatrix<ARTYPE>::
-DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-             int* pcolp, char uplop, double thresholdp,
-             int fillinp, bool reducible, bool check)
+DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+             MKL_INT* pcolp, char uplop, double thresholdp,
+             MKL_INT fillinp, bool reducible, bool check)
 {
 
   this->m   = np;
@@ -678,9 +678,9 @@ DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
 
 template<class ARTYPE>
 inline ARumSymMatrix<ARTYPE>::
-ARumSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-              int* pcolp, char uplop, double thresholdp,
-              int fillinp, bool reducible, bool check)   : ARMatrix<ARTYPE>(np)
+ARumSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+              MKL_INT* pcolp, char uplop, double thresholdp,
+              MKL_INT fillinp, bool reducible, bool check)   : ARMatrix<ARTYPE>(np)
 {
   Numeric = NULL;
   Ap = NULL;
@@ -695,7 +695,7 @@ ARumSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
 
 template<class ARTYPE>
 ARumSymMatrix<ARTYPE>::
-ARumSymMatrix(const std::string& file, double thresholdp, int fillinp,
+ARumSymMatrix(const std::string& file, double thresholdp, MKL_INT fillinp,
               bool reducible, bool check)
 {
   Numeric = NULL;

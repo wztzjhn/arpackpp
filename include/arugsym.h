@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARUGSym.h.
    Arpack++ class ARluSymGenEig definition
@@ -67,15 +67,15 @@ class ARluSymGenEig:
   ARluSymGenEig() { }
   // Short constructor.
 
-  ARluSymGenEig(int nevp, ARumSymMatrix<ARFLOAT>& A,
+  ARluSymGenEig(MKL_INT nevp, ARumSymMatrix<ARFLOAT>& A,
                 ARumSymMatrix<ARFLOAT>& B, const std::string& whichp = "LM",
-                int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+                MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                 ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARluSymGenEig(char InvertModep, int nevp, ARumSymMatrix<ARFLOAT>& A,
+  ARluSymGenEig(char InvertModep, MKL_INT nevp, ARumSymMatrix<ARFLOAT>& A,
                 ARumSymMatrix<ARFLOAT>& B, ARFLOAT sigma, const std::string& whichp = "LM", 
-                int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+                MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                 ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (shift and invert, buckling and Cayley modes).
 
@@ -172,9 +172,9 @@ SetCayleyMode(ARFLOAT sigmap)
 
 template<class ARFLOAT>
 inline ARluSymGenEig<ARFLOAT>::
-ARluSymGenEig(int nevp, ARumSymMatrix<ARFLOAT>& A,
-              ARumSymMatrix<ARFLOAT>& B, const std::string& whichp, int ncvp,
-              ARFLOAT tolp, int maxitp, ARFLOAT* residp, bool ishiftp)
+ARluSymGenEig(MKL_INT nevp, ARumSymMatrix<ARFLOAT>& A,
+              ARumSymMatrix<ARFLOAT>& B, const std::string& whichp, MKL_INT ncvp,
+              ARFLOAT tolp, MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 
@@ -191,10 +191,10 @@ ARluSymGenEig(int nevp, ARumSymMatrix<ARFLOAT>& A,
 
 template<class ARFLOAT>
 inline ARluSymGenEig<ARFLOAT>::
-ARluSymGenEig(char InvertModep, int nevp, ARumSymMatrix<ARFLOAT>& A,
+ARluSymGenEig(char InvertModep, MKL_INT nevp, ARumSymMatrix<ARFLOAT>& A,
               ARumSymMatrix<ARFLOAT>& B, ARFLOAT sigmap,
-              const std::string& whichp, int ncvp, ARFLOAT tolp,
-              int maxitp, ARFLOAT* residp, bool ishiftp)
+              const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+              MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 

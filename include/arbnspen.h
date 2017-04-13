@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARBNSPen.h.
    Arpack++ class ARbdNonSymPencil definition.
@@ -38,15 +38,15 @@ class ARbdNonSymPencil
   ARbdNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT> AsBc;
 #endif
 
-  int max(int a, int b) { return (a>b)?a:b; }
+  MKL_INT max(MKL_INT a, MKL_INT b) { return (a>b)?a:b; }
 
-  int min(int a, int b) { return (a<b)?a:b; }
+  MKL_INT min(MKL_INT a, MKL_INT b) { return (a<b)?a:b; }
 
-  void ComplexCopy(int n, ARFLOAT dx[], int incx, 
-                   arcomplex<ARFLOAT> dy[], int incy);
+  void ComplexCopy(MKL_INT n, ARFLOAT dx[], MKL_INT incx, 
+                   arcomplex<ARFLOAT> dy[], MKL_INT incy);
 
-  void ComplexAxpy(int n, arcomplex<ARFLOAT> da, ARTYPE dx[], 
-                   int incx, arcomplex<ARFLOAT> dy[], int incy);
+  void ComplexAxpy(MKL_INT n, arcomplex<ARFLOAT> da, ARTYPE dx[], 
+                   MKL_INT incx, arcomplex<ARFLOAT> dy[], MKL_INT incy);
 
   virtual void Copy(const ARbdNonSymPencil& other);
 
@@ -126,10 +126,10 @@ Copy(const ARbdNonSymPencil<ARTYPE, ARFLOAT>& other)
 
 template<class ARTYPE, class ARFLOAT>
 void ARbdNonSymPencil<ARTYPE, ARFLOAT>::
-ComplexCopy(int n, ARFLOAT dx[], int incx, arcomplex<ARFLOAT> dy[], int incy)
+ComplexCopy(MKL_INT n, ARFLOAT dx[], MKL_INT incx, arcomplex<ARFLOAT> dy[], MKL_INT incy)
 {
 
-  for (int ix=0, iy=0; ix<(n*incx); ix+=incx, iy+=incy) {
+  for (MKL_INT ix=0, iy=0; ix<(n*incx); ix+=incx, iy+=incy) {
     dy[iy] = arcomplex<ARFLOAT>(dx[ix], 0.0);
   }
 
@@ -138,11 +138,11 @@ ComplexCopy(int n, ARFLOAT dx[], int incx, arcomplex<ARFLOAT> dy[], int incy)
 
 template<class ARTYPE, class ARFLOAT>
 void ARbdNonSymPencil<ARTYPE, ARFLOAT>::
-ComplexAxpy(int n, arcomplex<ARFLOAT> da, ARTYPE dx[], int incx,
-            arcomplex<ARFLOAT> dy[], int incy)
+ComplexAxpy(MKL_INT n, arcomplex<ARFLOAT> da, ARTYPE dx[], MKL_INT incx,
+            arcomplex<ARFLOAT> dy[], MKL_INT incy)
 {
 
-  for (int ix=0, iy=0; ix<(n*incx); ix+=incx, iy+=incy) {
+  for (MKL_INT ix=0, iy=0; ix<(n*incx); ix+=incx, iy+=incy) {
     dy[iy] += da*dx[ix];
   }
 
@@ -153,7 +153,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARbdNonSymPencil<ARTYPE, ARFLOAT>::SubtractAsB(ARTYPE sigma)
 {
 
-  int    i, inca, incb, minL, minU, begB, begAsB;
+  MKL_INT    i, inca, incb, minL, minU, begB, begAsB;
   ARTYPE negsig;
 
   inca   = A->ndiagL+A->ndiagU+1;
@@ -207,7 +207,7 @@ void ARbdNonSymPencil<ARTYPE, ARFLOAT>::
 SubtractAsB(ARFLOAT sigmaR, ARFLOAT sigmaI)
 {
 
-  int                i, inca, incb, minL, minU, begB, begAsB;
+  MKL_INT                i, inca, incb, minL, minU, begB, begAsB;
   arcomplex<ARFLOAT> sigma;
 
   inca  = A->ndiagL+A->ndiagU+1;
@@ -404,7 +404,7 @@ void ARbdNonSymPencil<ARTYPE, ARFLOAT>::MultInvAsBv(ARFLOAT* v, ARFLOAT* w)
 
 #ifdef ARCOMP_H
 
-    int                i;
+    MKL_INT                i;
     arcomplex<ARFLOAT> *tv, *tw;
 
     tv = new arcomplex<ARFLOAT>[AsBc.ncols()];

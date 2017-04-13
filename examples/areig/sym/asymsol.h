@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/18/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ASymSol.cc
    Template functions that exemplify how to print information

@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARSComp.h.
    Arpack++ class ARCompStdEig definition.
@@ -35,17 +35,17 @@ class ARCompStdEig:
   ARCompStdEig() { }
   // Short constructor.
 
-  ARCompStdEig(int np, int nevp, ARFOP* objOPp,
+  ARCompStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
-               const std::string& whichp = "LM", int ncvp = 0,
-               ARFLOAT tolp = 0.0, int maxitp = 0,
+               const std::string& whichp = "LM", MKL_INT ncvp = 0,
+               ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                arcomplex<ARFLOAT>* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARCompStdEig(int np, int nevp, ARFOP* objOPp,
+  ARCompStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
                arcomplex<ARFLOAT> sigma,  const std::string& whichp = "LM",
-               int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+               MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                arcomplex<ARFLOAT>* residp = NULL, bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -70,9 +70,9 @@ class ARCompStdEig:
 
 template<class ARFLOAT, class ARFOP>
 inline ARCompStdEig<ARFLOAT, ARFOP>::
-ARCompStdEig(int np, int nevp, ARFOP* objOPp,
+ARCompStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
              void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
-             const std::string& whichp, int ncvp, ARFLOAT tolp, int maxitp,
+             const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp,
              arcomplex<ARFLOAT>* residp, bool ishiftp)
 
 {
@@ -86,10 +86,10 @@ ARCompStdEig(int np, int nevp, ARFOP* objOPp,
 
 template<class ARFLOAT, class ARFOP>
 inline ARCompStdEig<ARFLOAT, ARFOP>::
-ARCompStdEig(int np, int nevp, ARFOP* objOPp,
+ARCompStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
              void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
-             arcomplex<ARFLOAT> sigmap, const std::string& whichp, int ncvp,
-             ARFLOAT tolp, int maxitp, arcomplex<ARFLOAT>* residp,
+             arcomplex<ARFLOAT> sigmap, const std::string& whichp, MKL_INT ncvp,
+             ARFLOAT tolp, MKL_INT maxitp, arcomplex<ARFLOAT>* residp,
              bool ishiftp)
 
 {

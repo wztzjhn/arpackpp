@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLNSMat.h.
    Arpack++ class ARluNonSymMatrix definition.
@@ -42,12 +42,12 @@ class ARluNonSymMatrix: public ARMatrix<ARTYPE> {
  protected:
 
   bool        factored;
-  int         order;
-  int         nnz;
-  int*        irow;
-  int*        pcol;
-  int*        permc;
-  int*        permr;
+  MKL_INT         order;
+  MKL_INT         nnz;
+  MKL_INT*        irow;
+  MKL_INT*        pcol;
+  MKL_INT*        permc;
+  MKL_INT*        permr;
   double      threshold;
   ARTYPE*     a;
   SuperMatrix A;
@@ -66,7 +66,7 @@ class ARluNonSymMatrix: public ARMatrix<ARTYPE> {
 
  public:
 
-  int nzeros() { return nnz; }
+  MKL_INT nzeros() { return nnz; }
 
   bool IsFactored() { return factored; }
 
@@ -86,25 +86,25 @@ class ARluNonSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                    int* pcolp, double thresholdp = 0.1,
-                    int orderp = 1, bool check = true);   // Square matrix.
+  void DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                    MKL_INT* pcolp, double thresholdp = 0.1,
+                    MKL_INT orderp = 1, bool check = true);   // Square matrix.
 
-  void DefineMatrix(int mp, int np, int nnzp, ARTYPE* ap,
-                    int* irowp, int* pcolp);              // Rectangular matrix.
+  void DefineMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap,
+                    MKL_INT* irowp, MKL_INT* pcolp);              // Rectangular matrix.
 
   ARluNonSymMatrix();
   // Short constructor that does nothing.
 
-  ARluNonSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
-                   double thresholdp = 0.1, int orderp = 1, bool check = true);
+  ARluNonSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp,
+                   double thresholdp = 0.1, MKL_INT orderp = 1, bool check = true);
   // Long constructor (square matrix).
 
-  ARluNonSymMatrix(int mp, int np, int nnzp, ARTYPE* ap, int* irowp,int* pcolp);
+  ARluNonSymMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,MKL_INT* pcolp);
   // Long constructor (rectangular matrix).
 
   ARluNonSymMatrix(const std::string& name, double thresholdp = 0.1, 
-                   int orderp = 1, bool check = true);
+                   MKL_INT orderp = 1, bool check = true);
   // Long constructor (Harwell-Boeing file).
 
   ARluNonSymMatrix(const ARluNonSymMatrix& other) { Copy(other); }
@@ -127,7 +127,7 @@ template<class ARTYPE, class ARFLOAT>
 bool ARluNonSymMatrix<ARTYPE, ARFLOAT>::DataOK()
 {
 
-  int i, j, k;
+  MKL_INT i, j, k;
 
   // Checking if pcol is in ascending order.
 
@@ -219,7 +219,7 @@ SubtractAsI(ARTYPE sigma, NCformat& A, NCformat& AsI)
 
   // Defining local variables.
 
-  int     i, j, k, end;
+  MKL_INT     i, j, k, end;
   ARTYPE* anzval;
   ARTYPE* inzval;
 
@@ -277,8 +277,8 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::FactorA()
 
   // Defining local variables.
 
-  int         info;
-  int*        etree;
+  MKL_INT         info;
+  MKL_INT*        etree;
   SuperMatrix AC;
 
   // Quitting the function if A was not defined.
@@ -304,8 +304,8 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::FactorA()
 
   // Setting default values for gstrf parameters.
 
-  int    panel_size = sp_ienv(1);
-  int    relax      = sp_ienv(2);
+  MKL_INT    panel_size = sp_ienv(1);
+  MKL_INT    relax      = sp_ienv(2);
   superlu_options_t options;
 
   /* Set the default input options:
@@ -325,7 +325,7 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::FactorA()
 
   // Reserving memory for etree (used in matrix decomposition).
 
-  etree = new int[this->n];
+  etree = new MKL_INT[this->n];
 
   // Defining LUStat.
 
@@ -395,10 +395,10 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::FactorAsI(ARTYPE sigma)
 
   // Defining local variables.
 
-  int         info;
-  int*        etree;
-  int*        irowi;
-  int*        pcoli;
+  MKL_INT         info;
+  MKL_INT*        etree;
+  MKL_INT*        irowi;
+  MKL_INT*        pcoli;
   ARTYPE*     asi;
   SuperMatrix AsI;
   SuperMatrix AC;
@@ -415,8 +415,8 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::FactorAsI(ARTYPE sigma)
 
   // Setting default values for gstrf parameters.
 
-  int    panel_size = sp_ienv(1);
-  int    relax      = sp_ienv(2);
+  MKL_INT    panel_size = sp_ienv(1);
+  MKL_INT    relax      = sp_ienv(2);
   superlu_options_t options;
 
   /* Set the default input options:
@@ -436,8 +436,8 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::FactorAsI(ARTYPE sigma)
 
   // Creating a temporary matrix AsI.
 
-  irowi = new int[nnz+this->n];
-  pcoli = new int[this->n+1];
+  irowi = new MKL_INT[nnz+this->n];
+  pcoli = new MKL_INT[this->n+1];
   asi   = new ARTYPE[nnz+this->n];
   Create_CompCol_Matrix(&AsI, this->n,  this->n, nnz, asi, irowi, pcoli, SLU_NC, SLU_GE);
 
@@ -449,7 +449,7 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::FactorAsI(ARTYPE sigma)
 
   // Reserving memory for etree (used in matrix decomposition).
 
-  etree = new int[this->n];
+  etree = new MKL_INT[this->n];
 
   // Defining LUStat.
 
@@ -504,7 +504,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARluNonSymMatrix<ARTYPE, ARFLOAT>::MultMv(ARTYPE* v, ARTYPE* w)
 {
 
-  int    i,j;
+  MKL_INT    i,j;
   ARTYPE t;
 
   // Quitting the function if A was not defined.
@@ -531,7 +531,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARluNonSymMatrix<ARTYPE, ARFLOAT>::MultMtv(ARTYPE* v, ARTYPE* w)
 {
 
-  int    i,j;
+  MKL_INT    i,j;
   ARTYPE t;
 
   // Quitting the function if A was not defined.
@@ -604,7 +604,7 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::MultInvv(ARTYPE* v, ARTYPE* w)
 
   // Solving A.w = v (or AsI.w = v).
 
-  int         info;
+  MKL_INT         info;
   SuperMatrix B;
 
   if (&v != &w) copy(this->n, v, 1, w, 1);
@@ -620,8 +620,8 @@ void ARluNonSymMatrix<ARTYPE, ARFLOAT>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE, class ARFLOAT>
 inline void ARluNonSymMatrix<ARTYPE, ARFLOAT>::
-DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
-             double thresholdp, int orderp, bool check)
+DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp,
+             double thresholdp, MKL_INT orderp, bool check)
 {
 
   this->m         = np;
@@ -647,8 +647,8 @@ DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
 
   // Reserving memory for vectors used in matrix decomposition.
 
-  permc = new int[this->n];
-  permr = new int[this->n];
+  permc = new MKL_INT[this->n];
+  permr = new MKL_INT[this->n];
 
   this->defined = true;
 
@@ -657,7 +657,7 @@ DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
 
 template<class ARTYPE, class ARFLOAT>
 inline void ARluNonSymMatrix<ARTYPE, ARFLOAT>::
-DefineMatrix(int mp, int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp)
+DefineMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp)
 {
 
   this->m       = mp;
@@ -687,9 +687,9 @@ inline ARluNonSymMatrix<ARTYPE, ARFLOAT>::ARluNonSymMatrix(): ARMatrix<ARTYPE>()
 
 template<class ARTYPE, class ARFLOAT>
 inline ARluNonSymMatrix<ARTYPE, ARFLOAT>::
-ARluNonSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                 int* pcolp, double thresholdp,
-                 int orderp, bool check)                : ARMatrix<ARTYPE>(np)
+ARluNonSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                 MKL_INT* pcolp, double thresholdp,
+                 MKL_INT orderp, bool check)                : ARMatrix<ARTYPE>(np)
 {
 
   factored = false;
@@ -700,8 +700,8 @@ ARluNonSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
 
 template<class ARTYPE, class ARFLOAT>
 inline ARluNonSymMatrix<ARTYPE, ARFLOAT>::
-ARluNonSymMatrix(int mp, int np, int nnzp, ARTYPE* ap,
-                 int* irowp, int* pcolp)            : ARMatrix<ARTYPE>(mp, np)
+ARluNonSymMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap,
+                 MKL_INT* irowp, MKL_INT* pcolp)            : ARMatrix<ARTYPE>(mp, np)
 {
 
   factored = false;
@@ -712,7 +712,7 @@ ARluNonSymMatrix(int mp, int np, int nnzp, ARTYPE* ap,
 
 template<class ARTYPE, class ARFLOAT>
 ARluNonSymMatrix<ARTYPE, ARFLOAT>::
-ARluNonSymMatrix(const std::string& file, double thresholdp, int orderp, bool check)
+ARluNonSymMatrix(const std::string& file, double thresholdp, MKL_INT orderp, bool check)
 {
 
   factored = false;

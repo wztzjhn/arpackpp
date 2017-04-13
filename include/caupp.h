@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE caupp.h.
    Interface to ARPACK subroutines znaupd and cnaupd.
@@ -30,8 +30,8 @@ inline void caupp(ARint& ido, char bmat, ARint n, const std::string& which, ARin
 
 /*
   c++ version of ARPACK routine znaupd that implements the
-  Reverse communication interface for the Implicitly Restarted Arnoldi
-  iteration. This is intended to be used to find a few eigenpairs of a
+  Reverse communication MKL_INTerface for the Implicitly Restarted Arnoldi
+  iteration. This is MKL_INTended to be used to find a few eigenpairs of a
   complex linear operator OP with respect to a semi-inner product defined
   by a hermitian positive semi-definite real matrix B. B may be the
   identity matrix. NOTE: if both OP and B are real, then naupp should
@@ -71,30 +71,30 @@ inline void caupp(ARint& ido, char bmat, ARint n, const std::string& which, ARin
 
     ido     (Input / Output) Reverse communication flag.  ido must be
             zero on the first call to caupp.  ido will be set
-            internally to indicate the type of operation to be
+            MKL_INTernally to indicate the type of operation to be
             performed.  Control is then given back to the calling
             routine which has the responsibility to carry out the
             requested operation and call caupp with the result. The
             operand is given in workd[ipntr[1]], the result must be
             put in workd[ipntr[2]].
-            ido =  0: first call to the reverse communication interface.
+            ido =  0: first call to the reverse communication MKL_INTerface.
             ido = -1: compute  Y = OP * X  where
-                      ipntr[1] is the pointer into workd for X,
-                      ipntr[2] is the pointer into workd for Y.
+                      ipntr[1] is the pointer MKL_INTo workd for X,
+                      ipntr[2] is the pointer MKL_INTo workd for Y.
                       This is for the initialization phase to force the
-                      starting vector into the range of OP.
+                      starting vector MKL_INTo the range of OP.
             ido =  1: compute  Y = OP * X where
-                      ipntr[1] is the pointer into workd for X,
-                      ipntr[2] is the pointer into workd for Y.
+                      ipntr[1] is the pointer MKL_INTo workd for X,
+                      ipntr[2] is the pointer MKL_INTo workd for Y.
                       In mode 3 and 4, the vector B * X is already
                       available in workd[ipntr[3]].  It does not
                       need to be recomputed in forming OP * X.
             ido =  2: compute  Y = B * X  where
-                      ipntr[1] is the pointer into workd for X,
-                      ipntr[2] is the pointer into workd for Y.
+                      ipntr[1] is the pointer MKL_INTo workd for X,
+                      ipntr[2] is the pointer MKL_INTo workd for Y.
             ido =  3: compute the iparam[8] real and imaginary parts
                       of the shifts where inptr[14] is the pointer
-                      into workl for placing the shifts. See Remark 
+                      MKL_INTo workl for placing the shifts. See Remark 
                       5 below.
             ido = 99: done.
     bmat    (Input) bmat specifies the type of the matrix B that defines
@@ -149,7 +149,7 @@ inline void caupp(ARint& ido, char bmat, ARint n, const std::string& which, ARin
                         after updating the starting vector with a linear
                         combination of Ritz vectors associated with the
                         "wanted" eigenvalues.
-            ISHIFT = 2: other choice of internal shift to be defined.
+            ISHIFT = 2: other choice of MKL_INTernal shift to be defined.
             -------------------------------------------------------------
             iparam[2]  is no longer referenced.
             iparam[3]  = MXITER
@@ -246,7 +246,7 @@ inline void caupp(ARint& ido, char bmat, ARint n, const std::string& which, ARin
     2. If a basis for the invariant subspace corresponding to the converged
        Ritz values is needed, the user must call ceupp immediately following
        completion of caupp. This is new starting with release 2 of ARPACK.
-    3. If M can be factored into a Cholesky factorization M = LL'
+    3. If M can be factored MKL_INTo a Cholesky factorization M = LL'
        then Mode = 2 should not be selected.  Instead one should use
        Mode = 1 with  OP = inv(L)*A*inv(L').  Appropriate triangular
        linear systems should be solved with L and L' rather

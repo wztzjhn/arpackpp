@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE seupp.h.
    Interface to ARPACK subroutines dseupd and sseupd.
@@ -91,7 +91,7 @@ inline void seupp(bool rvec, char HowMny, double d[], double Z[],
             They are not changed by seupp. workl[4*ncv+1:ncv*(ncv+8)]
             holds the untransformed Ritz values, the computed error
             estimates, and the associated eigenvector matrix of H.
-            Note: ipntr[8:10] contains the pointer into workl for
+            Note: ipntr[8:10] contains the pointer MKL_INTo workl for
             addresses of the above information computed by seupp.
     ipntr   (Input / Output) Array of length 12. Pointer to mark the
             starting locations in the workl array for matrices/vectors

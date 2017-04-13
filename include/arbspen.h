@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARBSPen.h.
    Arpack++ class ARbdSymPencil definition.
@@ -34,9 +34,9 @@ class ARbdSymPencil
   ARbdSymMatrix<ARTYPE>* B;
   ARbdSymMatrix<ARTYPE>  AsB;
 
-  int max(int a, int b) { return (a>b)?a:b; }
+  MKL_INT max(MKL_INT a, MKL_INT b) { return (a>b)?a:b; }
 
-  int min(int a, int b) { return (a<b)?a:b; }
+  MKL_INT min(MKL_INT a, MKL_INT b) { return (a<b)?a:b; }
 
   virtual void Copy(const ARbdSymPencil& other);
 
@@ -95,7 +95,7 @@ template<class ARTYPE>
 void ARbdSymPencil<ARTYPE>::SubtractAsB(ARTYPE sigma)
 {
 
-  int    i, n, minD, ndA, ndB, ndAsB, lda;
+  MKL_INT    i, n, minD, ndA, ndB, ndAsB, lda;
   ARTYPE negsig;
 
   negsig = -sigma;

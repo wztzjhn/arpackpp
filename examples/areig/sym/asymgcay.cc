@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/18/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ASymGShf.cc.
    Example program that illustrates how to solve a real symmetric
@@ -13,7 +13,7 @@
       where A and B are obtained from the finite element discretization
       of the 1-dimensional discrete Laplacian
                                   d^2u / dx^2
-      on the interval [0,1] with zero Dirichlet boundary conditions
+      on the MKL_INTerval [0,1] with zero Dirichlet boundary conditions
       using piecewise linear elements.
 
    2) Data structure used to represent matrices A and B:
@@ -61,12 +61,12 @@ int main()
 
   // Defining variables;
 
-  int    n;              // Dimension of the problem.
-  int    nconv;          // Number of "converged" eigenvalues.
-  int    nnzA,   nnzB;   // Number of nonzero elements in A and B.
-  int    *irowA, *irowB; // pointer to an array that stores the row
+  MKL_INT    n;              // Dimension of the problem.
+  MKL_INT    nconv;          // Number of "converged" eigenvalues.
+  MKL_INT    nnzA,   nnzB;   // Number of nonzero elements in A and B.
+  MKL_INT    *irowA, *irowB; // pointer to an array that stores the row
                          // indices of the nonzeros in A and B.
-  int    *pcolA, *pcolB; // pointer to an array of pointers to the
+  MKL_INT    *pcolA, *pcolB; // pointer to an array of pointers to the
                          // beginning of each column of A (B) in valA (valB).
   double *valA,  *valB;  // pointer to an array that stores the nonzero
                          // elements of A and B.

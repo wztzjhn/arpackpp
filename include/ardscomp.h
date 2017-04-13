@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARDSComp.h.
    Arpack++ class ARluCompStdEig definition
@@ -48,15 +48,15 @@ class ARluCompStdEig:
   ARluCompStdEig() { }
   // Short constructor.
 
-  ARluCompStdEig(int nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A, 
-                 const std::string& whichp = "LM", int ncvp = 0,
-                 ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARluCompStdEig(MKL_INT nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A, 
+                 const std::string& whichp = "LM", MKL_INT ncvp = 0,
+                 ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                  arcomplex<ARFLOAT>* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARluCompStdEig(int nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A,
+  ARluCompStdEig(MKL_INT nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A,
                  arcomplex<ARFLOAT> sigma, const std::string& whichp = "LM",
-                 int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+                 MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                  arcomplex<ARFLOAT>* residp = NULL, bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -118,9 +118,9 @@ SetShiftInvertMode(arcomplex<ARFLOAT> sigmap)
 
 template<class ARFLOAT>
 inline ARluCompStdEig<ARFLOAT>::
-ARluCompStdEig(int nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A,
-               const std::string& whichp, int ncvp, ARFLOAT tolp,
-               int maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
+ARluCompStdEig(MKL_INT nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A,
+               const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+               MKL_INT maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
 
 {
 
@@ -134,9 +134,9 @@ ARluCompStdEig(int nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A,
 
 template<class ARFLOAT>
 inline ARluCompStdEig<ARFLOAT>::
-ARluCompStdEig(int nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A,
-               arcomplex<ARFLOAT> sigmap, const std::string& whichp, int ncvp,
-               ARFLOAT tolp, int maxitp, arcomplex<ARFLOAT>* residp,
+ARluCompStdEig(MKL_INT nevp, ARdsNonSymMatrix<arcomplex<ARFLOAT>, ARFLOAT>& A,
+               arcomplex<ARFLOAT> sigmap, const std::string& whichp, MKL_INT ncvp,
+               ARFLOAT tolp, MKL_INT maxitp, arcomplex<ARFLOAT>* residp,
                bool ishiftp)
 
 {

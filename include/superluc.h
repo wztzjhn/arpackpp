@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE SuperLUc.h.
    Interface to SuperLU routines.
@@ -25,9 +25,9 @@
 // gstrf.
 
 inline void gstrf(superlu_options_t *options, SuperMatrix *A,
-        int relax, int panel_size, int *etree, void *work, int lwork,
-        int *perm_c, int *perm_r, SuperMatrix *L, SuperMatrix *U,
-        SuperLUStat_t *stat, int *info)
+        MKL_INT relax, MKL_INT panel_size, MKL_INT *etree, void *work, MKL_INT lwork,
+        MKL_INT *perm_c, MKL_INT *perm_r, SuperMatrix *L, SuperMatrix *U,
+        SuperLUStat_t *stat, MKL_INT *info)
 {
   if (A->Dtype == SLU_D) {       // calling the double precision routine.
     dGlobalLU_t Glu;
@@ -58,7 +58,7 @@ inline void gstrf(superlu_options_t *options, SuperMatrix *A,
 
 
 inline void gstrs(trans_t trans, SuperMatrix *L, SuperMatrix *U,
-	          int *perm_c, int *perm_r, SuperMatrix *B, SuperLUStat_t* stat, int *info)
+	          MKL_INT *perm_c, MKL_INT *perm_r, SuperMatrix *B, SuperLUStat_t* stat, MKL_INT *info)
 {
 
   if (L->Dtype == SLU_D) {       // calling the double precision routine.
@@ -83,8 +83,8 @@ inline void gstrs(trans_t trans, SuperMatrix *L, SuperMatrix *U,
 
 // Create_CompCol_Matrix.
 
-inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
-                                  double* a, int* irow, int* pcol,
+inline void Create_CompCol_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, MKL_INT nnz,
+                                  double* a, MKL_INT* irow, MKL_INT* pcol,
                                   Stype_t S, Mtype_t M)
 {
 
@@ -92,8 +92,8 @@ inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
 
 } // Create_CompCol_Matrix (double).
 
-inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
-                                  float* a, int* irow, int* pcol,
+inline void Create_CompCol_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, MKL_INT nnz,
+                                  float* a, MKL_INT* irow, MKL_INT* pcol,
                                   Stype_t S, Mtype_t M)
 {
 
@@ -103,8 +103,8 @@ inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
 
 #ifdef ARCOMP_H
 
-inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
-                                  arcomplex<double>* a, int* irow, int* pcol,
+inline void Create_CompCol_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, MKL_INT nnz,
+                                  arcomplex<double>* a, MKL_INT* irow, MKL_INT* pcol,
                                   Stype_t S, Mtype_t M)
 {
 
@@ -112,8 +112,8 @@ inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
 
 } // Create_CompCol_Matrix (complex<double>).
 
-inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
-                                  arcomplex<float>* a, int* irow, int* pcol,
+inline void Create_CompCol_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, MKL_INT nnz,
+                                  arcomplex<float>* a, MKL_INT* irow, MKL_INT* pcol,
                                   Stype_t S, Mtype_t M)
 {
 
@@ -126,16 +126,16 @@ inline void Create_CompCol_Matrix(SuperMatrix* A, int m, int n, int nnz,
 
 // Create_Dense_Matrix.
 
-inline void Create_Dense_Matrix(SuperMatrix* A, int m, int n, double* x,
-                                int ldx, Stype_t S, Mtype_t M)
+inline void Create_Dense_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, double* x,
+                                MKL_INT ldx, Stype_t S, Mtype_t M)
 {
 
   dCreate_Dense_Matrix(A,m,n,x,ldx,S,SLU_D,M);
 
 } // Create_Dense_Matrix (double).
 
-inline void Create_Dense_Matrix(SuperMatrix* A, int m, int n, float* x,
-                                int ldx, Stype_t S, Mtype_t M)
+inline void Create_Dense_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, float* x,
+                                MKL_INT ldx, Stype_t S, Mtype_t M)
 {
 
   sCreate_Dense_Matrix(A,m,n,x,ldx,S,SLU_S,M);
@@ -144,16 +144,16 @@ inline void Create_Dense_Matrix(SuperMatrix* A, int m, int n, float* x,
 
 #ifdef ARCOMP_H
 
-inline void Create_Dense_Matrix(SuperMatrix* A, int m, int n, arcomplex<double>* x,
-                                int ldx, Stype_t S, Mtype_t M)
+inline void Create_Dense_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, arcomplex<double>* x,
+                                MKL_INT ldx, Stype_t S, Mtype_t M)
 {
 
   zCreate_Dense_Matrix(A,m,n,(ldcomplex*)x,ldx,S,SLU_Z,M);
 
 } // Create_Dense_Matrix (complex<double>).
 
-inline void Create_Dense_Matrix(SuperMatrix* A, int m, int n, arcomplex<float>* x,
-                                int ldx, Stype_t S, Mtype_t M)
+inline void Create_Dense_Matrix(SuperMatrix* A, MKL_INT m, MKL_INT n, arcomplex<float>* x,
+                                MKL_INT ldx, Stype_t S, Mtype_t M)
 {
 
   cCreate_Dense_Matrix(A,m,n,(lscomplex*)x,ldx,S,SLU_C,M);

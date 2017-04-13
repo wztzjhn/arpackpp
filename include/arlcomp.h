@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLComp.h.
    ALTERED copy of dcomplex.h and scomplex.h (from SuperLU package).

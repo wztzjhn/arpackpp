@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARRSNSym.h.
    Arpack++ class ARrcNonSymStdEig definition.
@@ -36,7 +36,7 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
 
  // a.1) Memory control functions.
 
-  int ValSize() { return this->nev+1; }
+  MKL_INT ValSize() { return this->nev+1; }
   // Provides the size of array EigVal.
 
   void ValAllocate();
@@ -57,13 +57,13 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
 
  // a.3) Functions that check user defined parameters.
 
-  int CheckNev(int nevp);
+  MKL_INT CheckNev(MKL_INT nevp);
   // Does Range checking on nev.
 
 
  // a.4) Auxiliary functions required when using STL vector class.
 
-  bool ConjEigVec(int i);
+  bool ConjEigVec(MKL_INT i);
   // Indicates if EigVec[i] is the second eigenvector in 
   // a complex conjugate pair.
 
@@ -76,14 +76,14 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
   // Generates a complex vector Complex = RealPart + I*ImagPart
   // (or Complex = RealPart - I*ImagPart, if conj = true).
 
-  vector<arcomplex<ARFLOAT> >* GenComplex(int dim, ARFLOAT* RealPart, 
+  vector<arcomplex<ARFLOAT> >* GenComplex(MKL_INT dim, ARFLOAT* RealPart, 
                                           ARFLOAT* ImagPart, 
                                           bool conj = false);
   // Generates a complex vector Complex = RealPart + I*ImagPart
   // (or Complex = RealPart - I*ImagPart, if conj = true). dim
   // is the length of RealPart and ImagPart.
 
-  vector<arcomplex<ARFLOAT> >* GenComplex(int dim, ARFLOAT* RealPart);
+  vector<arcomplex<ARFLOAT> >* GenComplex(MKL_INT dim, ARFLOAT* RealPart);
   // Generates a complex vector from a real vector. dim is the
   // length of RealPart.
 
@@ -96,9 +96,9 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
 
  // b.1) Trace functions.
 
-  void Trace(const int digit = -5, const int getv0 = 0, const int aupd = 1,
-             const int aup2 = 0,  const int aitr = 0,  const int eigt = 0,
-             const int apps = 0,  const int gets = 0,  const int eupd = 0)
+  void Trace(const MKL_INT digit = -5, const MKL_INT getv0 = 0, const MKL_INT aupd = 1,
+             const MKL_INT aup2 = 0,  const MKL_INT aitr = 0,  const MKL_INT eigt = 0,
+             const MKL_INT apps = 0,  const MKL_INT gets = 0,  const MKL_INT eupd = 0)
   {
     nTraceOn(digit, getv0, aupd, aup2, aitr, eigt, apps, gets, eupd); 
   }
@@ -114,13 +114,13 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
 
  // b.3) Functions that perform all calculations in one step.
 
-  int Eigenvalues(ARFLOAT* &EigValRp, ARFLOAT* &EigValIp,
+  MKL_INT Eigenvalues(ARFLOAT* &EigValRp, ARFLOAT* &EigValIp,
                   bool ivec = false, bool ischur = false);
   // Overrides arrays EigValRp with the real part and EigValIp 
   // with the imaginary part of the eigenvalues of the problem. 
   // Calculates eigenvectors and Schur vectors if requested.
 
-  int EigenValVectors(ARFLOAT* &EigVecp, ARFLOAT* &EigValRp, 
+  MKL_INT EigenValVectors(ARFLOAT* &EigVecp, ARFLOAT* &EigValRp, 
                       ARFLOAT* &EigValIp, bool ischur = false);
   // Overrides array EigVecp sequentially with the eigenvectors of the
   // given eigen-problem. Also stores the eigenvalues in EigValRp and
@@ -130,29 +130,29 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
  // b.4) Functions that return elements of vectors and matrices.
 
 #ifdef ARCOMP_H
-  arcomplex<ARFLOAT> Eigenvalue(int i);
+  arcomplex<ARFLOAT> Eigenvalue(MKL_INT i);
   // Furnishes i-eth eigenvalue.
 #endif // ARCOMP_H.
 
-  ARFLOAT EigenvalueReal(int i);
+  ARFLOAT EigenvalueReal(MKL_INT i);
   // Provides the real part of the i-eth eigenvalue.
 
-  ARFLOAT EigenvalueImag(int i);
+  ARFLOAT EigenvalueImag(MKL_INT i);
   // Provides the imaginary part of the i-eth eigenvalue.
 
 #ifdef ARCOMP_H
-  arcomplex<ARFLOAT> Eigenvector(int i, int j);
+  arcomplex<ARFLOAT> Eigenvector(MKL_INT i, MKL_INT j);
   // Furnishes element j of the i-eth eigenvector.
 #endif // ARCOMP_H.
 
-  ARFLOAT EigenvectorReal(int i, int j);
+  ARFLOAT EigenvectorReal(MKL_INT i, MKL_INT j);
   // Provides the real part of element j of the i-eth eigenvector.
 
-  ARFLOAT EigenvectorImag(int i, int j);
+  ARFLOAT EigenvectorImag(MKL_INT i, MKL_INT j);
   // Provides the imaginary part of element j of the i-eth eigenvector.
 
 
- // b.5) Functions that provide raw access to internal vectors and matrices.
+ // b.5) Functions that provide raw access to MKL_INTernal vectors and matrices.
 
   ARFLOAT* RawEigenvaluesImag();
   // Provides raw access to the imaginary part of eigenvalues.
@@ -176,14 +176,14 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
   // Returns the imaginary part of the eigenvalues.
 
 #ifdef ARCOMP_H
-  vector<arcomplex<ARFLOAT> >* StlEigenvector(int i);
+  vector<arcomplex<ARFLOAT> >* StlEigenvector(MKL_INT i);
   // Returns the i-th eigenvector.
 #endif // ARCOMP_H.
 
-  vector<ARFLOAT>* StlEigenvectorReal(int i);
+  vector<ARFLOAT>* StlEigenvectorReal(MKL_INT i);
   // Returns the real part of the i-th eigenvector.
 
-  vector<ARFLOAT>* StlEigenvectorImag(int i);
+  vector<ARFLOAT>* StlEigenvectorImag(MKL_INT i);
   // Returns the imaginary part of the i-th eigenvector.
 
 #endif // STL_VECTOR_H.
@@ -194,13 +194,13 @@ class ARrcNonSymStdEig: public virtual ARrcStdEig<ARFLOAT, ARFLOAT> {
   ARrcNonSymStdEig() { }
   // Short constructor.
 
-  ARrcNonSymStdEig(int np, int nevp, const std::string& whichp = "LM", int ncvp = 0,
-                   ARFLOAT tolp = 0.0, int maxitp = 0, ARFLOAT* residp = NULL,
+  ARrcNonSymStdEig(MKL_INT np, MKL_INT nevp, const std::string& whichp = "LM", MKL_INT ncvp = 0,
+                   ARFLOAT tolp = 0.0, MKL_INT maxitp = 0, ARFLOAT* residp = NULL,
                    bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARrcNonSymStdEig(int np, int nevp, ARFLOAT sigma, const std::string& whichp = "LM",
-                   int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARrcNonSymStdEig(MKL_INT np, MKL_INT nevp, ARFLOAT sigma, const std::string& whichp = "LM",
+                   MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                    ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -271,7 +271,7 @@ inline void ARrcNonSymStdEig<ARFLOAT>::Eupp()
 
 
 template<class ARFLOAT>
-inline int ARrcNonSymStdEig<ARFLOAT>::CheckNev(int nevp)
+inline MKL_INT ARrcNonSymStdEig<ARFLOAT>::CheckNev(MKL_INT nevp)
 {
 
   if ((nevp<=1)||(nevp>=(this->n-1))) { // nev must satisfy 1 < nev < n-1.
@@ -283,11 +283,11 @@ inline int ARrcNonSymStdEig<ARFLOAT>::CheckNev(int nevp)
 
 
 template<class ARFLOAT>
-bool ARrcNonSymStdEig<ARFLOAT>::ConjEigVec(int i)
+bool ARrcNonSymStdEig<ARFLOAT>::ConjEigVec(MKL_INT i)
 {
 
   if (this->EigValI[i] == (ARFLOAT)0.0) return false;
-  int j = i-1;
+  MKL_INT j = i-1;
   while ((j >= 0) && (this->EigValI[j] != (ARFLOAT)0.0)) j--;
   if (((i-j)%2) == 0) {
     return true;
@@ -335,7 +335,7 @@ GenComplex(vector<ARFLOAT>* RealPart, vector<ARFLOAT>* ImagPart, bool conj)
 
 template<class ARFLOAT>
 vector<arcomplex<ARFLOAT> >* ARrcNonSymStdEig<ARFLOAT>::
-GenComplex(int dim, ARFLOAT* RealPart, ARFLOAT* ImagPart, bool conj)
+GenComplex(MKL_INT dim, ARFLOAT* RealPart, ARFLOAT* ImagPart, bool conj)
 {
 
   // Defining variables.
@@ -366,7 +366,7 @@ GenComplex(int dim, ARFLOAT* RealPart, ARFLOAT* ImagPart, bool conj)
 
 template<class ARFLOAT>
 vector<arcomplex<ARFLOAT> >* ARrcNonSymStdEig<ARFLOAT>::
-GenComplex(int dim, ARFLOAT* RealPart)
+GenComplex(MKL_INT dim, ARFLOAT* RealPart)
 {
 
   // Defining variables.
@@ -380,7 +380,7 @@ GenComplex(int dim, ARFLOAT* RealPart)
   ARFLOAT* end = &RealPart[dim];
   arcomplex<ARFLOAT>* s = Result->begin();
 
-  // Copying a real vector into a complex vector.
+  // Copying a real vector MKL_INTo a complex vector.
 
   while (rp != end) *s++ = *rp++;
 
@@ -405,7 +405,7 @@ ARFLOAT* ARrcNonSymStdEig<ARFLOAT>::GetVectorImag()
 
 
 template<class ARFLOAT>
-int ARrcNonSymStdEig<ARFLOAT>::
+MKL_INT ARrcNonSymStdEig<ARFLOAT>::
 Eigenvalues(ARFLOAT* &EigValRp, ARFLOAT* &EigValIp, bool ivec, bool ischur)
 {
 
@@ -456,7 +456,7 @@ Eigenvalues(ARFLOAT* &EigValRp, ARFLOAT* &EigValIp, bool ivec, bool ischur)
 
 
 template<class ARFLOAT>
-int ARrcNonSymStdEig<ARFLOAT>::
+MKL_INT ARrcNonSymStdEig<ARFLOAT>::
 EigenValVectors(ARFLOAT* &EigVecp, ARFLOAT* &EigValRp,
                 ARFLOAT* &EigValIp, bool ischur)
 {
@@ -496,7 +496,7 @@ EigenValVectors(ARFLOAT* &EigVecp, ARFLOAT* &EigValRp,
 
 #ifdef ARCOMP_H
 template<class ARFLOAT>
-inline arcomplex<ARFLOAT> ARrcNonSymStdEig<ARFLOAT>::Eigenvalue(int i)
+inline arcomplex<ARFLOAT> ARrcNonSymStdEig<ARFLOAT>::Eigenvalue(MKL_INT i)
 {
 
   // Returning i-eth eigenvalue.
@@ -514,7 +514,7 @@ inline arcomplex<ARFLOAT> ARrcNonSymStdEig<ARFLOAT>::Eigenvalue(int i)
 
 
 template<class ARFLOAT>
-inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvalueReal(int i)
+inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvalueReal(MKL_INT i)
 {
 
   // Returning the real part of i-eth eigenvalue.
@@ -531,7 +531,7 @@ inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvalueReal(int i)
 
 
 template<class ARFLOAT>
-inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvalueImag(int i)
+inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvalueImag(MKL_INT i)
 {
 
   // Returning the imaginary part of i-eth eigenvalue.
@@ -550,7 +550,7 @@ inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvalueImag(int i)
 #ifdef ARCOMP_H
 template<class ARFLOAT>
 inline arcomplex<ARFLOAT> ARrcNonSymStdEig<ARFLOAT>::
-Eigenvector(int i, int j)
+Eigenvector(MKL_INT i, MKL_INT j)
 {
 
   // Returning element j of i-eth eigenvector.
@@ -578,7 +578,7 @@ Eigenvector(int i, int j)
 
 
 template<class ARFLOAT>
-inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvectorReal(int i, int j)
+inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvectorReal(MKL_INT i, MKL_INT j)
 {
 
   // Returning the real part of element j of i-eth eigenvector.
@@ -595,7 +595,7 @@ inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvectorReal(int i, int j)
 
 
 template<class ARFLOAT>
-inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvectorImag(int i, int j)
+inline ARFLOAT ARrcNonSymStdEig<ARFLOAT>::EigenvectorImag(MKL_INT i, MKL_INT j)
 {
 
   // Returning the imaginary part of element j of i-eth eigenvector.
@@ -717,7 +717,7 @@ inline vector<ARFLOAT>* ARrcNonSymStdEig<ARFLOAT>::StlEigenvaluesImag()
 #ifdef ARCOMP_H
 template<class ARFLOAT>
 inline vector<arcomplex<ARFLOAT> >* ARrcNonSymStdEig<ARFLOAT>::
-StlEigenvector(int i)
+StlEigenvector(MKL_INT i)
 {
 
   // Returning the i-th eigenvector in a STL vector.
@@ -743,7 +743,7 @@ StlEigenvector(int i)
 
 
 template<class ARFLOAT>
-inline vector<ARFLOAT>* ARrcNonSymStdEig<ARFLOAT>::StlEigenvectorReal(int i)
+inline vector<ARFLOAT>* ARrcNonSymStdEig<ARFLOAT>::StlEigenvectorReal(MKL_INT i)
 {
 
   // Returning the real part of the i-th eigenvector in a STL vector.
@@ -775,7 +775,7 @@ inline vector<ARFLOAT>* ARrcNonSymStdEig<ARFLOAT>::StlEigenvectorReal(int i)
 
 
 template<class ARFLOAT>
-inline vector<ARFLOAT>* ARrcNonSymStdEig<ARFLOAT>::StlEigenvectorImag(int i)
+inline vector<ARFLOAT>* ARrcNonSymStdEig<ARFLOAT>::StlEigenvectorImag(MKL_INT i)
 {
 
   // Returning the imaginary part of the i-th eigenvector in a STL vector.
@@ -818,8 +818,8 @@ inline vector<ARFLOAT>* ARrcNonSymStdEig<ARFLOAT>::StlEigenvectorImag(int i)
 
 template<class ARFLOAT>
 inline ARrcNonSymStdEig<ARFLOAT>::
-ARrcNonSymStdEig(int np, int nevp, const std::string& whichp, int ncvp,
-                 ARFLOAT tolp, int maxitp, ARFLOAT* residp, bool ishiftp)
+ARrcNonSymStdEig(MKL_INT np, MKL_INT nevp, const std::string& whichp, MKL_INT ncvp,
+                 ARFLOAT tolp, MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 
@@ -831,8 +831,8 @@ ARrcNonSymStdEig(int np, int nevp, const std::string& whichp, int ncvp,
 
 template<class ARFLOAT>
 inline ARrcNonSymStdEig<ARFLOAT>::
-ARrcNonSymStdEig(int np, int nevp, ARFLOAT sigmap, const std::string& whichp, int ncvp,
-                 ARFLOAT tolp, int maxitp, ARFLOAT* residp, bool ishiftp)
+ARrcNonSymStdEig(MKL_INT np, MKL_INT nevp, ARFLOAT sigmap, const std::string& whichp, MKL_INT ncvp,
+                 ARFLOAT tolp, MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 

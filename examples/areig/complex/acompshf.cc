@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/18/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ACompShf.cc
    Example program that illustrates how to solve a complex standard
@@ -12,7 +12,7 @@
       mode, where A is derived from the central difference discretization
       of the 1-dimensional convection-diffusion operator
                         (d^2u/dx^2) + rho*(du/dx)
-      on the interval [0,1] with zero Dirichlet boundary conditions.
+      on the MKL_INTerval [0,1] with zero Dirichlet boundary conditions.
 
    2) Data structure used to represent matrix A:
 
@@ -55,12 +55,12 @@ int main()
 
   // Defining variables;
 
-  int               n;            // Dimension of the problem.
-  int               nnz;          // Number of nonzero elements in A.
-  int               nconv;        // Number of "converged" eigenvalues.
-  int*              irow;         // pointer to an array that stores the row
+  MKL_INT               n;            // Dimension of the problem.
+  MKL_INT               nnz;          // Number of nonzero elements in A.
+  MKL_INT               nconv;        // Number of "converged" eigenvalues.
+  MKL_INT*              irow;         // pointer to an array that stores the row
                                   // indices of the nonzeros in A.
-  int*              pcol;         // pointer to an array of pointers to the
+  MKL_INT*              pcol;         // pointer to an array of pointers to the
                                   // beginning of each column in vector A.
   arcomplex<double> rho;          // Parameter used by CompMatrixB.
   arcomplex<double> *A;           // pointer to an array that stores the

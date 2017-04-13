@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARGNSym.h.
    Arpack++ class ARNonSymGenEig definition.
@@ -80,15 +80,15 @@ class ARNonSymGenEig:
 
  // d.2) Functions that perform all calculations in one step.
 
-  virtual int FindEigenvalues();
+  virtual MKL_INT FindEigenvalues();
   // Determines nev approximated eigenvalues of the given eigen-problem.
 
-  virtual int FindEigenvectors(bool schurp = false);
+  virtual MKL_INT FindEigenvectors(bool schurp = false);
   // Determines nev approximated eigenvectors of the given eigen-problem
   // Optionally also determines nev Schur vectors that span the desired
   // invariant subspace.
 
-  virtual int FindSchurVectors();
+  virtual MKL_INT FindSchurVectors();
   // Determines nev Schur vectors that span the desired invariant subspace.
   // Redefined in ARSymEig.
 
@@ -98,27 +98,27 @@ class ARNonSymGenEig:
   ARNonSymGenEig() { this->part = 'R'; }
   // Short constructor (Does nothing but calling base classes constructors).
 
-  ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
+  ARNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                  void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
                  ARFB* objBp, void (ARFB::* MultBxp)(ARFLOAT[], ARFLOAT[]),
-                 const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-                 int maxitp = 0, ARFLOAT* residp = NULL, bool ishiftp = true);
+                 const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+                 MKL_INT maxitp = 0, ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
+  ARNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                  void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
                  ARFB* objBp, void (ARFB::* MultBxp)(ARFLOAT[], ARFLOAT[]),
-                 ARFLOAT sigmap, const std::string& whichp = "LM", int ncvp = 0,
-                 ARFLOAT tolp = 0.0, int maxitp = 0, ARFLOAT* residp = NULL,
+                 ARFLOAT sigmap, const std::string& whichp = "LM", MKL_INT ncvp = 0,
+                 ARFLOAT tolp = 0.0, MKL_INT maxitp = 0, ARFLOAT* residp = NULL,
                  bool ishiftp = true);
   // Long constructor (real shift and invert mode).
 
-  ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
+  ARNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                  void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]), ARFB* objAp,
                  void (ARFB::* MultAxp)(ARFLOAT[], ARFLOAT[]), ARFB* objBp,
                  void (ARFB::* MultBxp)(ARFLOAT[], ARFLOAT[]), char partp,
                  ARFLOAT sigmaRp, ARFLOAT sigmaIp, const std::string& whichp = "LM",
-                 int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+                 MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                  ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (complex shift and invert mode).
 
@@ -158,7 +158,7 @@ template<class ARFLOAT, class ARFOP, class ARFB>
 void ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::RecoverEigenvalues()
 {
 
-  int    j, ColJ, ColJp1;
+  MKL_INT    j, ColJ, ColJp1;
   ARFLOAT  numr, numi, denr, deni;
   ARFLOAT* Ax;
 
@@ -256,7 +256,7 @@ SetComplexShiftMode(char partp, ARFLOAT sigmaRp, ARFLOAT sigmaIp,
 
 
 template<class ARFLOAT, class ARFOP, class ARFB>
-inline int ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindEigenvalues()
+inline MKL_INT ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindEigenvalues()
 {
 
   this->nconv = ARStdEig<ARFLOAT, ARFLOAT, ARFOP>::FindEigenvalues();
@@ -267,7 +267,7 @@ inline int ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindEigenvalues()
 
 
 template<class ARFLOAT, class ARFOP, class ARFB>
-inline int ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindEigenvectors(bool schurp)
+inline MKL_INT ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindEigenvectors(bool schurp)
 {
 
   this->nconv = ARStdEig<ARFLOAT, ARFLOAT, ARFOP>::FindEigenvectors(schurp);
@@ -278,7 +278,7 @@ inline int ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindEigenvectors(bool schurp)
 
 
 template<class ARFLOAT, class ARFOP, class ARFB>
-int ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindSchurVectors()
+MKL_INT ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindSchurVectors()
 {
 
   this->nconv = ARStdEig<ARFLOAT, ARFLOAT, ARFOP>::FindSchurVectors();
@@ -290,10 +290,10 @@ int ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::FindSchurVectors()
 
 template<class ARFLOAT, class ARFOP, class ARFB>
 inline ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::
-ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
+ARNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
                ARFB* objBp, void (ARFB::* MultBxp)(ARFLOAT[], ARFLOAT[]),
-               const std::string& whichp, int ncvp, ARFLOAT tolp, int maxitp,
+               const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp,
                ARFLOAT* residp, bool ishiftp)
 
 {
@@ -308,11 +308,11 @@ ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
 
 template<class ARFLOAT, class ARFOP, class ARFB>
 inline ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::
-ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
+ARNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
                ARFB* objBp, void (ARFB::* MultBxp)(ARFLOAT[], ARFLOAT[]),
-               ARFLOAT sigmap, const std::string& whichp, int ncvp,
-               ARFLOAT tolp, int maxitp, ARFLOAT* residp, bool ishiftp)
+               ARFLOAT sigmap, const std::string& whichp, MKL_INT ncvp,
+               ARFLOAT tolp, MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 
@@ -326,12 +326,12 @@ ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
 
 template<class ARFLOAT, class ARFOP, class ARFB>
 inline ARNonSymGenEig<ARFLOAT, ARFOP, ARFB>::
-ARNonSymGenEig(int np, int nevp, ARFOP* objOPp,
+ARNonSymGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
                ARFB* objAp, void (ARFB::* MultAxp)(ARFLOAT[], ARFLOAT[]),
                ARFB* objBp, void (ARFB::* MultBxp)(ARFLOAT[], ARFLOAT[]),
                char partp, ARFLOAT sigmaRp, ARFLOAT sigmaIp,
-               const std::string& whichp, int ncvp, ARFLOAT tolp, int maxitp,
+               const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp,
                ARFLOAT* residp, bool ishiftp)
 
 {

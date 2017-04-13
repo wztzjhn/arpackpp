@@ -1,11 +1,11 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARRGEig.h.
    Arpack++ class ARrcGenEig definition.
    Derived from ARrcStdEig, this class implements the
-   reverse communication interface for generalized problems.
+   reverse communication MKL_INTerface for generalized problems.
 
    ARPACK Authors
       Richard Lehoucq

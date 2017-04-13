@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARDFMat.h
    Matrix template that generates a dense matrix from a file.
@@ -34,19 +34,19 @@ class ARdfMatrix {
 
  private:
 
-  // const int linelength = 256;
+  // const MKL_INT linelength = 256;
 
   std::string   datafile;  // Filename.
   std::ifstream file;      // File handler.
-  int      m;         // Number of rows.
-  int      n;         // Number of columns.
-  int      blksize;   // Size of each matrix block that is read at once.
-  int      block;     // Index of the matrix block that is to be read.
-  int      nblocks;   // Number of blocks the matrix contain. 
-  int      first;     // First row/column stored in val.
-  int      strows;    // Number of rows actually stored in val.
-  int      stcols;    // Number of columns actually stored in val.
-  int      headsize;  // Number of lines in the heading part of the file
+  MKL_INT      m;         // Number of rows.
+  MKL_INT      n;         // Number of columns.
+  MKL_INT      blksize;   // Size of each matrix block that is read at once.
+  MKL_INT      block;     // Index of the matrix block that is to be read.
+  MKL_INT      nblocks;   // Number of blocks the matrix contain. 
+  MKL_INT      first;     // First row/column stored in val.
+  MKL_INT      strows;    // Number of rows actually stored in val.
+  MKL_INT      stcols;    // Number of columns actually stored in val.
+  MKL_INT      headsize;  // Number of lines in the heading part of the file
                       // (including the line that contains the matrix size).
   bool     roword;    // A variable that indicates if the data will be read
                       // using a row-major or a column-major ordering.
@@ -78,33 +78,33 @@ class ARdfMatrix {
 
   void Rewind();
 
-  int BlockSize() const { return blksize; }
+  MKL_INT BlockSize() const { return blksize; }
 
-  int FirstIndex() const { return first; }
+  MKL_INT FirstIndex() const { return first; }
 
-  int NBlocks() const { return nblocks; }
+  MKL_INT NBlocks() const { return nblocks; }
 
-  int ColsInMemory() const { return stcols; }
+  MKL_INT ColsInMemory() const { return stcols; }
   
-  int RowsInMemory() const { return strows; }
+  MKL_INT RowsInMemory() const { return strows; }
   
-  int NRows() const { return m; }
+  MKL_INT NRows() const { return m; }
 
-  int NCols() const { return n; }
+  MKL_INT NCols() const { return n; }
   
   ARTYPE* Entries() const { return val; }
 
   void ReadBlock();
   // Function that reads a block of blksize rows/columns of the matrix.
 
-  void Define(const std::string& filename, int blksizep = 0);
+  void Define(const std::string& filename, MKL_INT blksizep = 0);
   // Function that reads the matrix dimension. Define also read all
   // of the matrix elements when blocksize = 0.
   
   ARdfMatrix();
   // Short constructor.
 
-  ARdfMatrix(const std::string& filename, int blksizep = 0);
+  ARdfMatrix(const std::string& filename, MKL_INT blksizep = 0);
   // Long constructor.
 
   ~ARdfMatrix();
@@ -242,7 +242,7 @@ void ARdfMatrix<ARTYPE>::Rewind()
 
   // Skipping the header. 
 
-  for (int i=0; i<headsize; i++) {
+  for (MKL_INT i=0; i<headsize; i++) {
     file.get((char*)data,LINELEN,'\n');
     file.get(c);
   }
@@ -254,7 +254,7 @@ template<class ARTYPE>
 void ARdfMatrix<ARTYPE>::ReadBlock()
 {
 
-  int    i, j, last;
+  MKL_INT    i, j, last;
   ARTYPE value;
 
   // Repositioning the file pointer if block == 0.
@@ -326,7 +326,7 @@ void ARdfMatrix<ARTYPE>::ReadBlock()
 
 
 template<class ARTYPE>
-void ARdfMatrix<ARTYPE>::Define(const std::string& filename, int blksizep)
+void ARdfMatrix<ARTYPE>::Define(const std::string& filename, MKL_INT blksizep)
 {
 
   // Declaring variables.
@@ -431,7 +431,7 @@ ARdfMatrix<ARTYPE>::ARdfMatrix()
 
 
 template<class ARTYPE>
-ARdfMatrix<ARTYPE>::ARdfMatrix(const std::string& filename, int blksizep) 
+ARdfMatrix<ARTYPE>::ARdfMatrix(const std::string& filename, MKL_INT blksizep) 
 { 
 
   val = NULL;

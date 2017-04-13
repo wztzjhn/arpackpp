@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLSMat.h.
    Arpack++ class ARluSymMatrix definition.
@@ -42,12 +42,12 @@ class ARluSymMatrix: public ARMatrix<ARTYPE> {
 
   bool        factored;
   char        uplo;
-  int         order;
-  int         nnz;
-  int*        irow;
-  int*        pcol;
-  int*        permc;
-  int*        permr;
+  MKL_INT         order;
+  MKL_INT         nnz;
+  MKL_INT*        irow;
+  MKL_INT*        pcol;
+  MKL_INT*        permc;
+  MKL_INT*        permr;
   double      threshold;
   ARTYPE*     a;
   SuperMatrix A;
@@ -66,7 +66,7 @@ class ARluSymMatrix: public ARMatrix<ARTYPE> {
 
  public:
 
-  int nzeros() { return nnz; }
+  MKL_INT nzeros() { return nnz; }
 
   bool IsFactored() { return factored; }
 
@@ -78,20 +78,20 @@ class ARluSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
+  void DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp,
                     char uplop = 'L', double thresholdp = 0.1,
-                    int orderp = 2, bool check = true);
+                    MKL_INT orderp = 2, bool check = true);
 
   ARluSymMatrix();
   // Short constructor that does nothing.
 
-  ARluSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
+  ARluSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp,
                 char uplop = 'L', double thresholdp = 0.1,
-                int orderp = 2, bool check = true);
+                MKL_INT orderp = 2, bool check = true);
   // Long constructor.
 
   ARluSymMatrix(const std::string& name, double thresholdp = 0.1,
-                int orderp = 2, bool check = true);
+                MKL_INT orderp = 2, bool check = true);
   // Long constructor (Harwell-Boeing file).
 
   ARluSymMatrix(const ARluSymMatrix& other) { Copy(other); }
@@ -114,7 +114,7 @@ template<class ARTYPE>
 bool ARluSymMatrix<ARTYPE>::DataOK()
 {
 
-  int i, j, k;
+  MKL_INT i, j, k;
 
   // Checking if pcol is in ascending order.
 
@@ -205,9 +205,9 @@ ExpandA(NCformat& A, NCformat& Aexp, ARTYPE sigma)
   // Defining local variables.
 
   bool   subtract;
-  int    i, j, k;
-  int    *colA, *colE;
-  int    *indA, *indE;
+  MKL_INT    i, j, k;
+  MKL_INT    *colA, *colE;
+  MKL_INT    *indA, *indE;
   ARTYPE *valA, *valE;
 
   // Checking if sigma is zero.
@@ -218,10 +218,10 @@ ExpandA(NCformat& A, NCformat& Aexp, ARTYPE sigma)
 
   valA = (ARTYPE*)A.nzval;
   valE = (ARTYPE*)Aexp.nzval;
-  indA = (int*)A.rowind;
-  indE = (int*)Aexp.rowind;
-  colA = (int*)A.colptr;
-  colE = (int*)Aexp.colptr;
+  indA = (MKL_INT*)A.rowind;
+  indE = (MKL_INT*)Aexp.rowind;
+  colA = (MKL_INT*)A.colptr;
+  colE = (MKL_INT*)Aexp.colptr;
 
   // Filling colE with zeros.
 
@@ -350,10 +350,10 @@ void ARluSymMatrix<ARTYPE>::FactorA()
 
   // Defining local variables.
 
-  int         info;
-  int*        etree;
-  int*        irowi;
-  int*        pcoli;
+  MKL_INT         info;
+  MKL_INT*        etree;
+  MKL_INT*        irowi;
+  MKL_INT*        pcoli;
   ARTYPE*     aexp;
   SuperMatrix Aexp;
   SuperMatrix AC;
@@ -370,8 +370,8 @@ void ARluSymMatrix<ARTYPE>::FactorA()
 
   // Setting default values for gstrf parameters.
 
-  int    panel_size = sp_ienv(1);
-  int    relax      = sp_ienv(2);
+  MKL_INT    panel_size = sp_ienv(1);
+  MKL_INT    relax      = sp_ienv(2);
   superlu_options_t options;
 
   /* Set the default input options:
@@ -396,8 +396,8 @@ void ARluSymMatrix<ARTYPE>::FactorA()
 
   // Creating a temporary matrix Aexp.
 
-  irowi = new int[nnz*2];
-  pcoli = new int[this->n+1];
+  irowi = new MKL_INT[nnz*2];
+  pcoli = new MKL_INT[this->n+1];
   aexp  = new ARTYPE[nnz*2];
   Create_CompCol_Matrix(&Aexp, this->n,  this->n, nnz, aexp, irowi, pcoli, SLU_NC, SLU_GE);
 
@@ -409,7 +409,7 @@ void ARluSymMatrix<ARTYPE>::FactorA()
 
   // Reserving memory for etree (used in matrix decomposition).
 
-  etree = new int[this->n];
+  etree = new MKL_INT[this->n];
 
   // Defining LUStat.
 
@@ -471,10 +471,10 @@ void ARluSymMatrix<ARTYPE>::FactorAsI(ARTYPE sigma)
 
   // Defining local variables.
 
-  int         info;
-  int*        etree;
-  int*        irowi;
-  int*        pcoli;
+  MKL_INT         info;
+  MKL_INT*        etree;
+  MKL_INT*        irowi;
+  MKL_INT*        pcoli;
   ARTYPE*     asi;
   SuperMatrix AsI;
   SuperMatrix AC;
@@ -491,8 +491,8 @@ void ARluSymMatrix<ARTYPE>::FactorAsI(ARTYPE sigma)
 
   // Setting default values for gstrf parameters.
 
-  int    panel_size = sp_ienv(1);
-  int    relax      = sp_ienv(2);
+  MKL_INT    panel_size = sp_ienv(1);
+  MKL_INT    relax      = sp_ienv(2);
   superlu_options_t options;
 
   /* Set the default input options:
@@ -517,8 +517,8 @@ void ARluSymMatrix<ARTYPE>::FactorAsI(ARTYPE sigma)
 
   // Creating a temporary matrix AsI.
 
-  irowi = new int[nnz*2+this->n];
-  pcoli = new int[this->n+1];
+  irowi = new MKL_INT[nnz*2+this->n];
+  pcoli = new MKL_INT[this->n+1];
   asi   = new ARTYPE[nnz*2+this->n];
   Create_CompCol_Matrix(&AsI, this->n,  this->n, nnz, asi, irowi, pcoli, SLU_NC, SLU_GE);
 
@@ -530,7 +530,7 @@ void ARluSymMatrix<ARTYPE>::FactorAsI(ARTYPE sigma)
 
   // Reserving memory for etree (used in matrix decomposition).
 
-  etree = new int[this->n];
+  etree = new MKL_INT[this->n];
 
   // Defining LUStat.
 
@@ -583,7 +583,7 @@ template<class ARTYPE>
 void ARluSymMatrix<ARTYPE>::MultMv(ARTYPE* v, ARTYPE* w)
 {
 
-  int    i, j, k;
+  MKL_INT    i, j, k;
   ARTYPE t;
 
   // Quitting the function if A was not defined.
@@ -645,7 +645,7 @@ void ARluSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
 
   // Solving A.w = v (or AsI.w = v).
 
-  int         info;
+  MKL_INT         info;
   SuperMatrix B;
 
   if (&v != &w) copy(this->n, v, 1, w, 1);
@@ -661,8 +661,8 @@ void ARluSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE>
 inline void ARluSymMatrix<ARTYPE>::
-DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
-             char uplop, double thresholdp, int orderp, bool check)
+DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp,
+             char uplop, double thresholdp, MKL_INT orderp, bool check)
 {
 
   this->m         = np;
@@ -689,8 +689,8 @@ DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
 
   // Reserving memory for vectors used in matrix decomposition.
 
-  permc = new int[this->n];
-  permr = new int[this->n];
+  permc = new MKL_INT[this->n];
+  permr = new MKL_INT[this->n];
 
   this->defined = true;
 
@@ -710,9 +710,9 @@ inline ARluSymMatrix<ARTYPE>::ARluSymMatrix(): ARMatrix<ARTYPE>()
 
 template<class ARTYPE>
 inline ARluSymMatrix<ARTYPE>::
-ARluSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-              int* pcolp, char uplop, double thresholdp,
-              int orderp, bool check)                   : ARMatrix<ARTYPE>(np)
+ARluSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+              MKL_INT* pcolp, char uplop, double thresholdp,
+              MKL_INT orderp, bool check)                   : ARMatrix<ARTYPE>(np)
 {
 
   factored = false;
@@ -723,7 +723,7 @@ ARluSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
 
 template<class ARTYPE>
 ARluSymMatrix<ARTYPE>::
-ARluSymMatrix(const std::string& file, double thresholdp, int orderp, bool check)
+ARluSymMatrix(const std::string& file, double thresholdp, MKL_INT orderp, bool check)
 {
 
   factored = false;

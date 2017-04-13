@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARDNSMat.h.
    Arpack++ class ARdsNonSymMatrix definition.
@@ -40,8 +40,8 @@ class ARdsNonSymMatrix: public ARMatrix<ARTYPE> {
  protected:
 
   bool                factored;
-  int                 info;
-  int*                ipiv;
+  MKL_INT                 info;
+  MKL_INT*                ipiv;
   ARTYPE*             A;
   ARTYPE*             Ainv;
   ARdfMatrix<ARTYPE>  mat;
@@ -74,20 +74,20 @@ class ARdsNonSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, ARTYPE* Ap);
+  void DefineMatrix(MKL_INT np, ARTYPE* Ap);
 
-  void DefineMatrix(int mp, int np, ARTYPE* Ap);
+  void DefineMatrix(MKL_INT mp, MKL_INT np, ARTYPE* Ap);
 
   ARdsNonSymMatrix(): ARMatrix<ARTYPE>() { factored = false; }
   // Short constructor that does nothing.
 
-  ARdsNonSymMatrix(int np, ARTYPE* Ap);
+  ARdsNonSymMatrix(MKL_INT np, ARTYPE* Ap);
   // Long constructor (square matrix).
 
-  ARdsNonSymMatrix(int mp, int np, ARTYPE* Ap);
+  ARdsNonSymMatrix(MKL_INT mp, MKL_INT np, ARTYPE* Ap);
   // Long constructor (rectangular matrix).
 
-  ARdsNonSymMatrix(const std::string& file, int blksizep = 0);
+  ARdsNonSymMatrix(const std::string& file, MKL_INT blksizep = 0);
   // Long constructor (Matrix stored in a file).
 
   ARdsNonSymMatrix(const ARdsNonSymMatrix& other) { Copy(other); }
@@ -147,10 +147,10 @@ Copy(const ARdsNonSymMatrix<ARTYPE, ARFLOAT>& other)
   // Copying vectors.
 
   Ainv = new ARTYPE[this->m*this->n];
-  ipiv = new int[this->n];
+  ipiv = new MKL_INT[this->n];
 
   copy(this->m*this->n, other.Ainv, 1, Ainv, 1);
-  for (int i=0; i<this->n; i++) ipiv[i] = other.ipiv[i];
+  for (MKL_INT i=0; i<this->n; i++) ipiv[i] = other.ipiv[i];
 
 } // Copy.
 
@@ -161,7 +161,7 @@ inline void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::CreateStructure()
 
   ClearMem();
   Ainv = new ARTYPE[this->m*this->n];
-  ipiv = new int[this->n];
+  ipiv = new MKL_INT[this->n];
 
 } // CreateStructure.
 
@@ -251,7 +251,7 @@ void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::FactorAsI(ARTYPE sigma)
   // Subtracting sigma*I from A.
 
   ::copy(this->m*this->n,A,1,Ainv,1);
-  for (int i=0; i<(this->m*this->n); i+=this->m+1) Ainv[i]-=sigma;
+  for (MKL_INT i=0; i<(this->m*this->n); i+=this->m+1) Ainv[i]-=sigma;
 
   // Decomposing AsI.
 
@@ -270,7 +270,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::MultMv(ARTYPE* v, ARTYPE* w)
 {
 
-  int     i;
+  MKL_INT     i;
   ARTYPE* t;
   ARTYPE  one;
   ARTYPE  zero;
@@ -331,7 +331,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::MultMtv(ARTYPE* v, ARTYPE* w)
 {
 
-  int     i;
+  MKL_INT     i;
   ARTYPE* t;
   ARTYPE  one;   
   ARTYPE  zero; 
@@ -393,7 +393,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::MultMtMv(ARTYPE* v, ARTYPE* w)
 {
 
-  int    i;
+  MKL_INT    i;
   ARTYPE *t, *s;
   ARTYPE one;   
   ARTYPE zero; 
@@ -443,7 +443,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::MultMMtv(ARTYPE* v, ARTYPE* w)
 {
 
-  int    i;
+  MKL_INT    i;
   ARTYPE *t, *s;
   ARTYPE one;   
   ARTYPE zero; 
@@ -526,7 +526,7 @@ void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE, class ARFLOAT>
 inline void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::
-DefineMatrix(int np, ARTYPE* Ap)
+DefineMatrix(MKL_INT np, ARTYPE* Ap)
 {
 
   // Defining member variables.
@@ -544,7 +544,7 @@ DefineMatrix(int np, ARTYPE* Ap)
 
 template<class ARTYPE, class ARFLOAT>
 inline void ARdsNonSymMatrix<ARTYPE, ARFLOAT>::
-DefineMatrix(int mp, int np, ARTYPE* Ap)
+DefineMatrix(MKL_INT mp, MKL_INT np, ARTYPE* Ap)
 {
 
   // Defining member variables.
@@ -562,7 +562,7 @@ DefineMatrix(int mp, int np, ARTYPE* Ap)
 
 template<class ARTYPE, class ARFLOAT>
 inline ARdsNonSymMatrix<ARTYPE, ARFLOAT>::
-ARdsNonSymMatrix(int np, ARTYPE* Ap) : ARMatrix<ARTYPE>(np)
+ARdsNonSymMatrix(MKL_INT np, ARTYPE* Ap) : ARMatrix<ARTYPE>(np)
 {
 
   factored = false;
@@ -573,7 +573,7 @@ ARdsNonSymMatrix(int np, ARTYPE* Ap) : ARMatrix<ARTYPE>(np)
 
 template<class ARTYPE, class ARFLOAT>
 inline ARdsNonSymMatrix<ARTYPE, ARFLOAT>::
-ARdsNonSymMatrix(int mp, int np, ARTYPE* Ap) : ARMatrix<ARTYPE>(mp, np)
+ARdsNonSymMatrix(MKL_INT mp, MKL_INT np, ARTYPE* Ap) : ARMatrix<ARTYPE>(mp, np)
 {
 
   factored = false;
@@ -583,7 +583,7 @@ ARdsNonSymMatrix(int mp, int np, ARTYPE* Ap) : ARMatrix<ARTYPE>(mp, np)
 
 
 template<class ARTYPE, class ARFLOAT>
-ARdsNonSymMatrix<ARTYPE, ARFLOAT>::ARdsNonSymMatrix(const std::string& file, int blksizep)
+ARdsNonSymMatrix<ARTYPE, ARFLOAT>::ARdsNonSymMatrix(const std::string& file, MKL_INT blksizep)
 {
 
   factored = false;

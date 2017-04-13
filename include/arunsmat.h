@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARUNSMat.h.
    Arpack++ class ARumNonSymMatrix definition.
@@ -40,16 +40,16 @@ class ARumNonSymMatrix: public ARMatrix<ARTYPE> {
  protected:
 
   bool    factored;
-  int     fillin;
-  int     nnz;
-  int     lvalue;
-  int     lindex;
-  int     keep[20];
-  int     icntl[20];
-  int     info[40];
-  int*    irow;
-  int*    pcol;
-  int*    index;
+  MKL_INT     fillin;
+  MKL_INT     nnz;
+  MKL_INT     lvalue;
+  MKL_INT     lindex;
+  MKL_INT     keep[20];
+  MKL_INT     icntl[20];
+  MKL_INT     info[40];
+  MKL_INT*    irow;
+  MKL_INT*    pcol;
+  MKL_INT*    index;
   double  threshold;
   ARTYPE  cntl[10];
   ARTYPE  rinfo[20];
@@ -71,9 +71,9 @@ class ARumNonSymMatrix: public ARMatrix<ARTYPE> {
 
  public:
 
-  int nzeros() { return nnz; }
+  MKL_INT nzeros() { return nnz; }
 
-  int  FillFact() { return fillin; }
+  MKL_INT  FillFact() { return fillin; }
 
   bool IsSymmetric() { return bool(icntl[5]); }
 
@@ -95,29 +95,29 @@ class ARumNonSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                    int* pcolp, double thresholdp = 0.1,
-                    int fillinp = 9, bool simest = false,
+  void DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                    MKL_INT* pcolp, double thresholdp = 0.1,
+                    MKL_INT fillinp = 9, bool simest = false,
                     bool reducible = true, bool check = true); // Square.
 
-  void DefineMatrix(int mp, int np, int nnzp, ARTYPE* ap,
-                    int* irowp, int* pcolp);                   // Rectangular.
+  void DefineMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap,
+                    MKL_INT* irowp, MKL_INT* pcolp);                   // Rectangular.
 
   ARumNonSymMatrix(): ARMatrix<ARTYPE>() { factored = false; }
   // Short constructor that does nothing.
 
-  ARumNonSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                   int* pcolp, double thresholdp = 0.1,
-                   int fillinp = 9, bool simest = false,
+  ARumNonSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                   MKL_INT* pcolp, double thresholdp = 0.1,
+                   MKL_INT fillinp = 9, bool simest = false,
                    bool reducible = true, bool check = true);
   // Long constructor (square matrix).
 
-  ARumNonSymMatrix(int mp, int np, int nnzp, ARTYPE* ap,
-                   int* irowp, int* pcolp);
+  ARumNonSymMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap,
+                   MKL_INT* irowp, MKL_INT* pcolp);
   // Long constructor (rectangular matrix).
 
   ARumNonSymMatrix(const std::string& name, double thresholdp = 0.1,
-                   int fillinp = 9, bool simest = false,
+                   MKL_INT fillinp = 9, bool simest = false,
                    bool reducible = true, bool check = true);
   // Long constructor (Harwell-Boeing file).
 
@@ -141,7 +141,7 @@ template<class ARTYPE, class ARFLOAT>
 bool ARumNonSymMatrix<ARTYPE, ARFLOAT>::DataOK()
 {
 
-  int i, j, k;
+  MKL_INT i, j, k;
 
   // Checking if pcol is in ascending order.
 
@@ -187,7 +187,7 @@ Copy(const ARumNonSymMatrix<ARTYPE, ARFLOAT>& other)
 
   // Local variable.
 
-  int i;
+  MKL_INT i;
 
   // Copying very fundamental variables and user-defined parameters.
 
@@ -221,7 +221,7 @@ Copy(const ARumNonSymMatrix<ARTYPE, ARFLOAT>& other)
   if (!factored) return;
 
   value = new ARTYPE[lvalue];
-  index = new int[lindex];
+  index = new MKL_INT[lindex];
 
   for (i=0; i<lindex; i++) index[i] = other.index[i];
   copy(lvalue, other.value, 1, value, 1);
@@ -233,7 +233,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARumNonSymMatrix<ARTYPE, ARFLOAT>::SubtractAsI(ARTYPE sigma)
 {
 
-  int i, j, k, ki, end;
+  MKL_INT i, j, k, ki, end;
 
   // Subtracting sigma from diagonal elements.
 
@@ -281,7 +281,7 @@ template<class ARTYPE, class ARFLOAT>
 inline void ARumNonSymMatrix<ARTYPE, ARFLOAT>::CreateStructure()
 {
 
-  int dimfact = (((fillin+1)*nnz)<(this->n*this->n)) ? (fillin+1)*nnz : this->n*this->n;
+  MKL_INT dimfact = (((fillin+1)*nnz)<(this->n*this->n)) ? (fillin+1)*nnz : this->n*this->n;
 
   this->ClearMem();
 
@@ -289,7 +289,7 @@ inline void ARumNonSymMatrix<ARTYPE, ARFLOAT>::CreateStructure()
   lvalue = dimfact;
 
   value  = new ARTYPE[lvalue];
-  index  = new int[lindex];
+  index  = new MKL_INT[lindex];
 
 } // CreateStructure.
 
@@ -333,8 +333,8 @@ void ARumNonSymMatrix<ARTYPE, ARFLOAT>::FactorA()
 
   // Defining local variables.
 
-  int i;
-  int *pi, *pj;
+  MKL_INT i;
+  MKL_INT *pi, *pj;
 
   // Reserving memory for some vectors used in matrix decomposition.
 
@@ -407,7 +407,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARumNonSymMatrix<ARTYPE, ARFLOAT>::MultMv(ARTYPE* v, ARTYPE* w)
 {
 
-  int    i,j;
+  MKL_INT    i,j;
   ARTYPE t;
 
   // Quitting the function if A was not defined.
@@ -434,7 +434,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARumNonSymMatrix<ARTYPE, ARFLOAT>::MultMtv(ARTYPE* v, ARTYPE* w)
 {
 
-  int    i,j;
+  MKL_INT    i,j;
   ARTYPE t;
 
   // Quitting the function if A was not defined.
@@ -519,8 +519,8 @@ void ARumNonSymMatrix<ARTYPE, ARFLOAT>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE, class ARFLOAT>
 inline void ARumNonSymMatrix<ARTYPE, ARFLOAT>::
-DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-             int* pcolp, double thresholdp, int fillinp,
+DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+             MKL_INT* pcolp, double thresholdp, MKL_INT fillinp,
              bool simest, bool reducible, bool check)
 {
 
@@ -557,7 +557,7 @@ DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
 
 template<class ARTYPE, class ARFLOAT>
 inline void ARumNonSymMatrix<ARTYPE, ARFLOAT>::
-DefineMatrix(int mp, int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp)
+DefineMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp)
 {
 
   // Defining member variables.
@@ -577,8 +577,8 @@ DefineMatrix(int mp, int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp)
 
 template<class ARTYPE, class ARFLOAT>
 inline ARumNonSymMatrix<ARTYPE, ARFLOAT>::
-ARumNonSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                 int* pcolp, double thresholdp, int fillinp,
+ARumNonSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                 MKL_INT* pcolp, double thresholdp, MKL_INT fillinp,
                  bool simest, bool reducible, bool check): ARMatrix<ARTYPE>(np)
 {
 
@@ -591,8 +591,8 @@ ARumNonSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
 
 template<class ARTYPE, class ARFLOAT>
 inline ARumNonSymMatrix<ARTYPE, ARFLOAT>::
-ARumNonSymMatrix(int mp, int np, int nnzp, ARTYPE* ap,
-                 int* irowp, int* pcolp)             : ARMatrix<ARTYPE>(mp, np)
+ARumNonSymMatrix(MKL_INT mp, MKL_INT np, MKL_INT nnzp, ARTYPE* ap,
+                 MKL_INT* irowp, MKL_INT* pcolp)             : ARMatrix<ARTYPE>(mp, np)
 {
 
   factored = false;
@@ -603,7 +603,7 @@ ARumNonSymMatrix(int mp, int np, int nnzp, ARTYPE* ap,
 
 template<class ARTYPE, class ARFLOAT>
 ARumNonSymMatrix<ARTYPE, ARFLOAT>::
-ARumNonSymMatrix(const std::string& name, double thresholdp, int fillinp,
+ARumNonSymMatrix(const std::string& name, double thresholdp, MKL_INT fillinp,
                  bool simest, bool reducible, bool check)
 {
 

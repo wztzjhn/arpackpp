@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLNames.h.
    Unaltered copy of Cnames.h (from SuperLU package).
@@ -63,7 +63,7 @@
 /*
  * These defines set up the naming scheme required to have a fortran 77
  * routine call a C routine
- * No redefinition necessary to have following Fortran to C interface:
+ * No redefinition necessary to have following Fortran to C MKL_INTerface:
  *           FORTRAN CALL               C DECLARATION
  *           call dgemm(...)           void dgemm_(...)
  *
@@ -76,7 +76,7 @@
 /*
  * These defines set up the naming scheme required to have a fortran 77
  * routine call a C routine 
- * for following Fortran to C interface:
+ * for following Fortran to C MKL_INTerface:
  *           FORTRAN CALL               C DECLARATION
  *           call dgemm(...)           void dgemm__(...)
  */
@@ -162,7 +162,7 @@
 #define izmax1_   izmax1__
 #define zlacon_   zlacon__
 
-/* Fortran interface */
+/* Fortran MKL_INTerface */
 #define c_bridge_dgssv_ c_bridge_dgssv__
 #define c_fortran_sgssv_ c_fortran_sgssv__
 #define c_fortran_dgssv_ c_fortran_dgssv__
@@ -174,7 +174,7 @@
 /*
  * These defines set up the naming scheme required to have a fortran 77
  * routine call a C routine 
- * following Fortran to C interface:
+ * following Fortran to C MKL_INTerface:
  *           FORTRAN CALL               C DECLARATION
  *           call dgemm(...)           void DGEMM(...)
  */
@@ -258,7 +258,7 @@
 #define izmax1_   IZMAX1
 #define zlacon_   ZLACON
 
-/* Fortran interface */
+/* Fortran MKL_INTerface */
 #define c_bridge_dgssv_ C_BRIDGE_DGSSV
 #define c_fortran_sgssv_ C_FORTRAN_SGSSV
 #define c_fortran_dgssv_ C_FORTRAN_DGSSV
@@ -271,7 +271,7 @@
 /*
  * These defines set up the naming scheme required to have a fortran 77
  * routine call a C routine 
- * following Fortran to C interface:
+ * following Fortran to C MKL_INTerface:
  *           FORTRAN CALL               C DECLARATION
  *           call dgemm(...)           void SGEMM(...)
  */
@@ -355,7 +355,7 @@
 #define izmax1_   IZMAX1
 #define zlacon_   ZLACON
 
-/* Fortran interface */
+/* Fortran MKL_INTerface */
 #define c_bridge_dgssv_ C_BRIDGE_DGSSV
 #define c_fortran_sgssv_ C_FORTRAN_SGSSV
 #define c_fortran_dgssv_ C_FORTRAN_DGSSV
@@ -368,7 +368,7 @@
 /*
  * These defines set up the naming scheme required to have a fortran 77
  * routine call a C routine 
- * for following Fortran to C interface:
+ * for following Fortran to C MKL_INTerface:
  *           FORTRAN CALL               C DECLARATION
  *           call dgemm(...)           void dgemm(...)
  */
@@ -452,7 +452,7 @@
 #define izmax1_   izmax1
 #define zlacon_   zlacon
 
-/* Fortran interface */
+/* Fortran MKL_INTerface */
 #define c_bridge_dgssv_ c_bridge_dgssv
 #define c_fortran_sgssv_ c_fortran_sgssv
 #define c_fortran_dgssv_ c_fortran_dgssv

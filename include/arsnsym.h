@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARSNSym.h.
    Arpack++ class ARNonSymStdEig definition.
@@ -36,16 +36,16 @@ class ARNonSymStdEig:
   ARNonSymStdEig() { }
   // Short constructor.
 
-  ARNonSymStdEig(int np, int nevp, ARFOP* objOPp,
+  ARNonSymStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                  void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
-                 const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-                 int maxitp = 0, ARFLOAT* residp = NULL, bool ishiftp = true);
+                 const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+                 MKL_INT maxitp = 0, ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARNonSymStdEig(int np, int nevp, ARFOP* objOPp,
+  ARNonSymStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                  void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
-                 ARFLOAT sigma, const std::string& whichp = "LM", int ncvp = 0,
-                 ARFLOAT tolp = 0.0, int maxitp = 0, ARFLOAT* residp = NULL,
+                 ARFLOAT sigma, const std::string& whichp = "LM", MKL_INT ncvp = 0,
+                 ARFLOAT tolp = 0.0, MKL_INT maxitp = 0, ARFLOAT* residp = NULL,
                  bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -70,9 +70,9 @@ class ARNonSymStdEig:
 
 template<class ARFLOAT, class ARFOP>
 inline ARNonSymStdEig<ARFLOAT, ARFOP>::
-ARNonSymStdEig(int np, int nevp, ARFOP* objOPp,
+ARNonSymStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
-               const std::string& whichp, int ncvp, ARFLOAT tolp, int maxitp,
+               const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp,
                ARFLOAT* residp, bool ishiftp)
 
 {
@@ -86,10 +86,10 @@ ARNonSymStdEig(int np, int nevp, ARFOP* objOPp,
 
 template<class ARFLOAT, class ARFOP>
 inline ARNonSymStdEig<ARFLOAT, ARFOP>::
-ARNonSymStdEig(int np, int nevp, ARFOP* objOPp,
+ARNonSymStdEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(ARFLOAT[], ARFLOAT[]),
-               ARFLOAT sigmap, const std::string& whichp, int ncvp, ARFLOAT tolp,
-               int maxitp, ARFLOAT* residp, bool ishiftp)
+               ARFLOAT sigmap, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+               MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 

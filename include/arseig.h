@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARSEig.h.
    Arpack++ class ARStdEig definition.
@@ -57,9 +57,9 @@ class ARStdEig: virtual public ARrcStdEig<ARFLOAT, ARTYPE> {
 
  // d.1) Function that stores user defined parameters.
 
-  virtual void DefineParameters(int np, int nevp, ARFOP* objOPp,
+  virtual void DefineParameters(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                                 TypeOPx MultOPxp, const std::string& whichp="LM",
-                                int ncvp=0, ARFLOAT tolp=0.0, int maxitp=0,
+                                MKL_INT ncvp=0, ARFLOAT tolp=0.0, MKL_INT maxitp=0,
                                 ARTYPE* residp=NULL, bool ishiftp=true);
   // Set values of problem parameters (also called by constructors).
   // Redefined in ARGenEigenProblem.
@@ -86,7 +86,7 @@ class ARStdEig: virtual public ARrcStdEig<ARFLOAT, ARTYPE> {
 
  // d.4) Function that performs all calculations in one step.
 
-  virtual int FindArnoldiBasis();
+  virtual MKL_INT FindArnoldiBasis();
   // Determines the Arnoldi basis related to the given problem.
   // Redefined in ARGenEigenProblem and ARSymGenEigenProblem.
 
@@ -129,9 +129,9 @@ Copy(const ARStdEig<ARFLOAT, ARTYPE, ARFOP>& other)
 
 template<class ARFLOAT, class ARTYPE, class ARFOP>
 void ARStdEig<ARFLOAT, ARTYPE, ARFOP>::
-DefineParameters(int np, int nevp, ARFOP* objOPp,
+DefineParameters(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                  void (ARFOP::* MultOPxp)(ARTYPE[], ARTYPE[]), const std::string& whichp,
-                 int ncvp, ARFLOAT tolp, int maxitp, ARTYPE* residp, 
+                 MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp, ARTYPE* residp, 
                  bool ishiftp)
 
 
@@ -181,7 +181,7 @@ SetShiftInvertMode(ARTYPE sigmap, ARFOP* objOPp,
 
 
 template<class ARFLOAT, class ARTYPE, class ARFOP>
-int ARStdEig<ARFLOAT, ARTYPE, ARFOP>::FindArnoldiBasis()
+MKL_INT ARStdEig<ARFLOAT, ARTYPE, ARFOP>::FindArnoldiBasis()
 {
 
   if (!this->BasisOK) this->Restart();

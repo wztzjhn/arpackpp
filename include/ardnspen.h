@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARDNSPen.h.
    Arpack++ class ARdsNonSymPencil definition.
@@ -198,7 +198,7 @@ FactorAsB(ARFLOAT sigmaR, ARFLOAT sigmaI, char partp)
   // Subtracting sigma*B from A and storing the result on AsBc.
 
   arcomplex<ARFLOAT> sigma(sigmaR, sigmaI);
-  for (int i=0; i<(A->m*A->n); i++) AsBc.Ainv[i] = A->A[i]-sigma*B->A[i];
+  for (MKL_INT i=0; i<(A->m*A->n); i++) AsBc.Ainv[i] = A->A[i]-sigma*B->A[i];
 
   // Decomposing AsBc.
 
@@ -253,7 +253,7 @@ void ARdsNonSymPencil<ARTYPE, ARFLOAT>::MultInvAsBv(ARFLOAT* v, ARFLOAT* w)
 
 #ifdef ARCOMP_H
 
-    int              i;
+    MKL_INT              i;
     arcomplex<ARFLOAT> *tv, *tw;
 
     tv = new arcomplex<ARFLOAT>[AsBc.ncols()];

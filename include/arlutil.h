@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLUtil.h.
    Unaltered copy of util.h (from SuperLU package)
@@ -124,7 +124,7 @@ typedef enum {
 #define SUPERLU_FREE(addr) USER_FREE(addr)
 
 #define CHECK_MALLOC(where) {                 \
-    extern int superlu_malloc_total;        \
+    extern MKL_INT superlu_malloc_total;        \
     printf("%s: malloc_total %d Bytes\n",     \
 	   where, superlu_malloc_total); \
 }
@@ -169,7 +169,7 @@ typedef enum {
 					      to limit memory growth  */
 #define  DROP_SECONDARY	( 0x000E )  /* PROWS | COLUMN | AREA */
 #define  DROP_DYNAMIC	( 0x0010 )  /* adaptive tau */
-#define  DROP_INTERP	( 0x0100 )  /* use interpolation */
+#define  DROP_INTERP	( 0x0100 )  /* use MKL_INTerpolation */
 
 
 #if 1
@@ -257,7 +257,7 @@ typedef unsigned char Logical;
  *        = LargeDiag: make the diagonal large relative to the off-diagonal
  *        = MY_PERMR: use the permutation given by the user
  *
- * ILU_DropRule (int)
+ * ILU_DropRule (MKL_INT)
  *        Specifies the dropping rule:
  *	  = DROP_BASIC:   Basic dropping rule, supernodal based ILUTP(tau).
  *	  = DROP_PROWS:   Supernodal based ILUTP(p,tau), p = gamma * nnz(A)/n.
@@ -273,7 +273,7 @@ typedef unsigned char Logical;
  *			  tau_U(j) uses the similar rule.
  *			  NOTE: the thresholds used by L and U are separate.
  *	  = DROP_INTERP:  Compute the second dropping threshold by
- *	                  interpolation instead of sorting (default).
+ *	                  MKL_INTerpolation instead of sorting (default).
  *  		          In this case, the actual fill ratio is not
  *			  guaranteed to be smaller than gamma.
  *   	  Note: DROP_PROWS, DROP_COLUMN and DROP_AREA are mutually exclusive.
@@ -325,7 +325,7 @@ typedef struct {
     yes_no_t      PivotGrowth;
     yes_no_t      ConditionNumber;
     rowperm_t     RowPerm;
-    int 	  ILU_DropRule;
+    MKL_INT 	  ILU_DropRule;
     double	  ILU_DropTol;    /* threshold for dropping */
     double	  ILU_FillFactor; /* gamma in the secondary dropping */
     norm_t	  ILU_Norm;       /* infinity-norm, 1-norm, or 2-norm */
@@ -337,8 +337,8 @@ typedef struct {
     yes_no_t      SolveInitialized;
     yes_no_t      RefineInitialized;
     yes_no_t      PrintStat;
-    int           nnzL, nnzU;      /* used to store nnzs for now       */
-    int           num_lookaheads;  /* num of levels in look-ahead      */
+    MKL_INT           nnzL, nnzU;      /* used to store nnzs for now       */
+    MKL_INT           num_lookaheads;  /* num of levels in look-ahead      */
     yes_no_t      lookahead_etree; /* use etree computed from the
 				      serial symbolic factorization */
     yes_no_t      SymPattern;      /* symmetric factorization          */
@@ -346,25 +346,25 @@ typedef struct {
 
 /*! \brief Headers for 4 types of dynamatically managed memory */
 typedef struct e_node {
-    int size;      /* length of the memory that has been used */
+    MKL_INT size;      /* length of the memory that has been used */
     void *mem;     /* pointer to the new malloc'd store */
 } ExpHeader;
 
 typedef struct {
-    int  size;
-    int  used;
-    int  top1;  /* grow upward, relative to &array[0] */
-    int  top2;  /* grow downward */
+    MKL_INT  size;
+    MKL_INT  used;
+    MKL_INT  top1;  /* grow upward, relative to &array[0] */
+    MKL_INT  top2;  /* grow downward */
     void *array;
 } LU_stack_t;
 
 typedef struct {
-    int     *panel_histo; /* histogram of panel size distribution */
+    MKL_INT     *panel_histo; /* histogram of panel size distribution */
     double  *utime;       /* running time at various phases */
     flops_t *ops;         /* operation count at various phases */
-    int     TinyPivots;   /* number of tiny pivots */
-    int     RefineSteps;  /* number of iterative refinement steps */
-    int     expansions;   /* number of memory expansions */
+    MKL_INT     TinyPivots;   /* number of tiny pivots */
+    MKL_INT     RefineSteps;  /* number of iterative refinement steps */
+    MKL_INT     expansions;   /* number of memory expansions */
 } SuperLUStat_t;
 
 typedef struct {
@@ -386,44 +386,44 @@ extern void    Destroy_CompRow_Matrix(SuperMatrix *);
 extern void    Destroy_SuperNode_Matrix(SuperMatrix *);
 extern void    Destroy_CompCol_Permuted(SuperMatrix *);
 extern void    Destroy_Dense_Matrix(SuperMatrix *);
-extern void    get_perm_c(int, SuperMatrix *, int *);
+extern void    get_perm_c(MKL_INT, SuperMatrix *, MKL_INT *);
 extern void    set_default_options(superlu_options_t *options);
 extern void    ilu_set_default_options(superlu_options_t *options);
-extern void    sp_preorder (superlu_options_t *, SuperMatrix*, int*, int*,
+extern void    sp_preorder (superlu_options_t *, SuperMatrix*, MKL_INT*, MKL_INT*,
 			    SuperMatrix*);
 extern void    superlu_abort_and_exit(char*);
 extern void    *superlu_malloc (size_t);
-extern int     *intMalloc (int);
-extern int     *intCalloc (int);
+extern MKL_INT     *intMalloc (MKL_INT);
+extern MKL_INT     *intCalloc (MKL_INT);
 extern void    superlu_free (void*);
-extern void    SetIWork (int, int, int, int *, int **, int **, int **,
-                         int **, int **, int **, int **);
-extern int     sp_coletree (int *, int *, int *, int, int, int *);
-extern void    relax_snode (const int, int *, const int, int *, int *);
-extern void    heap_relax_snode (const int, int *, const int, int *, int *);
-extern int     mark_relax(int, int *, int *, int *, int *, int *, int *);
-extern void    ilu_relax_snode (const int, int *, const int, int *,
-				int *, int *);
-extern void    ilu_heap_relax_snode (const int, int *, const int, int *,
-				     int *, int*);
-extern void    resetrep_col (const int, const int *, int *);
-extern int     spcoletree (int *, int *, int *, int, int, int *);
-extern int     *TreePostorder (int, int *);
+extern void    SetIWork (MKL_INT, MKL_INT, MKL_INT, MKL_INT *, MKL_INT **, MKL_INT **, MKL_INT **,
+                         MKL_INT **, MKL_INT **, MKL_INT **, MKL_INT **);
+extern MKL_INT     sp_coletree (MKL_INT *, MKL_INT *, MKL_INT *, MKL_INT, MKL_INT, MKL_INT *);
+extern void    relax_snode (const MKL_INT, MKL_INT *, const MKL_INT, MKL_INT *, MKL_INT *);
+extern void    heap_relax_snode (const MKL_INT, MKL_INT *, const MKL_INT, MKL_INT *, MKL_INT *);
+extern MKL_INT     mark_relax(MKL_INT, MKL_INT *, MKL_INT *, MKL_INT *, MKL_INT *, MKL_INT *, MKL_INT *);
+extern void    ilu_relax_snode (const MKL_INT, MKL_INT *, const MKL_INT, MKL_INT *,
+				int *, MKL_INT *);
+extern void    ilu_heap_relax_snode (const MKL_INT, MKL_INT *, const MKL_INT, MKL_INT *,
+				     MKL_INT *, MKL_INT*);
+extern void    resetrep_col (const MKL_INT, const MKL_INT *, MKL_INT *);
+extern MKL_INT     spcoletree (MKL_INT *, MKL_INT *, MKL_INT *, MKL_INT, MKL_INT, MKL_INT *);
+extern MKL_INT     *TreePostorder (MKL_INT, MKL_INT *);
 extern double  SuperLU_timer_ ();
-extern int     sp_ienv (int);
-extern int     lsame_ (char *, char *);
-extern int     xerbla_ (char *, int *);
-extern void    ifill (int *, int, int);
-extern void    snode_profile (int, int *);
-extern void    super_stats (int, int *);
-extern void    check_repfnz(int, int, int, int *);
-extern void    PrintSumm (char *, int, int, int);
+extern MKL_INT     sp_ienv (MKL_INT);
+extern MKL_INT     lsame_ (char *, char *);
+extern MKL_INT     xerbla_ (char *, MKL_INT *);
+extern void    ifill (MKL_INT *, MKL_INT, MKL_INT);
+extern void    snode_profile (MKL_INT, MKL_INT *);
+extern void    super_stats (MKL_INT, MKL_INT *);
+extern void    check_repfnz(MKL_INT, MKL_INT, MKL_INT, MKL_INT *);
+extern void    PrintSumm (char *, MKL_INT, MKL_INT, MKL_INT);
 extern void    StatInit(SuperLUStat_t *);
 extern void    StatPrint (SuperLUStat_t *);
 extern void    StatFree(SuperLUStat_t *);
-extern void    print_panel_seg(int, int, int, int, int *, int *);
-extern int     print_int_vec(char *,int, int *);
-extern int     slu_PrintInt10(char *, int, int *);
+extern void    print_panel_seg(MKL_INT, MKL_INT, MKL_INT, MKL_INT, MKL_INT *, MKL_INT *);
+extern MKL_INT     print_int_vec(char *,MKL_INT, MKL_INT *);
+extern MKL_INT     slu_PrintInt10(char *, MKL_INT, MKL_INT *);
 
 #ifdef __cplusplus
   }

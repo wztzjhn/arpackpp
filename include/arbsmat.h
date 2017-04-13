@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARBSMat.h.
    Arpack++ class ARbdSymMatrix definition.
@@ -38,10 +38,10 @@ class ARbdSymMatrix: public ARMatrix<ARTYPE> {
 
   bool     factored;
   char     uplo;
-  int      nsdiag;
-  int      lda;
-  int      info;
-  int*     ipiv;
+  MKL_INT      nsdiag;
+  MKL_INT      lda;
+  MKL_INT      info;
+  MKL_INT*     ipiv;
   ARTYPE*  A;
   ARTYPE*  Ainv;
 
@@ -69,12 +69,12 @@ class ARbdSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, int nsdiagp, ARTYPE* Ap, char uplop = 'L');
+  void DefineMatrix(MKL_INT np, MKL_INT nsdiagp, ARTYPE* Ap, char uplop = 'L');
 
   ARbdSymMatrix(): ARMatrix<ARTYPE>() { factored = false; }
   // Short constructor that does nothing.
 
-  ARbdSymMatrix(int np, int nsdiagp, ARTYPE* Ap, char uplop = 'L');
+  ARbdSymMatrix(MKL_INT np, MKL_INT nsdiagp, ARTYPE* Ap, char uplop = 'L');
   // Long constructor.
 
   ARbdSymMatrix(const ARbdSymMatrix& other) { Copy(other); }
@@ -131,10 +131,10 @@ Copy(const ARbdSymMatrix<ARTYPE>& other)
   // Copying vectors.
 
   Ainv = new ARTYPE[this->n*lda];
-  ipiv = new int[this->n];
+  ipiv = new MKL_INT[this->n];
 
   copy(this->n*lda, other.Ainv, 1, Ainv, 1);
-  for (int i=0; i<this->n; i++) ipiv[i] = other.ipiv[i];
+  for (MKL_INT i=0; i<this->n; i++) ipiv[i] = other.ipiv[i];
 
 } // Copy.
 
@@ -143,7 +143,7 @@ template<class ARTYPE>
 void ARbdSymMatrix<ARTYPE>::ExpandA()
 {
 
-  int i;
+  MKL_INT i;
  
   if (uplo == 'U') {
 
@@ -188,7 +188,7 @@ void ARbdSymMatrix<ARTYPE>::SubtractAsI(ARTYPE sigma)
 
   // Subtracting sigma from diagonal elements.
 
-  for (int i=(2*nsdiag); i<(lda*this->n); i+=lda) Ainv[i] -= sigma; 
+  for (MKL_INT i=(2*nsdiag); i<(lda*this->n); i+=lda) Ainv[i] -= sigma; 
 
 } // SubtractAsI.
 
@@ -199,7 +199,7 @@ inline void ARbdSymMatrix<ARTYPE>::CreateStructure()
 
   ClearMem();
   Ainv = new ARTYPE[lda*this->n];
-  ipiv = new int[this->n];
+  ipiv = new MKL_INT[this->n];
 
 } // CreateStructure.
 
@@ -330,7 +330,7 @@ void ARbdSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE>
 inline void ARbdSymMatrix<ARTYPE>::
-DefineMatrix(int np, int nsdiagp, ARTYPE* Ap, char uplop)
+DefineMatrix(MKL_INT np, MKL_INT nsdiagp, ARTYPE* Ap, char uplop)
 {
 
   // Defining member variables.
@@ -351,7 +351,7 @@ DefineMatrix(int np, int nsdiagp, ARTYPE* Ap, char uplop)
 
 template<class ARTYPE>
 inline ARbdSymMatrix<ARTYPE>::
-ARbdSymMatrix(int np, int nsdiagp, 
+ARbdSymMatrix(MKL_INT np, MKL_INT nsdiagp, 
               ARTYPE* Ap, char uplop) : ARMatrix<ARTYPE>(np)
 {
 

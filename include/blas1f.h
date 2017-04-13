@@ -1,6 +1,6 @@
 /*
   ARPACK++ v1.2 2/20/2000
-  c++ interface to ARPACK code.
+  c++ MKL_INTerface to ARPACK code.
 
   MODULE blas1f.h
   BLAS 1 and BLAS 2 FORTRAN routines.

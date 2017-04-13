@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/18/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ASymShf.cc.
    Example program that illustrates how to solve a real symmetric
@@ -55,12 +55,12 @@ int main()
 
   // Defining variables;
 
-  int     n;           // Dimension of the problem.
-  int     nconv;       // Number of "converged" eigenvalues.
-  int     nnz;         // Number of nonzero elements in A.
-  int*    irow;        // pointer to an array that stores the row
+  MKL_INT     n;           // Dimension of the problem.
+  MKL_INT     nconv;       // Number of "converged" eigenvalues.
+  MKL_INT     nnz;         // Number of nonzero elements in A.
+  MKL_INT*    irow;        // pointer to an array that stores the row
                        // indices of the nonzeros in A.
-  int*    pcol;        // pointer to an array of pointers to the
+  MKL_INT*    pcol;        // pointer to an array of pointers to the
                        // beginning of each column of A in vector A.
   double* A;           // pointer to an array that stores the
                        // nonzero elements of A.

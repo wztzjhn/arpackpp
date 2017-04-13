@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARRSComp.h.
    Arpack++ class ARrcCompStdEig definition.
@@ -53,9 +53,9 @@ class ARrcCompStdEig: virtual public ARrcStdEig<ARFLOAT, arcomplex<ARFLOAT> > {
 
  // b.1) Trace functions.
 
-  void Trace(const int digit = -5, const int getv0 = 0, const int aupd = 1,
-             const int aup2 = 0,  const int aitr = 0,  const int eigt = 0,
-             const int apps = 0,  const int gets = 0,  const int eupd = 0)
+  void Trace(const MKL_INT digit = -5, const MKL_INT getv0 = 0, const MKL_INT aupd = 1,
+             const MKL_INT aup2 = 0,  const MKL_INT aitr = 0,  const MKL_INT eigt = 0,
+             const MKL_INT apps = 0,  const MKL_INT gets = 0,  const MKL_INT eupd = 0)
   { 
     cTraceOn(digit, getv0, aupd, aup2, aitr, eigt, apps, gets, eupd); 
   }
@@ -64,12 +64,12 @@ class ARrcCompStdEig: virtual public ARrcStdEig<ARFLOAT, arcomplex<ARFLOAT> > {
 
  // b.2) Functions that perform all calculations in one step.
 
-  int Eigenvalues(arcomplex<ARFLOAT>* &EigValp, bool ivec = false,
+  MKL_INT Eigenvalues(arcomplex<ARFLOAT>* &EigValp, bool ivec = false,
                   bool ischur = false);
   // Overrides array EigValp with the eigenvalues of the problem.
   // Also calculates eigenvectors and Schur vectors if requested.
 
-  int EigenValVectors(arcomplex<ARFLOAT>* &EigVecp, 
+  MKL_INT EigenValVectors(arcomplex<ARFLOAT>* &EigVecp, 
                       arcomplex<ARFLOAT>* &EigValp, bool ischur = false);
   // Overrides array EigVecp sequentially with the eigenvectors of the
   // given eigen-problem. Also stores the eigenvalues in EigValp.
@@ -78,10 +78,10 @@ class ARrcCompStdEig: virtual public ARrcStdEig<ARFLOAT, arcomplex<ARFLOAT> > {
 
  // b.3) Functions that return elements of vectors and matrices.
 
-  arcomplex<ARFLOAT> Eigenvalue(int i);
+  arcomplex<ARFLOAT> Eigenvalue(MKL_INT i);
   // Provides i-eth eigenvalue.
 
-  arcomplex<ARFLOAT> Eigenvector(int i, int j);
+  arcomplex<ARFLOAT> Eigenvector(MKL_INT i, MKL_INT j);
   // Provides element j of the i-eth eigenvector.
 
 
@@ -94,7 +94,7 @@ class ARrcCompStdEig: virtual public ARrcStdEig<ARFLOAT, arcomplex<ARFLOAT> > {
   // Calculates the eigenvalues and stores them in a single STL vector.
   // Also calculates eigenvectors and Schur vectors if requested.
 
-  vector<arcomplex<ARFLOAT> >* StlEigenvector(int i);
+  vector<arcomplex<ARFLOAT> >* StlEigenvector(MKL_INT i);
   // Returns the i-th eigenvector in a STL vector.
 
 #endif // #ifdef STL_VECTOR_H.
@@ -105,14 +105,14 @@ class ARrcCompStdEig: virtual public ARrcStdEig<ARFLOAT, arcomplex<ARFLOAT> > {
   ARrcCompStdEig() { }
   // Short constructor.
 
-  ARrcCompStdEig(int np, int nevp, const std::string& whichp = "LM",
-                 int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARrcCompStdEig(MKL_INT np, MKL_INT nevp, const std::string& whichp = "LM",
+                 MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                  arcomplex<ARFLOAT>* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARrcCompStdEig(int np, int nevp, arcomplex<ARFLOAT> sigma,
-                 const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-                 int maxitp = 0, arcomplex<ARFLOAT>* residp = NULL,
+  ARrcCompStdEig(MKL_INT np, MKL_INT nevp, arcomplex<ARFLOAT> sigma,
+                 const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+                 MKL_INT maxitp = 0, arcomplex<ARFLOAT>* residp = NULL,
                  bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -171,7 +171,7 @@ inline void ARrcCompStdEig<ARFLOAT>::Eupp()
 
 
 template<class ARFLOAT>
-int ARrcCompStdEig<ARFLOAT>::
+MKL_INT ARrcCompStdEig<ARFLOAT>::
 Eigenvalues(arcomplex<ARFLOAT>* &EigValp, bool ivec, bool ischur)
 {
 
@@ -210,7 +210,7 @@ Eigenvalues(arcomplex<ARFLOAT>* &EigValp, bool ivec, bool ischur)
 
 
 template<class ARFLOAT>
-int ARrcCompStdEig<ARFLOAT>::
+MKL_INT ARrcCompStdEig<ARFLOAT>::
 EigenValVectors(arcomplex<ARFLOAT>* &EigVecp, arcomplex<ARFLOAT>* &EigValp,
                 bool ischur)
 {
@@ -245,7 +245,7 @@ EigenValVectors(arcomplex<ARFLOAT>* &EigVecp, arcomplex<ARFLOAT>* &EigValp,
 
 
 template<class ARFLOAT>
-inline arcomplex<ARFLOAT> ARrcCompStdEig<ARFLOAT>::Eigenvalue(int i)
+inline arcomplex<ARFLOAT> ARrcCompStdEig<ARFLOAT>::Eigenvalue(MKL_INT i)
 // calcula e retorna um autovalor.
 
 {
@@ -265,7 +265,7 @@ inline arcomplex<ARFLOAT> ARrcCompStdEig<ARFLOAT>::Eigenvalue(int i)
 
 template<class ARFLOAT>
 inline arcomplex<ARFLOAT> ARrcCompStdEig<ARFLOAT>::
-Eigenvector(int i, int j)
+Eigenvector(MKL_INT i, MKL_INT j)
 {
 
   // Returning element j of i-eth eigenvector.
@@ -306,7 +306,7 @@ StlEigenvalues(bool ivec, bool ischur)
 
 template<class ARFLOAT>
 inline vector<arcomplex<ARFLOAT> >* ARrcCompStdEig<ARFLOAT>::
-StlEigenvector(int i)
+StlEigenvector(MKL_INT i)
 {
 
   // Returning the i-th eigenvector in a STL vector.
@@ -332,8 +332,8 @@ StlEigenvector(int i)
 
 template<class ARFLOAT>
 inline ARrcCompStdEig<ARFLOAT>::
-ARrcCompStdEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT tolp,
-               int maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
+ARrcCompStdEig(MKL_INT np, MKL_INT nevp, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+               MKL_INT maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
 
 {
 
@@ -345,8 +345,8 @@ ARrcCompStdEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT to
 
 template<class ARFLOAT>
 inline ARrcCompStdEig<ARFLOAT>::
-ARrcCompStdEig(int np, int nevp, arcomplex<ARFLOAT> sigmap,
-               const std::string& whichp, int ncvp, ARFLOAT tolp, int maxitp,
+ARrcCompStdEig(MKL_INT np, MKL_INT nevp, arcomplex<ARFLOAT> sigmap,
+               const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp,
                arcomplex<ARFLOAT>* residp, bool ishiftp)
 
 {

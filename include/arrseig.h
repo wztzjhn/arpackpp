@@ -1,11 +1,11 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARRSEig.h.
    Arpack++ base class ARrcStdEig definition.
    This class implements c++ version of the reverse
-   communication interface for standard problems.
+   communication MKL_INTerface for standard problems.
 
    ARPACK Authors
       Richard Lehoucq
@@ -43,10 +43,10 @@ class ARrcStdEig {
 
  // a.1) User defined parameters.
 
-  int     n;          // Dimension of the eigenproblem.
-  int     nev;        // Number of eigenvalues to be computed. 0 < nev < n-1.
-  int     ncv;        // Number of Arnoldi vectors generated at each iteration.
-  int     maxit;      // Maximum number of Arnoldi update iterations allowed.
+  MKL_INT     n;          // Dimension of the eigenproblem.
+  MKL_INT     nev;        // Number of eigenvalues to be computed. 0 < nev < n-1.
+  MKL_INT     ncv;        // Number of Arnoldi vectors generated at each iteration.
+  MKL_INT     maxit;      // Maximum number of Arnoldi update iterations allowed.
   std::string   which;      // Specify which of the Ritz values of OP to compute.
   ARFLOAT tol;        // Stopping criterion (relative accuracy of Ritz values).
   ARFLOAT sigmaI;     // Imaginary part of shift (for nonsymmetric problems).
@@ -61,36 +61,36 @@ class ARrcStdEig {
   bool    newRes;     // Indicates if a new "resid" vector was created.
   bool    newVal;     // Indicates if a new "EigValR" vector was created.
   bool    newVec;     // Indicates if a new "EigVec" vector was created.
-  bool    PrepareOK;  // Indicates if internal variables were correctly set.
+  bool    PrepareOK;  // Indicates if MKL_INTernal variables were correctly set.
   bool    BasisOK;    // Indicates if an Arnoldi basis was found.
   bool    ValuesOK;   // Indicates if eigenvalues were calculated.
   bool    VectorsOK;  // Indicates if eigenvectors were determined.
   bool    SchurOK;    // Indicates if Schur vectors were determined.
   bool    AutoShift;  // Indicates if implicit shifts will be generated
-                      // internally (or will be supplied by the user).
+                      // MKL_INTernally (or will be supplied by the user).
   char    bmat;       // Indicates if the problem is a standard ('I') or
                       // generalized ('G") eigenproblem.
   char    HowMny;     // Indicates if eigenvectors ('A') or Schur vectors ('P')
                       // were requested (not referenced if rvec = false).
-  int     ido;        // Original ARPACK reverse communication flag.
-  int     info;       // Original ARPACK error flag.
-  int     mode;       // Indicates the type of the eigenproblem (regular,
+  MKL_INT     ido;        // Original ARPACK reverse communication flag.
+  MKL_INT     info;       // Original ARPACK error flag.
+  MKL_INT     mode;       // Indicates the type of the eigenproblem (regular,
                       // shift and invert, etc).
-  int     lworkl;     // Dimension of array workl.
-  int     lworkv;     // Dimension of array workv.
-  int     lrwork;     // Dimension of array rwork.
-  int     iparam[12]; // Vector that handles original ARPACK parameters.
-  int     ipntr[15];  // Vector that handles original ARPACK pointers.
-  ARFLOAT *rwork;     // Original ARPACK internal vector.
-  ARTYPE  *workl;     // Original ARPACK internal vector.
-  ARTYPE  *workd;     // Original ARPACK internal vector.
-  ARTYPE  *workv;     // Original ARPACK internal vector.
+  MKL_INT     lworkl;     // Dimension of array workl.
+  MKL_INT     lworkv;     // Dimension of array workv.
+  MKL_INT     lrwork;     // Dimension of array rwork.
+  MKL_INT     iparam[12]; // Vector that handles original ARPACK parameters.
+  MKL_INT     ipntr[15];  // Vector that handles original ARPACK pointers.
+  ARFLOAT *rwork;     // Original ARPACK MKL_INTernal vector.
+  ARTYPE  *workl;     // Original ARPACK MKL_INTernal vector.
+  ARTYPE  *workd;     // Original ARPACK MKL_INTernal vector.
+  ARTYPE  *workv;     // Original ARPACK MKL_INTernal vector.
   ARTYPE  *V;         // Arnoldi basis / Schur vectors.
 
 
  // a.3) Pure output variables.
 
-  int     nconv;      // Number of "converged" Ritz values.
+  MKL_INT     nconv;      // Number of "converged" Ritz values.
   ARFLOAT *EigValI;   // Imaginary part of eigenvalues (nonsymmetric problems).
   ARTYPE  *EigValR;   // Eigenvalues (real part only if problem is nonsymmetric).
   ARTYPE  *EigVec;    // Eigenvectors.
@@ -103,7 +103,7 @@ class ARrcStdEig {
   bool OverV() { return (EigVec == &V[1]); }
   // Indicates whether EigVec overrides V or no.
 
-  virtual int ValSize() { return nev; }
+  virtual MKL_INT ValSize() { return nev; }
   // Provides the size of array EigVal.
   // Redefined in ARrcNonSymStdEig.
 
@@ -153,17 +153,17 @@ class ARrcStdEig {
 
  // b.3) Functions that check user defined parameters.
 
-  int CheckN(int np);
+  MKL_INT CheckN(MKL_INT np);
   // Does range checking on ncv.
 
-  int CheckNcv(int ncvp);
+  MKL_INT CheckNcv(MKL_INT ncvp);
   // Forces ncv to conform to its ranges.
 
-  virtual int CheckNev(int nevp);
+  virtual MKL_INT CheckNev(MKL_INT nevp);
   // Does range checking on nev.
   // Redefined in ARrcNonSymStdEig.
 
-  int CheckMaxit(int maxitp);
+  MKL_INT CheckMaxit(MKL_INT maxitp);
   // Forces maxit to be greater than zero.
 
   virtual std::string CheckWhich(const std::string& whichp);
@@ -171,12 +171,12 @@ class ARrcStdEig {
   // Redefined in ARrcSymStdEig.
 
 
- // b.4) Functions that set internal variables.
+ // b.4) Functions that set MKL_INTernal variables.
 
   void Restart();
 
   virtual void Prepare();
-  // Defines internal variables and allocates working arrays.
+  // Defines MKL_INTernal variables and allocates working arrays.
 
   virtual void Copy(const ARrcStdEig& other);
   // Makes a deep copy of "other" over "this" object.
@@ -189,8 +189,8 @@ class ARrcStdEig {
 
  // c.1) Function that stores user defined parameters.
 
-  virtual void DefineParameters(int np, int nevp, const std::string& whichp="LM",
-                                int ncvp=0, ARFLOAT tolp=0.0, int maxitp=0,
+  virtual void DefineParameters(MKL_INT np, MKL_INT nevp, const std::string& whichp="LM",
+                                MKL_INT ncvp=0, ARFLOAT tolp=0.0, MKL_INT maxitp=0,
                                 ARTYPE* residp=NULL, bool ishiftp=true);
   // Set values of problem parameters (also called by constructors).
   // Redefined in ARrcStdEig and ARrcGenEig.
@@ -199,7 +199,7 @@ class ARrcStdEig {
  // c.2) Functions that detect if output data is ready.
 
   bool ParametersDefined() { return PrepareOK; }
-  // Indicates if all internal variables and arrays were defined.
+  // Indicates if all MKL_INTernal variables and arrays were defined.
 
   bool ArnoldiBasisFound() { return BasisOK; }
   // Indicates if an Arnoldi basis is available.
@@ -214,27 +214,27 @@ class ARrcStdEig {
   // Indicates if the Schur vectors are available.
 
 
- // c.3) Functions that provides access to internal variables' values.
+ // c.3) Functions that provides access to MKL_INTernal variables' values.
 
-  int ConvergedEigenvalues() { return nconv; }
+  MKL_INT ConvergedEigenvalues() { return nconv; }
   // Provides the number of "converged" eigenvalues found so far.
 
-  int GetMaxit() { return maxit; }
+  MKL_INT GetMaxit() { return maxit; }
   // Returns the maximum number of Arnoldi update iterations allowed.
 
-  int GetIter();
+  MKL_INT GetIter();
   // Returns the actual number of Arnoldi iterations taken.
 
   ARFLOAT GetTol() { return tol; }
   // Returns the stopping criterion.
 
-  int GetN() { return n; }
+  MKL_INT GetN() { return n; }
   // Returns the dimension of the problem.
 
-  int GetNev() { return nev; }
+  MKL_INT GetNev() { return nev; }
   // Returns the number of eigenvalues to be computed.
 
-  int GetNcv() { return ncv; }
+  MKL_INT GetNcv() { return ncv; }
   // Returns the number of Arnoldi vectors generated at each iteration..
 
   const std::string& GetWhich() { return which; }
@@ -246,22 +246,22 @@ class ARrcStdEig {
   bool GetAutoShift() { return AutoShift; }
   // Returns "AutoShift".
 
-  int GetMode() { return mode; }
+  MKL_INT GetMode() { return mode; }
   // Returns the type of problem (regular, shift and invert, etc).
 
 
  // c.4) Functions that allow changes in problem parameters.
 
-  void ChangeMaxit(int maxitp);
+  void ChangeMaxit(MKL_INT maxitp);
   // Changes the maximum number of Arnoldi update iterations allowed.
 
   void ChangeTol(ARFLOAT tolp);
   // Changes the stopping criterion.
 
-  virtual void ChangeNev(int nevp);
+  virtual void ChangeNev(MKL_INT nevp);
   // Changes the number of eigenvalues to be computed.
 
-  virtual void ChangeNcv(int ncvp);
+  virtual void ChangeNcv(MKL_INT ncvp);
   // Changes the number of Arnoldi vectors generated at each iteration..
 
   virtual void ChangeWhich(const std::string& whichp);
@@ -299,11 +299,11 @@ class ARrcStdEig {
 
  // c.6) Functions that permit step by step execution of ARPACK.
 
-  int GetNp() { return iparam[8]; }
+  MKL_INT GetNp() { return iparam[8]; }
   // Returns the number of shifts that must be supplied after a call to
   // TakeStep() when shifts are provided by the user (AutoShift = false).
 
-  int GetIdo() { return ido; }
+  MKL_INT GetIdo() { return ido; }
   // Indicates the type of operation the user must perform between two
   // successive calls to function TakeStep().
   // ido = -1: compute y = OP*x, where GetVector() gives a pointer to the
@@ -332,58 +332,58 @@ class ARrcStdEig {
   // function indicates where to store the shifts.
   // Redefined in ARrcSymStdEig.
 
-  virtual int TakeStep();
+  virtual MKL_INT TakeStep();
   // Calls Aupp once if there is no Arnoldi basis available.
 
 
  // c.7) Functions that perform final calculations.
 
-  virtual int FindArnoldiBasis();
+  virtual MKL_INT FindArnoldiBasis();
   // Determines the Arnoldi basis related to the given problem.
   // This function has no meaning for this class. It is maintained
   // here for compatibility with all derived classes.
   // Redefined in ARStdEig, ARGenEig and ARSymGenEig.
 
-  virtual int FindEigenvalues();
+  virtual MKL_INT FindEigenvalues();
   // Determines nev approximated eigenvalues of the given eigen-problem.
   // Redefined in ARNonSymGenEig.
 
-  virtual int FindEigenvectors(bool schurp = false);
+  virtual MKL_INT FindEigenvectors(bool schurp = false);
   // Determines nev approximated eigenvectors of the given eigen-problem
   // Optionally also determines nev Schur vectors that span the desired
   // invariant subspace.
   // Redefined in ARNonSymGenEig.
 
-  virtual int FindSchurVectors();
+  virtual MKL_INT FindSchurVectors();
   // Determines nev Schur vectors that span the desired invariant subspace.
   // Redefined in ARrcSymStdEig and ARNonSymGenEig.
 
 
  // c.8) Function that perform calculations using user supplied data structure.
 
-  virtual int Eigenvectors(ARTYPE* &EigVecp, bool ischur = false);
+  virtual MKL_INT Eigenvectors(ARTYPE* &EigVecp, bool ischur = false);
   // Overrides array EigVecp sequentially with the eigenvectors of the
   // given eigen-problem. Also calculates Schur vectors if requested.
 
 
  // c.9) Functions that return elements of vectors and matrices.
 
-  ARTYPE ArnoldiBasisVector(int i, int j);
+  ARTYPE ArnoldiBasisVector(MKL_INT i, MKL_INT j);
   // Furnishes element j of the i-eth Arnoldi basis vector.
 
-  ARTYPE SchurVector(int i, int j);
+  ARTYPE SchurVector(MKL_INT i, MKL_INT j);
   // Furnishes element j of the i-eth Schur vector.
 
-  ARTYPE ResidualVector(int i);
+  ARTYPE ResidualVector(MKL_INT i);
   // Furnishes element j of the residual vector.
 
 
- // c.10) Functions that provide raw access to internal vectors and matrices.
+ // c.10) Functions that provide raw access to MKL_INTernal vectors and matrices.
 
   ARTYPE* RawArnoldiBasisVectors();
   // Provides raw access to Arnoldi basis vectors elements.
 
-  ARTYPE* RawArnoldiBasisVector(int i);
+  ARTYPE* RawArnoldiBasisVector(MKL_INT i);
   // Provides raw access to Arnoldi basis vector i.
 
   ARTYPE* RawEigenvalues();
@@ -392,13 +392,13 @@ class ARrcStdEig {
   ARTYPE* RawEigenvectors();
   // Provides raw access to eigenvectors elements.
 
-  ARTYPE* RawEigenvector(int i);
+  ARTYPE* RawEigenvector(MKL_INT i);
   // Provides raw access to eigenvector i.
 
   ARTYPE* RawSchurVectors();
   // Provides raw access to Schur vectors elements.
 
-  ARTYPE* RawSchurVector(int i);
+  ARTYPE* RawSchurVector(MKL_INT i);
   // Provides raw access to Schur vector i.
 
   ARTYPE* RawResidualVector();
@@ -412,7 +412,7 @@ class ARrcStdEig {
   vector<ARTYPE>* StlArnoldiBasisVectors();
   // Returns a copy of the Arnoldi basis in a single STL vector.
 
-  vector<ARTYPE>* StlArnoldiBasisVector(int i);
+  vector<ARTYPE>* StlArnoldiBasisVector(MKL_INT i);
   // Returns the i-th Arnoldi basis vector in a STL vector.
 
   vector<ARTYPE>* StlEigenvectors(bool ischur = false);
@@ -422,7 +422,7 @@ class ARrcStdEig {
   vector<ARTYPE>* StlSchurVectors();
   // Returns a copy of the Schur vectors in a single STL vector.
 
-  vector<ARTYPE>* StlSchurVector(int i);
+  vector<ARTYPE>* StlSchurVector(MKL_INT i);
   // Returns the i-th Schur vector in a STL vector.
 
   vector<ARTYPE>* StlResidualVector();
@@ -607,7 +607,7 @@ void ARrcStdEig<ARFLOAT, ARTYPE>::EuppError()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline int ARrcStdEig<ARFLOAT, ARTYPE>::CheckN(int np)
+inline MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::CheckN(MKL_INT np)
 {
 
   if (np < 2) {
@@ -619,7 +619,7 @@ inline int ARrcStdEig<ARFLOAT, ARTYPE>::CheckN(int np)
 
 
 template<class ARFLOAT, class ARTYPE>
-inline int ARrcStdEig<ARFLOAT, ARTYPE>::CheckNcv(int ncvp)
+inline MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::CheckNcv(MKL_INT ncvp)
 {
 
   // Adjusting ncv if ncv <= nev or ncv > n.
@@ -640,7 +640,7 @@ inline int ARrcStdEig<ARFLOAT, ARTYPE>::CheckNcv(int ncvp)
 
 
 template<class ARFLOAT, class ARTYPE>
-inline int ARrcStdEig<ARFLOAT, ARTYPE>::CheckNev(int nevp)
+inline MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::CheckNev(MKL_INT nevp)
 {
 
   if ((nevp<1)||(nevp>=n)) { 
@@ -652,7 +652,7 @@ inline int ARrcStdEig<ARFLOAT, ARTYPE>::CheckNev(int nevp)
 
 
 template<class ARFLOAT, class ARTYPE>
-inline int ARrcStdEig<ARFLOAT, ARTYPE>::CheckMaxit(int maxitp)
+inline MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::CheckMaxit(MKL_INT maxitp)
 {
 
   if (maxitp >= 1) return maxitp;
@@ -687,10 +687,10 @@ void ARrcStdEig<ARFLOAT, ARTYPE>::Restart()
 
   nconv=0;                  // No eigenvalues found yet.
   ido  =0;                  // First call to AUPP.
-  iparam[1]=(int)AutoShift; // Shift strategy used.
+  iparam[1]=(MKL_INT)AutoShift; // Shift strategy used.
   iparam[3]=maxit;          // Maximum number of Arnoldi iterations allowed.
   iparam[4]=1;              // Blocksize must be 1.
-  info =(int)(!newRes);     // Starting vector used.
+  info =(MKL_INT)(!newRes);     // Starting vector used.
   ClearBasis();
 
 } // Restart.
@@ -704,7 +704,7 @@ void ARrcStdEig<ARFLOAT, ARTYPE>::Prepare()
 
   ClearMem();
 
-  // Defining internal variables.
+  // Defining MKL_INTernal variables.
 
   try {
 
@@ -740,7 +740,7 @@ void ARrcStdEig<ARFLOAT,ARTYPE>::Copy(const ARrcStdEig<ARFLOAT,ARTYPE>& other)
 
   // Defining local variables.
 
-  int i;
+  MKL_INT i;
 
   // Copying variables that belong to fundamental types.
 
@@ -831,8 +831,8 @@ void ARrcStdEig<ARFLOAT,ARTYPE>::Copy(const ARrcStdEig<ARFLOAT,ARTYPE>& other)
 
 template<class ARFLOAT, class ARTYPE>
 void ARrcStdEig<ARFLOAT, ARTYPE>::
-DefineParameters(int np, int nevp, const std::string& whichp, int ncvp,
-                 ARFLOAT tolp, int maxitp, ARTYPE* residp, bool ishiftp)
+DefineParameters(MKL_INT np, MKL_INT nevp, const std::string& whichp, MKL_INT ncvp,
+                 ARFLOAT tolp, MKL_INT maxitp, ARTYPE* residp, bool ishiftp)
 
 {
 
@@ -860,7 +860,7 @@ DefineParameters(int np, int nevp, const std::string& whichp, int ncvp,
     return;
   }
 
-  // Setting internal variables.
+  // Setting MKL_INTernal variables.
 
   ClearFirst();
   Prepare();
@@ -869,7 +869,7 @@ DefineParameters(int np, int nevp, const std::string& whichp, int ncvp,
 
 
 template<class ARFLOAT, class ARTYPE>
-int ARrcStdEig<ARFLOAT, ARTYPE>::GetIter()
+MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::GetIter()
 {
 
   if (BasisOK || ValuesOK || VectorsOK || SchurOK) {
@@ -883,7 +883,7 @@ int ARrcStdEig<ARFLOAT, ARTYPE>::GetIter()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeMaxit(int maxitp)
+inline void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeMaxit(MKL_INT maxitp)
 {
 
   maxit = CheckMaxit(maxitp);
@@ -903,7 +903,7 @@ inline void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeTol(ARFLOAT tolp)
 
 
 template<class ARFLOAT, class ARTYPE>
-void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeNev(int nevp)
+void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeNev(MKL_INT nevp)
 {
 
   try { 
@@ -917,7 +917,7 @@ void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeNev(int nevp)
 
 
 template<class ARFLOAT, class ARTYPE>
-inline void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeNcv(int ncvp)
+inline void ARrcStdEig<ARFLOAT, ARTYPE>::ChangeNcv(MKL_INT ncvp)
 {
 
   ncv = CheckNcv(ncvp);
@@ -1022,10 +1022,10 @@ ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::PutVector()
 
 
 template<class ARFLOAT, class ARTYPE>
-int ARrcStdEig<ARFLOAT, ARTYPE>::TakeStep()
+MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::TakeStep()
 {
 
-  // Requiring the definition of all internal variables.
+  // Requiring the definition of all MKL_INTernal variables.
 
   if (!PrepareOK) {
 
@@ -1053,7 +1053,7 @@ int ARrcStdEig<ARFLOAT, ARTYPE>::TakeStep()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline int ARrcStdEig<ARFLOAT, ARTYPE>::FindArnoldiBasis()
+inline MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::FindArnoldiBasis()
 {
 
   if (!BasisOK) {
@@ -1065,7 +1065,7 @@ inline int ARrcStdEig<ARFLOAT, ARTYPE>::FindArnoldiBasis()
 
 
 template<class ARFLOAT, class ARTYPE>
-int ARrcStdEig<ARFLOAT, ARTYPE>::FindEigenvalues()
+MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::FindEigenvalues()
 {
 
   // Determining eigenvalues if they are not available.
@@ -1092,7 +1092,7 @@ int ARrcStdEig<ARFLOAT, ARTYPE>::FindEigenvalues()
 
 
 template<class ARFLOAT, class ARTYPE>
-int ARrcStdEig<ARFLOAT, ARTYPE>::FindEigenvectors(bool schurp)
+MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::FindEigenvectors(bool schurp)
 {
 
   // Determining eigenvectors if they are not available.
@@ -1124,7 +1124,7 @@ int ARrcStdEig<ARFLOAT, ARTYPE>::FindEigenvectors(bool schurp)
 
 
 template<class ARFLOAT, class ARTYPE>
-int ARrcStdEig<ARFLOAT, ARTYPE>::FindSchurVectors()
+MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::FindSchurVectors()
 {
 
   // Determining Schur vectors if they are not available.
@@ -1154,7 +1154,7 @@ int ARrcStdEig<ARFLOAT, ARTYPE>::FindSchurVectors()
 
 
 template<class ARFLOAT, class ARTYPE>
-int ARrcStdEig<ARFLOAT, ARTYPE>::
+MKL_INT ARrcStdEig<ARFLOAT, ARTYPE>::
 Eigenvectors(ARTYPE* &EigVecp, bool ischur)
 {
 
@@ -1194,7 +1194,7 @@ Eigenvectors(ARTYPE* &EigVecp, bool ischur)
 
 
 template<class ARFLOAT, class ARTYPE>
-inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::ArnoldiBasisVector(int i, int j)
+inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::ArnoldiBasisVector(MKL_INT i, MKL_INT j)
 {
 
   // Returning element j of Arnoldi basis vector i.
@@ -1211,7 +1211,7 @@ inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::ArnoldiBasisVector(int i, int j)
 
 
 template<class ARFLOAT, class ARTYPE>
-inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::SchurVector(int i, int j)
+inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::SchurVector(MKL_INT i, MKL_INT j)
 {
 
   // Returning element j of Schur vector i.
@@ -1228,7 +1228,7 @@ inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::SchurVector(int i, int j)
 
 
 template<class ARFLOAT, class ARTYPE>
-inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::ResidualVector(int i)
+inline ARTYPE ARrcStdEig<ARFLOAT, ARTYPE>::ResidualVector(MKL_INT i)
 {
 
   // Returning element i of the residual vector.
@@ -1259,7 +1259,7 @@ inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawArnoldiBasisVectors()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawArnoldiBasisVector(int i)
+inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawArnoldiBasisVector(MKL_INT i)
 {
 
   // Returning a constant pointer to Arnoldi basis vector i.
@@ -1300,7 +1300,7 @@ inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawEigenvectors()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawEigenvector(int i)
+inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawEigenvector(MKL_INT i)
 {
 
   // Returning a constant pointer to eigenvector i.
@@ -1329,7 +1329,7 @@ inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawSchurVectors()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawSchurVector(int i)
+inline ARTYPE* ARrcStdEig<ARFLOAT, ARTYPE>::RawSchurVector(MKL_INT i)
 {
 
   // Returning a constant pointer to Schur vector i.
@@ -1380,7 +1380,7 @@ inline vector<ARTYPE>* ARrcStdEig<ARFLOAT, ARTYPE>::StlArnoldiBasisVectors()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline vector<ARTYPE>* ARrcStdEig<ARFLOAT,ARTYPE>::StlArnoldiBasisVector(int i)
+inline vector<ARTYPE>* ARrcStdEig<ARFLOAT,ARTYPE>::StlArnoldiBasisVector(MKL_INT i)
 {
 
   // Returning the i-th Arnoldi basis vector in a STL vector.
@@ -1439,7 +1439,7 @@ inline vector<ARTYPE>* ARrcStdEig<ARFLOAT, ARTYPE>::StlSchurVectors()
 
 
 template<class ARFLOAT, class ARTYPE>
-inline vector<ARTYPE>* ARrcStdEig<ARFLOAT, ARTYPE>::StlSchurVector(int i)
+inline vector<ARTYPE>* ARrcStdEig<ARFLOAT, ARTYPE>::StlSchurVector(MKL_INT i)
 {
 
   // Returning the i-th Schur vector in a STL vector.

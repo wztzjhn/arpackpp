@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE saupp.h.
    Interface to ARPACK subroutines dsaupd and ssaupd.
@@ -81,29 +81,29 @@ inline void saupp(ARint& ido, char bmat, ARint n, const std::string& which, ARin
 
     ido     (Input / Output) Reverse communication flag.  ido must be
             zero on the first call to saupp.  ido will be set
-            internally to indicate the type of operation to be
+            MKL_INTernally to indicate the type of operation to be
             performed.  Control is then given back to the calling
             routine which has the responsibility to carry out the
             requested operation and call saupp with the result. The
             operand is given in workd[ipntr[1]], the result must be
             put in workd[ipntr[2]]. (If Mode = 2 see remark 5 below).
-            ido =  0: first call to the reverse communication interface.
+            ido =  0: first call to the reverse communication MKL_INTerface.
             ido = -1: compute  Y = OP * X  where
-                      ipntr[1] is the pointer into workd for X,
-                      ipntr[2] is the pointer into workd for Y.
+                      ipntr[1] is the pointer MKL_INTo workd for X,
+                      ipntr[2] is the pointer MKL_INTo workd for Y.
                       This is for the initialization phase to force the
-                      starting vector into the range of OP.
+                      starting vector MKL_INTo the range of OP.
             ido =  1: compute  Y = OP * X where
-                      ipntr[1] is the pointer into workd for X,
-                      ipntr[2] is the pointer into workd for Y.
+                      ipntr[1] is the pointer MKL_INTo workd for X,
+                      ipntr[2] is the pointer MKL_INTo workd for Y.
                       In mode 3,4 and 5, the vector B * X is already
                       available in workd[ipntr[3]].  It does not
                       need to be recomputed in forming OP * X.
             ido =  2: compute  Y = B * X  where
-                      ipntr[1] is the pointer into workd for X,
-                      ipntr[2] is the pointer into workd for Y.
+                      ipntr[1] is the pointer MKL_INTo workd for X,
+                      ipntr[2] is the pointer MKL_INTo workd for Y.
             ido =  3: compute the iparam[8] shifts where
-                      ipntr[11] is the pointer into workl for
+                      ipntr[11] is the pointer MKL_INTo workl for
                       placing the shifts. See remark 6 below.
             ido = 99: done.
     bmat    (Input) bmat specifies the type of the matrix B that defines
@@ -253,7 +253,7 @@ inline void saupp(ARint& ido, char bmat, ARint n, const std::string& which, ARin
     2. If the Ritz vectors corresponding to the converged Ritz values are
        needed, the user must call seupp immediately following completion
        of saupp. This is new starting with version 2.1 of ARPACK.
-    3. If M can be factored into a Cholesky factorization M = LL'
+    3. If M can be factored MKL_INTo a Cholesky factorization M = LL'
        then Mode = 2 should not be selected.  Instead one should use
        Mode = 1 with  OP = inv(L)*A*inv(L').  Appropriate triangular
        linear systems should be solved with L and L' rather
@@ -270,7 +270,7 @@ inline void saupp(ARint& ido, char bmat, ARint n, const std::string& which, ARin
        maintain the orthogonal basis vectors.   The optimal "cross-over"
        with respect to CPU time is problem dependent and must be
        determined empirically.
-    5. If iparam[7] = 2 then in the Reverse commuication interface the
+    5. If iparam[7] = 2 then in the Reverse commuication MKL_INTerface the
        user must do the following. When ido = 1, Y = OP * X is to be
        computed. When iparam[7] = 2 OP = inv(B)*A. After computing A*X
        the user must overwrite X with A*X. Y is then the solution to the

@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARDSPen.h.
    Arpack++ class ARdsSymPencil definition.
@@ -91,9 +91,9 @@ template<class ARTYPE>
 void ARdsSymPencil<ARTYPE>::SubtractAsB(ARTYPE sigma)
 {
 
-  int sizeA, i, j, k, l;
+  MKL_INT sizeA, i, j, k, l;
 
-  // Copying A into AsB.
+  // Copying A MKL_INTo AsB.
 
   sizeA = (A->ncols()*A->ncols()+A->ncols())/2;
   ::copy(sizeA, A->A, 1, AsB.Ainv, 1);

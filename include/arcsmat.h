@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARCSMat.h.
    Arpack++ class ARchSymMatrix definition.
@@ -52,9 +52,9 @@ class ARchSymMatrix: public ARMatrix<ARTYPE> {
 
   bool    factored;
   char    uplo;
-  int     nnz;
-  int*    irow;
-  int*    pcol;
+  MKL_INT     nnz;
+  MKL_INT*    irow;
+  MKL_INT*    pcol;
   double  threshold;
   ARTYPE* a;
   ARhbMatrix<int, ARTYPE> mat;
@@ -70,7 +70,7 @@ class ARchSymMatrix: public ARMatrix<ARTYPE> {
 
  public:
 
-  int nzeros() { return nnz; }
+  MKL_INT nzeros() { return nnz; }
 
   bool IsFactored() { return factored; }
 
@@ -82,15 +82,15 @@ class ARchSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                    int* pcolp, char uplop = 'L', double thresholdp = 0.1, 
+  void DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                    MKL_INT* pcolp, char uplop = 'L', double thresholdp = 0.1, 
                     bool check = true);
 
   ARchSymMatrix(): ARMatrix<ARTYPE>() { factored = false; cholmod_start (&c) ;}
   // Short constructor that does nothing.
 
-  ARchSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-                int* pcolp, char uplop = 'L', double thresholdp = 0.1,
+  ARchSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+                MKL_INT* pcolp, char uplop = 'L', double thresholdp = 0.1,
                 bool check = true);
   // Long constructor.
 
@@ -118,7 +118,7 @@ template<class ARTYPE>
 bool ARchSymMatrix<ARTYPE>::DataOK()
 {
 
-  int i, j, k;
+  MKL_INT i, j, k;
 
   // Checking if pcol is in ascending order.
 
@@ -204,7 +204,7 @@ inline void ARchSymMatrix<ARTYPE>::Copy(const ARchSymMatrix<ARTYPE>& other)
 template<class ARTYPE>
 void ARchSymMatrix<ARTYPE>::FactorA()
 {
-  int info;
+  MKL_INT info;
 
   //std::cout << "ARchSymMatrix::FactorA" << std::endl;
 
@@ -277,7 +277,7 @@ void ARchSymMatrix<ARTYPE>::FactorAsI(ARTYPE sigma)
   sigma2[0] = -sigma;
   sigma2[1] = 0.0;
   L = cholmod_analyze (A, &c) ;
-  int info = cholmod_factorize_p (A,sigma2,NULL,0,L,&c) ;  
+  MKL_INT info = cholmod_factorize_p (A,sigma2,NULL,0,L,&c) ;  
 
   factored = (info != 0);
   
@@ -298,7 +298,7 @@ void ARchSymMatrix<ARTYPE>::MultMv(ARTYPE* v, ARTYPE* w)
 {
   //std::cout << "ARchSymMatrix::MultMv " << std::endl;
 
-  int    i, j, k;
+  MKL_INT    i, j, k;
   ARTYPE t;
 
   // Quitting the function if A was not defined.
@@ -362,7 +362,7 @@ void ARchSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
   // Solving A.w = v (or AsI.w = v).
   
   //std::cout<< " b = [ " << v[0];
-  //for(int i=1;i<this->n;i++)
+  //for(MKL_INT i=1;i<this->n;i++)
   //  std::cout << " , " << v[i];
   //std::cout<< " ]" <<std::endl;
   
@@ -374,7 +374,7 @@ void ARchSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
   Get_Cholmod_Dense_Data(x, this->n, w);
 
   //std::cout<< " x = [ " << w[0];
-  //for(int i=1;i<this->n;i++)
+  //for(MKL_INT i=1;i<this->n;i++)
   //  std::cout << " , " << w[i];
   //std::cout<< " ]" <<std::endl;
 
@@ -387,7 +387,7 @@ void ARchSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE>
 inline void ARchSymMatrix<ARTYPE>::
-DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
+DefineMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp, MKL_INT* pcolp,
              char uplop, double thresholdp, bool check)
 {
 
@@ -417,8 +417,8 @@ DefineMatrix(int np, int nnzp, ARTYPE* ap, int* irowp, int* pcolp,
 
 template<class ARTYPE>
 inline ARchSymMatrix<ARTYPE>::
-ARchSymMatrix(int np, int nnzp, ARTYPE* ap, int* irowp,
-              int* pcolp, char uplop, double thresholdp,
+ARchSymMatrix(MKL_INT np, MKL_INT nnzp, ARTYPE* ap, MKL_INT* irowp,
+              MKL_INT* pcolp, char uplop, double thresholdp,
               bool check)                   : ARMatrix<ARTYPE>(np)
 {
  cholmod_start (&c) ;

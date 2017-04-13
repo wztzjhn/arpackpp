@@ -1,6 +1,6 @@
 /*
   ARPACK++ v1.2 2/20/2000
-  c++ interface to ARPACK code.
+  c++ MKL_INTerface to ARPACK code.
 
   MODULE arch.h
   Modified version of arch.h (from LAPACK++ 1.1).
@@ -20,7 +20,7 @@
 #define ARCH_H
 
 // ARPACK++ arcomplex type definition.
-// If you are not using g++ (or CC) and also are not intending 
+// If you are not using g++ (or CC) and also are not MKL_INTending 
 // use complex variables, comment out the following line.
 
 #include "arcomp.h"
@@ -83,15 +83,15 @@ extern "C" {
 typedef MKL_INT ARint;
 typedef MKL_INT ARlogical;
 #else
-typedef int ARint;
-typedef int ARlogical;
+typedef MKL_INT ARint;
+typedef MKL_INT ARlogical;
 #endif
 
 #ifdef __SUNPRO_CC
 
-  typedef int bool;
-  int true  = 1;
-  int false = 0;
+  typedef MKL_INT bool;
+  MKL_INT true  = 1;
+  MKL_INT false = 0;
 
 #endif
 

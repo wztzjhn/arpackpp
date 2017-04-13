@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARCSPen.h.
    Arpack++ class ARchSymMPencil definition.
@@ -46,8 +46,8 @@ class ARchSymPencil
 
   virtual void Copy(const ARchSymPencil& other);
 
-//  void SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-//                   int yind[], int ny, ARTYPE z[], int zind[], int& nz);
+//  void SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+//                   MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz);
 
 //  void ExpandAsB();
 
@@ -106,12 +106,12 @@ inline void ARchSymPencil<ARTYPE>::Copy(const ARchSymPencil<ARTYPE>& other)
 /*
 template<class ARTYPE>
 void ARchSymPencil<ARTYPE>::
-SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-            int yind[], int ny, ARTYPE z[], int zind[], int& nz)
+SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+            MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz)
 // A strongly sequential (and inefficient) sparse saxpy algorithm.
 {
 
-  int ix, iy;
+  MKL_INT ix, iy;
 
   nz = 0;
   if ((nx == 0) || (a == (ARTYPE)0)) {
@@ -162,8 +162,8 @@ template<class ARTYPE>
 void ARchSymPencil<ARTYPE>::ExpandAsB()
 {
 
-  int    i, j, k, n;
-  int    *pcol, *irow, *index, *pos;
+  MKL_INT    i, j, k, n;
+  MKL_INT    *pcol, *irow, *index, *pos;
   ARTYPE *value;
 
   // Initializing variables.
@@ -172,8 +172,8 @@ void ARchSymPencil<ARTYPE>::ExpandAsB()
   index = AsB.index;
   value = AsB.value;
   irow  = &index[n+1];
-  pcol  = new int[AsB.n+1];
-  pos   = new int[AsB.n+1];
+  pcol  = new MKL_INT[AsB.n+1];
+  pos   = new MKL_INT[AsB.n+1];
   for (i=0; i<=n; i++) pcol[i] = index[i];
   for (i=0; i<=n; i++) pos[i] = 0;
 
@@ -260,7 +260,7 @@ template<class ARTYPE>
 void ARchSymPencil<ARTYPE>::SubtractAsB(ARTYPE sigma)
 {
 
-  int i, acol, bcol, asbcol, scol;
+  MKL_INT i, acol, bcol, asbcol, scol;
 
   // Quitting function if A->uplo is not equal to B->uplo.
 
@@ -334,7 +334,7 @@ void ARchSymPencil<ARTYPE>::FactorAsB(ARTYPE sigma)
 //cholmod_write_sparse(fpb,A->A,NULL,NULL,&c);
 
   LAsB = cholmod_analyze (AsB, &c) ;
-  int info = cholmod_factorize (AsB, LAsB, &c) ;  
+  MKL_INT info = cholmod_factorize (AsB, LAsB, &c) ;  
 
   factoredAsB = (info != 0);  
   if (c.status != CHOLMOD_OK)

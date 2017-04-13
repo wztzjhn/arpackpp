@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/18/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ACompGRe.cc.
    Example program that illustrates how to solve a complex generalized
@@ -12,7 +12,7 @@
       where A and B are derived from the finite element discretization
       of the 1-dimensional convection-diffusion operator
                        (d^2u/dx^2) + rho*(du/dx)
-      on the interval [0,1], with zero boundary conditions, using
+      on the MKL_INTerval [0,1], with zero boundary conditions, using
       piecewise linear elements.
 
    2) Data structure used to represent matrices A and B:
@@ -60,12 +60,12 @@ int main()
 
   // Defining variables;
 
-  int     n;                      // Dimension of the problem.
-  int     nconv;                  // Number of "converged" eigenvalues.
-  int     nnzA,   nnzB;           // Number of nonzero elements in A and B.
-  int     *irowA, *irowB;         // pointers to arrays that store the row
+  MKL_INT     n;                      // Dimension of the problem.
+  MKL_INT     nconv;                  // Number of "converged" eigenvalues.
+  MKL_INT     nnzA,   nnzB;           // Number of nonzero elements in A and B.
+  MKL_INT     *irowA, *irowB;         // pointers to arrays that store the row
                                   // indices of the nonzeros in A and B.
-  int     *pcolA, *pcolB;         // pointers to arrays of pointers to the
+  MKL_INT     *pcolA, *pcolB;         // pointers to arrays of pointers to the
                                   // beginning of each column of A and B in
                                   // valA and ValB.
   arcomplex<double> rho;          // parameter used in CompMatrixE.

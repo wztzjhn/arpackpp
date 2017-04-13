@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARUSPen.h.
    Arpack++ class ARumSymPencil definition.
@@ -42,14 +42,14 @@ class ARumSymPencil
   ARumSymMatrix<ARTYPE>* B;
   //ARumSymMatrix<ARTYPE> AsB;
   void*   Numeric;
-  int*    Ap;
-  int*    Ai;
+  MKL_INT*    Ap;
+  MKL_INT*    Ai;
   ARTYPE* Ax; 
 
   virtual void Copy(const ARumSymPencil& other);
 
-//  void SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-//                   int yind[], int ny, ARTYPE z[], int zind[], int& nz);
+//  void SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+//                   MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz);
 
   void ExpandAsB(ARTYPE sigma);
 
@@ -125,12 +125,12 @@ inline void ARumSymPencil<ARTYPE>::Copy(const ARumSymPencil<ARTYPE>& other)
 
 /*template<class ARTYPE>
 void ARumSymPencil<ARTYPE>::
-SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-            int yind[], int ny, ARTYPE z[], int zind[], int& nz)
+SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+            MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz)
 // A strongly sequential (and inefficient) sparse saxpy algorithm.
 {
 
-  int ix, iy;
+  MKL_INT ix, iy;
 
   nz = 0;
   if ((nx == 0) || (a == (ARTYPE)0)) {
@@ -181,8 +181,8 @@ template<class ARTYPE>
 void ARumSymPencil<ARTYPE>::ExpandAsB()
 {
 
-  int    i, j, k, n;
-  int    *pcol, *irow, *index, *pos;
+  MKL_INT    i, j, k, n;
+  MKL_INT    *pcol, *irow, *index, *pos;
   ARTYPE *value;
 
   // Initializing variables.
@@ -191,8 +191,8 @@ void ARumSymPencil<ARTYPE>::ExpandAsB()
   index = AsB.index;
   value = AsB.value;
   irow  = &index[n+1];
-  pcol  = new int[AsB.n+1];
-  pos   = new int[AsB.n+1];
+  pcol  = new MKL_INT[AsB.n+1];
+  pos   = new MKL_INT[AsB.n+1];
   for (i=0; i<=n; i++) pcol[i] = index[i];
   for (i=0; i<=n; i++) pos[i] = 0;
 
@@ -279,7 +279,7 @@ template<class ARTYPE>
 void ARumSymPencil<ARTYPE>::SubtractAsB(ARTYPE sigma)
 {
 
-  int i, acol, bcol, asbcol, scol;
+  MKL_INT i, acol, bcol, asbcol, scol;
 
   // Quitting function if A->uplo is not equal to B->uplo.
 
@@ -323,19 +323,19 @@ std::cout <<"ARumSymPencil::ExpandAsB(" << sigma << ") ..." << std::flush;
 
   ClearMem();
  
-  int mynnz = 2*A->nnz+2*B->nnz;
+  MKL_INT mynnz = 2*A->nnz+2*B->nnz;
   if (sigma == 0.0)
     mynnz = 2*A->nnz;
   
   // create triples (i,j,value)
-  int * tripi = new int[mynnz];
-  int * tripj = new int[mynnz];
+  MKL_INT * tripi = new MKL_INT[mynnz];
+  MKL_INT * tripj = new MKL_INT[mynnz];
   ARTYPE* tripx = new ARTYPE[mynnz];
   if (tripi == NULL || tripj == NULL || tripx ==NULL)
     throw ArpackError(ArpackError::PARAMETER_ERROR, "ARumSymPencil::ExpandAsB out of memory (1)");
   
-  int count = 0;
-  int i,j;
+  MKL_INT count = 0;
+  MKL_INT i,j;
   for (i=0; i < A->n; i++)
   {
     // create triplets from A
@@ -380,13 +380,13 @@ std::cout <<"ARumSymPencil::ExpandAsB(" << sigma << ") ..." << std::flush;
   std::cout<< " ( N = " << A->n << "  NNZ = " << count << " )" << std::flush;
   //std::cout<< " size double " << sizeof(double) << "  size ARTYPE " << sizeof(ARTYPE) << std::endl;
   // convert triples (A-sigma B) to Ax Ap Ai
-  Ap = new int[A->n + 1];
-  Ai = new int[count];
+  Ap = new MKL_INT[A->n + 1];
+  Ai = new MKL_INT[count];
   Ax = new ARTYPE[count];
   if (!Ap || !Ai || !Ax )
     throw ArpackError(ArpackError::PARAMETER_ERROR, "ARumSymPencil::ExpandAsB out of memory (2)");
   
-  int status = umfpack_di_triplet_to_col (A->n, A->n, count, tripi, tripj, tripx, Ap, Ai, Ax,  (int *)NULL) ;
+  MKL_INT status = umfpack_di_triplet_to_col (A->n, A->n, count, tripi, tripj, tripx, Ap, Ai, Ax,  (MKL_INT *)NULL) ;
   if (status != UMFPACK_OK)
     throw ArpackError(ArpackError::PARAMETER_ERROR, "ARumSymPencil::ExpandAsB triplet to col");
 
@@ -425,7 +425,7 @@ void ARumSymPencil<ARTYPE>::FactorAsB(ARTYPE sigma)
   umfpack_di_defaults (Control) ;
   //std::cout <<" loaded defaults" << std::endl;
   void *Symbolic ;
-  int status = umfpack_di_symbolic (A->n, A->n, Ap, Ai, Ax, &Symbolic, Control, Info) ;
+  MKL_INT status = umfpack_di_symbolic (A->n, A->n, Ap, Ai, Ax, &Symbolic, Control, Info) ;
   std::cout << " symbolic status: " << status << std::endl;
   if (status != UMFPACK_OK)
     throw ArpackError(ArpackError::PARAMETER_ERROR, "ARumSymPencil::FactorAsB symbolic");
@@ -480,7 +480,7 @@ void ARumSymPencil<ARTYPE>::MultInvAsBv(ARTYPE* v, ARTYPE* w)
   }
 
   // Solving A.w = v (or AsI.w = v).
-   int status = umfpack_di_solve (UMFPACK_A, Ap, Ai, Ax, w, v, Numeric, NULL, NULL) ;
+   MKL_INT status = umfpack_di_solve (UMFPACK_A, Ap, Ai, Ax, w, v, Numeric, NULL, NULL) ;
   if (status == 1)
   {
     std::cout << " WARNING: MATRIX IS SINGULAR " << std::endl;

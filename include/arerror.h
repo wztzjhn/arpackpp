@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARError.h.
    Definition of ArpackError, a class that handles errors
@@ -148,7 +148,7 @@ class ArpackError: public ArpackError_static<void> {
   static void Set(ErrorCode error, const std::string& where="AREigenProblem");
   // Set error code and write error messages.
 
-  static int Status() { return (int) code; }
+  static MKL_INT Status() { return (MKL_INT) code; }
   // Returns current value of error code.
 
   ArpackError(ErrorCode error, const std::string& where="AREigenProblem") {
@@ -230,7 +230,7 @@ inline void ArpackError::Set(ErrorCode error, const std::string& where)
     Print(where, "Error in ARPACK Eupd fortran code");
     return;
   case CANNOT_PREPARE     :
-    Print(where, "Could not correctly define internal variables");
+    Print(where, "Could not correctly define MKL_INTernal variables");
     return;
   case CANNOT_FIND_BASIS  :
     Print(where, "Could not find an Arnoldi basis");

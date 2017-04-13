@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLNSPen.h.
    Arpack++ class ARluNonSymPencil definition.
@@ -35,8 +35,8 @@ class ARluNonSymPencil
  protected:
 
   bool                               factored;
-  int*                               permc;
-  int*                               permr;
+  MKL_INT*                               permc;
+  MKL_INT*                               permr;
   char                               part;
   ARluNonSymMatrix<ARTYPE, ARFLOAT>* A;
   ARluNonSymMatrix<ARTYPE, ARFLOAT>* B;
@@ -48,20 +48,20 @@ class ARluNonSymPencil
 
   void ClearMem();
 
-  void SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-                   int yind[], int ny, ARTYPE z[], int zind[], int& nz);
+  void SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+                   MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz);
 
 #ifdef ARCOMP_H
-  void SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], int xind[], int nx,
-                   ARFLOAT y[], int yind[], int ny, arcomplex<ARFLOAT> z[],
-                   int zind[], int& nz);
+  void SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], MKL_INT xind[], MKL_INT nx,
+                   ARFLOAT y[], MKL_INT yind[], MKL_INT ny, arcomplex<ARFLOAT> z[],
+                   MKL_INT zind[], MKL_INT& nz);
 #endif
 
-  void SubtractAsB(int n, ARTYPE sigma, NCformat& A, 
+  void SubtractAsB(MKL_INT n, ARTYPE sigma, NCformat& A, 
                    NCformat& B, NCformat& AsB);
 
 #ifdef ARCOMP_H
-  void SubtractAsB(int n, ARFLOAT sigmaR, ARFLOAT sigmaI,
+  void SubtractAsB(MKL_INT n, ARFLOAT sigmaR, ARFLOAT sigmaI,
                    NCformat& A, NCformat& B, NCformat& AsB);
 #endif
 
@@ -156,12 +156,12 @@ void ARluNonSymPencil<ARTYPE, ARFLOAT>::ClearMem()
 
 template<class ARTYPE, class ARFLOAT>
 void ARluNonSymPencil<ARTYPE, ARFLOAT>::
-SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-            int yind[], int ny, ARTYPE z[], int zind[], int& nz)
+SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+            MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz)
 // A strongly sequential (and inefficient) sparse saxpy algorithm.
 {
 
-  int ix, iy;
+  MKL_INT ix, iy;
 
   nz = 0;
   if ((nx == 0) || (a == (ARTYPE)0)) {
@@ -211,12 +211,12 @@ SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
 #ifdef ARCOMP_H
 template<class ARTYPE, class ARFLOAT>
 void ARluNonSymPencil<ARTYPE, ARFLOAT>::
-SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], int xind[], int nx, ARFLOAT y[],
-            int yind[], int ny, arcomplex<ARFLOAT> z[], int zind[], int& nz)
+SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], MKL_INT xind[], MKL_INT nx, ARFLOAT y[],
+            MKL_INT yind[], MKL_INT ny, arcomplex<ARFLOAT> z[], MKL_INT zind[], MKL_INT& nz)
 // A strongly sequential (and inefficient) sparse saxpy algorithm.
 {
 
-  int ix, iy;
+  MKL_INT ix, iy;
 
   nz = 0;
   if ((nx == 0) || (a == arcomplex<ARFLOAT>(0.0,0.0))) {
@@ -269,10 +269,10 @@ SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], int xind[], int nx, ARFLOAT y[],
 
 template<class ARTYPE, class ARFLOAT>
 void ARluNonSymPencil<ARTYPE, ARFLOAT>::
-SubtractAsB(int n, ARTYPE sigma, NCformat& A, NCformat& B, NCformat& AsB)
+SubtractAsB(MKL_INT n, ARTYPE sigma, NCformat& A, NCformat& B, NCformat& AsB)
 {
 
-  int     i, acol, bcol, asbcol, scol;
+  MKL_INT     i, acol, bcol, asbcol, scol;
   ARTYPE* anzval;
   ARTYPE* bnzval;
   ARTYPE* asbnzval;
@@ -306,11 +306,11 @@ SubtractAsB(int n, ARTYPE sigma, NCformat& A, NCformat& B, NCformat& AsB)
 #ifdef ARCOMP_H
 template<class ARTYPE, class ARFLOAT>
 void ARluNonSymPencil<ARTYPE, ARFLOAT>::
-SubtractAsB(int n, ARFLOAT sigmaR, ARFLOAT sigmaI,
+SubtractAsB(MKL_INT n, ARFLOAT sigmaR, ARFLOAT sigmaI,
             NCformat& A, NCformat& B, NCformat& AsB)
 {
 
-  int                 i, acol, bcol, asbcol, scol;
+  MKL_INT                 i, acol, bcol, asbcol, scol;
   ARTYPE*             anzval;
   ARTYPE*             bnzval;
   arcomplex<ARFLOAT>* asbnzval;
@@ -364,10 +364,10 @@ void ARluNonSymPencil<ARTYPE, ARFLOAT>::FactorAsB(ARTYPE sigma)
 
   // Defining local variables.
 
-  int         nnzi, info;
-  int*        etree;
-  int*        irowi;
-  int*        pcoli;
+  MKL_INT         nnzi, info;
+  MKL_INT*        etree;
+  MKL_INT*        irowi;
+  MKL_INT*        pcoli;
   ARTYPE*     asb;
   SuperMatrix AsB;
   SuperMatrix AC;
@@ -381,8 +381,8 @@ void ARluNonSymPencil<ARTYPE, ARFLOAT>::FactorAsB(ARTYPE sigma)
 
   // Setting default values for gstrf parameters.
 
-  int   panel_size      = sp_ienv(1);
-  int   relax           = sp_ienv(2);
+  MKL_INT   panel_size      = sp_ienv(1);
+  MKL_INT   relax           = sp_ienv(2);
   superlu_options_t options;
   /* Set the default input options:
   options.Fact = DOFACT;
@@ -407,8 +407,8 @@ void ARluNonSymPencil<ARTYPE, ARFLOAT>::FactorAsB(ARTYPE sigma)
   // Creating a temporary matrix AsB.
 
   nnzi  = Astore->nnz+Bstore->nnz;
-  irowi = new int[nnzi];
-  pcoli = new int[A->ncols()+1];
+  irowi = new MKL_INT[nnzi];
+  pcoli = new MKL_INT[A->ncols()+1];
   asb   = new ARTYPE[nnzi];
   Create_CompCol_Matrix(&AsB, A->nrows(), A->ncols(), nnzi, asb,
                         irowi, pcoli, SLU_NC, SLU_GE);
@@ -420,9 +420,9 @@ void ARluNonSymPencil<ARTYPE, ARFLOAT>::FactorAsB(ARTYPE sigma)
 
   // Reserving memory for some vectors used in matrix decomposition.
 
-  etree = new int[A->ncols()];
-  if (permc == NULL) permc = new int[A->ncols()];
-  if (permr == NULL) permr = new int[A->ncols()];
+  etree = new MKL_INT[A->ncols()];
+  if (permc == NULL) permc = new MKL_INT[A->ncols()];
+  if (permr == NULL) permr = new MKL_INT[A->ncols()];
 
   // Defining LUStat.
 
@@ -496,10 +496,10 @@ FactorAsB(ARFLOAT sigmaR, ARFLOAT sigmaI, char partp)
 
   // Defining local variables.
 
-  int                 nnzi, info;
-  int*                etree;
-  int*                irowi;
-  int*                pcoli;
+  MKL_INT                 nnzi, info;
+  MKL_INT*                etree;
+  MKL_INT*                irowi;
+  MKL_INT*                pcoli;
   arcomplex<ARFLOAT>* asb;
   SuperMatrix         AsB;
   SuperMatrix         AC;
@@ -513,8 +513,8 @@ FactorAsB(ARFLOAT sigmaR, ARFLOAT sigmaI, char partp)
 
   // Setting default values for gstrf parameters.
 
-  int   panel_size      = sp_ienv(1);
-  int   relax           = sp_ienv(2);
+  MKL_INT   panel_size      = sp_ienv(1);
+  MKL_INT   relax           = sp_ienv(2);
   superlu_options_t options;
   /* Set the default input options:
   options.Fact = DOFACT;
@@ -541,8 +541,8 @@ FactorAsB(ARFLOAT sigmaR, ARFLOAT sigmaI, char partp)
 
   part  = partp;
   nnzi  = Astore->nnz+Bstore->nnz;
-  irowi = new int[nnzi];
-  pcoli = new int[A->ncols()+1];
+  irowi = new MKL_INT[nnzi];
+  pcoli = new MKL_INT[A->ncols()+1];
   asb   = new arcomplex<ARFLOAT>[nnzi];
   Create_CompCol_Matrix(&AsB, A->nrows(), A->ncols(), nnzi, asb,
                         irowi, pcoli, SLU_NC, SLU_GE);
@@ -554,9 +554,9 @@ FactorAsB(ARFLOAT sigmaR, ARFLOAT sigmaI, char partp)
 
   // Reserving memory for some vectors used in matrix decomposition.
 
-  etree = new int[A->ncols()];
-  if (permc == NULL) permc = new int[A->ncols()];
-  if (permr == NULL) permr = new int[A->ncols()];
+  etree = new MKL_INT[A->ncols()];
+  if (permc == NULL) permc = new MKL_INT[A->ncols()];
+  if (permr == NULL) permr = new MKL_INT[A->ncols()];
 
   // Defining LUStat.
 
@@ -637,7 +637,7 @@ MultInvAsBv(arcomplex<ARFLOAT>* v, arcomplex<ARFLOAT>* w)
 
   // Solving AsB.w = v.
 
-  int         info;
+  MKL_INT         info;
   SuperMatrix RHS;
 
   copy(A->nrows(), v, 1, w, 1);
@@ -668,7 +668,7 @@ void ARluNonSymPencil<ARTYPE, ARFLOAT>::MultInvAsBv(ARFLOAT* v, ARFLOAT* w)
 
   // Solving AsB.w = v.
 
-  int         info;
+  MKL_INT         info;
   SuperMatrix RHS;
 
   if (part == 'N') {    // shift is real.
@@ -685,7 +685,7 @@ void ARluNonSymPencil<ARTYPE, ARFLOAT>::MultInvAsBv(ARFLOAT* v, ARFLOAT* w)
 
 #ifdef ARCOMP_H
 
-    int                i;
+    MKL_INT                i;
     arcomplex<ARFLOAT> *tv = new arcomplex<ARFLOAT>[A->ncols()];
 
     for (i=0; i!=A->ncols(); i++) tv[i] = arcomplex<ARFLOAT>(v[i],0.0);

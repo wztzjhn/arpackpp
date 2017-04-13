@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARGComp.h.
    Arpack++ class ARCompGenEig definition.
@@ -35,22 +35,22 @@ class ARCompGenEig:
   ARCompGenEig() { }
   // Short constructor (Does nothing but calling base classes constructors).
 
-  ARCompGenEig(int np, int nevp, ARFOP* objOPp,
+  ARCompGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
                ARFB* objBp,
                void (ARFB::* MultBxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
-               const std::string& whichp = "LM", int ncvp = 0,
-               ARFLOAT tolp = 0.0, int maxitp = 0,
+               const std::string& whichp = "LM", MKL_INT ncvp = 0,
+               ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                arcomplex<ARFLOAT>* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARCompGenEig(int np, int nevp, ARFOP* objOPp,
+  ARCompGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
                void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
                ARFB* objBp,
                void (ARFB::* MultBxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
                arcomplex<ARFLOAT> sigmap,
-               const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-               int maxitp = 0, arcomplex<ARFLOAT>* residp = NULL,
+               const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+               MKL_INT maxitp = 0, arcomplex<ARFLOAT>* residp = NULL,
                bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -75,12 +75,12 @@ class ARCompGenEig:
 
 template<class ARFLOAT, class ARFOP, class ARFB>
 inline ARCompGenEig<ARFLOAT, ARFOP, ARFB>::
-ARCompGenEig(int np, int nevp, ARFOP* objOPp,
+ARCompGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
              void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
              ARFB* objBp,
              void (ARFB::* MultBxp)(arcomplex<ARFLOAT>[], arcomplex<ARFLOAT>[]),
-             const std::string& whichp, int ncvp, ARFLOAT tolp,
-             int maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
+             const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+             MKL_INT maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
 
 {
 
@@ -93,12 +93,12 @@ ARCompGenEig(int np, int nevp, ARFOP* objOPp,
 
 template<class ARFLOAT, class ARFOP, class ARFB>
 inline ARCompGenEig<ARFLOAT, ARFOP, ARFB>::
-ARCompGenEig(int np, int nevp, ARFOP* objOPp,
+ARCompGenEig(MKL_INT np, MKL_INT nevp, ARFOP* objOPp,
              void (ARFOP::* MultOPxp)(arcomplex<ARFLOAT>[],arcomplex<ARFLOAT>[]),
              ARFB* objBp,
              void (ARFB::* MultBxp)(arcomplex<ARFLOAT>[], arcomplex<ARFLOAT>[]),
-             arcomplex<ARFLOAT> sigmap, const std::string& whichp, int ncvp, ARFLOAT tolp,
-             int maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
+             arcomplex<ARFLOAT> sigmap, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+             MKL_INT maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
 
 {
 

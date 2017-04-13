@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARMat.h
    Generic matrix template with a matrix-vector product.
@@ -22,7 +22,7 @@ class ARMatrix {
 
  protected:
 
-  int  m, n;    // Number of rows and columns.
+  MKL_INT  m, n;    // Number of rows and columns.
   bool defined;
  
  public:
@@ -30,7 +30,7 @@ class ARMatrix {
   ARMatrix() { defined = false; }
   // Short constructor.
 
-  ARMatrix(int nrows, int ncols = 0)
+  ARMatrix(MKL_INT nrows, MKL_INT ncols = 0)
   // Long constructor.
   {
     m = nrows;
@@ -41,9 +41,9 @@ class ARMatrix {
   virtual ~ARMatrix() { }
   // Destructor.
 
-  int nrows() { return m; }
+  MKL_INT nrows() { return m; }
 
-  int ncols() { return n; }
+  MKL_INT ncols() { return n; }
 
   bool IsDefined() { return defined; }
 

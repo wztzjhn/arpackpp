@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARRGSym.h.
    Arpack++ class ARrcSymGenEig definition.
@@ -73,14 +73,14 @@ class ARrcSymGenEig:
   ARrcSymGenEig() { InvertMode = 'S'; }
   // Short constructor that does almost nothing.
 
-  ARrcSymGenEig(int np, int nevp, const std::string& whichp = "LM",
-                int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARrcSymGenEig(MKL_INT np, MKL_INT nevp, const std::string& whichp = "LM",
+                MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                 ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARrcSymGenEig(char invertmodep, int np, int nevp, ARFLOAT sigmap,
-                const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-                int maxitp = 0, ARFLOAT* residp = NULL, bool ishiftp = true);
+  ARrcSymGenEig(char invertmodep, MKL_INT np, MKL_INT nevp, ARFLOAT sigmap,
+                const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+                MKL_INT maxitp = 0, ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (shift-and-invert, buckling and Cayley modes).
 
   ARrcSymGenEig(const ARrcSymGenEig& other) { Copy(other); }
@@ -191,8 +191,8 @@ void ARrcSymGenEig<ARFLOAT>::SetCayleyMode(ARFLOAT sigmap)
 
 template<class ARFLOAT>
 inline ARrcSymGenEig<ARFLOAT>::
-ARrcSymGenEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT tolp,
-              int maxitp, ARFLOAT* residp, bool ishiftp)
+ARrcSymGenEig(MKL_INT np, MKL_INT nevp, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+              MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 
@@ -205,9 +205,9 @@ ARrcSymGenEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT tol
 
 template<class ARFLOAT>
 inline ARrcSymGenEig<ARFLOAT>::
-ARrcSymGenEig(char InvertModep, int np, int nevp,
-              ARFLOAT sigmap, const std::string& whichp, int ncvp, ARFLOAT tolp,
-              int maxitp, ARFLOAT* residp, bool ishiftp)
+ARrcSymGenEig(char InvertModep, MKL_INT np, MKL_INT nevp,
+              ARFLOAT sigmap, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+              MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 

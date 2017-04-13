@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARRGComp.h.
    Arpack++ class ARrcCompGenEig definition.
@@ -35,14 +35,14 @@ class ARrcCompGenEig:
   ARrcCompGenEig() { }
   // Short constructor (Does nothing but calling base classes constructors).
 
-  ARrcCompGenEig(int np, int nevp, const std::string& whichp = "LM",
-                 int ncvp = 0, ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARrcCompGenEig(MKL_INT np, MKL_INT nevp, const std::string& whichp = "LM",
+                 MKL_INT ncvp = 0, ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                  arcomplex<ARFLOAT>* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARrcCompGenEig(int np, int nevp, arcomplex<ARFLOAT> sigmap,
-                 const std::string& whichp = "LM", int ncvp = 0, ARFLOAT tolp = 0.0,
-                 int maxitp = 0, arcomplex<ARFLOAT>* residp = NULL,
+  ARrcCompGenEig(MKL_INT np, MKL_INT nevp, arcomplex<ARFLOAT> sigmap,
+                 const std::string& whichp = "LM", MKL_INT ncvp = 0, ARFLOAT tolp = 0.0,
+                 MKL_INT maxitp = 0, arcomplex<ARFLOAT>* residp = NULL,
                  bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -67,8 +67,8 @@ class ARrcCompGenEig:
 
 template<class ARFLOAT>
 inline ARrcCompGenEig<ARFLOAT>::
-ARrcCompGenEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT tolp,
-               int maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
+ARrcCompGenEig(MKL_INT np, MKL_INT nevp, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+               MKL_INT maxitp, arcomplex<ARFLOAT>* residp, bool ishiftp)
 
 {
 
@@ -80,8 +80,8 @@ ARrcCompGenEig(int np, int nevp, const std::string& whichp, int ncvp, ARFLOAT to
 
 template<class ARFLOAT>
 inline ARrcCompGenEig<ARFLOAT>::
-ARrcCompGenEig(int np, int nevp, arcomplex<ARFLOAT> sigmap, const std::string& whichp,
-               int ncvp, ARFLOAT tolp, int maxitp, arcomplex<ARFLOAT>* residp,
+ARrcCompGenEig(MKL_INT np, MKL_INT nevp, arcomplex<ARFLOAT> sigmap, const std::string& whichp,
+               MKL_INT ncvp, ARFLOAT tolp, MKL_INT maxitp, arcomplex<ARFLOAT>* residp,
                bool ishiftp)
 
 {

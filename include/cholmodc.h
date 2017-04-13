@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE CHOLMODc.h.
    Interface to CHOLMOD routines.
@@ -35,9 +35,9 @@ inline void Write_Cholmod_Sparse_Matrix(const std::string & fname,
   cholmod_triplet * T = cholmod_sparse_to_triplet(A,c);
   //std::cout << " [ " << std::endl;
 	myfile.precision(20);
-  for (unsigned int i=0;i<T->nnz;i++)
+  for (unsigned MKL_INT i=0;i<T->nnz;i++)
   {
-    myfile << ((int*)T->i)[i]+1 << " " << ((int*)T->j)[i]+1 << " " << ((double*)T->x)[i] << std::endl;
+    myfile << ((MKL_INT*)T->i)[i]+1 << " " << ((MKL_INT*)T->j)[i]+1 << " " << ((double*)T->x)[i] << std::endl;
   }
   //std::cout << " ] " << std::endl;
   myfile.close();
@@ -47,8 +47,8 @@ inline void Write_Cholmod_Sparse_Matrix(const std::string & fname,
 }
 
 // Create_Cholmod_Sparse_Matrix 
-inline cholmod_sparse* Create_Cholmod_Sparse_Matrix(int m, int n, int nnz,
-      double* a, int* irow, int* pcol, char uplo, cholmod_common *c)
+inline cholmod_sparse* Create_Cholmod_Sparse_Matrix(MKL_INT m, MKL_INT n, MKL_INT nnz,
+      double* a, MKL_INT* irow, MKL_INT* pcol, char uplo, cholmod_common *c)
 {
   
   cholmod_sparse* A = new cholmod_sparse;
@@ -72,18 +72,18 @@ inline cholmod_sparse* Create_Cholmod_Sparse_Matrix(int m, int n, int nnz,
   
   
 /*  double* hd  = new double[nnz];
-  int* hi     = new int[nnz];
-  int* hp     = new int[n+1];
+  MKL_INT* hi     = new MKL_INT[nnz];
+  MKL_INT* hp     = new MKL_INT[n+1];
   
-  int col,j;
-  int counter=0;
-  int counter2=0;
+  MKL_INT col,j;
+  MKL_INT counter=0;
+  MKL_INT counter2=0;
   for (col=0;col<n;col++) // column
   {
     hp[col] = counter2;
     for (j=pcol[col];j<pcol[col+1];j++)
     {
-      int & row = irow[counter];
+      MKL_INT & row = irow[counter];
       if ((uplo == 'L' && row >= col) ||(uplo == 'U' && row <= col))
       {
         hd[counter2] = a[counter];
@@ -125,7 +125,7 @@ inline cholmod_sparse* Create_Cholmod_Sparse_Matrix(int m, int n, int nnz,
 } // Create_Cholmod_Sparse_Matrix (double).
 
 // Create_Cholmod_Dense_Matrix (from Triplet)
-inline cholmod_dense* Create_Cholmod_Dense_Matrix(int m, int n,
+inline cholmod_dense* Create_Cholmod_Dense_Matrix(MKL_INT m, MKL_INT n,
                                   double* a, cholmod_common *c)
 {
 
@@ -147,11 +147,11 @@ inline cholmod_dense* Create_Cholmod_Dense_Matrix(int m, int n,
 } // Create_Cholmod_Dense_Matrix (double).
 
 // Create_Cholmod_Dense_Matrix (from Triplet)
-inline void Get_Cholmod_Dense_Data(cholmod_dense* A, int n, double* a)
+inline void Get_Cholmod_Dense_Data(cholmod_dense* A, MKL_INT n, double* a)
 {
   memcpy(a,A->x,n*sizeof(double));
   
-//  for (int i = 0;i<n;i++)
+//  for (MKL_INT i = 0;i<n;i++)
 //    a[i] = ((double*)A->x)[i];
   
 } // Create_Cholmod_Dense_Matrix (double).

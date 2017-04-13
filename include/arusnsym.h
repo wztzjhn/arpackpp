@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARUSNSym.h.
    Arpack++ class ARluNonSymStdEig definition
@@ -46,15 +46,15 @@ class ARluNonSymStdEig:
   ARluNonSymStdEig() { }
   // Short constructor.
 
-  ARluNonSymStdEig(int nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
-                   const std::string& whichp = "LM", int ncvp = 0,
-                   ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARluNonSymStdEig(MKL_INT nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
+                   const std::string& whichp = "LM", MKL_INT ncvp = 0,
+                   ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                    ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (regular mode).
 
-  ARluNonSymStdEig(int nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
-                   ARFLOAT sigma, const std::string& whichp = "LM", int ncvp = 0,
-                   ARFLOAT tolp = 0.0, int maxitp = 0,
+  ARluNonSymStdEig(MKL_INT nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
+                   ARFLOAT sigma, const std::string& whichp = "LM", MKL_INT ncvp = 0,
+                   ARFLOAT tolp = 0.0, MKL_INT maxitp = 0,
                    ARFLOAT* residp = NULL, bool ishiftp = true);
   // Long constructor (shift and invert mode).
 
@@ -115,9 +115,9 @@ inline void ARluNonSymStdEig<ARFLOAT>::SetShiftInvertMode(ARFLOAT sigmap)
 
 template<class ARFLOAT>
 inline ARluNonSymStdEig<ARFLOAT>::
-ARluNonSymStdEig(int nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
-                 const std::string& whichp, int ncvp, ARFLOAT tolp,
-                 int maxitp, ARFLOAT* residp, bool ishiftp)
+ARluNonSymStdEig(MKL_INT nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
+                 const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+                 MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 
@@ -131,9 +131,9 @@ ARluNonSymStdEig(int nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
 
 template<class ARFLOAT>
 inline ARluNonSymStdEig<ARFLOAT>::
-ARluNonSymStdEig(int nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
-                 ARFLOAT sigmap, const std::string& whichp, int ncvp, ARFLOAT tolp,
-                 int maxitp, ARFLOAT* residp, bool ishiftp)
+ARluNonSymStdEig(MKL_INT nevp, ARumNonSymMatrix<ARFLOAT, ARFLOAT>& A,
+                 ARFLOAT sigmap, const std::string& whichp, MKL_INT ncvp, ARFLOAT tolp,
+                 MKL_INT maxitp, ARFLOAT* residp, bool ishiftp)
 
 {
 

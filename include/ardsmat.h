@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARDSMat.h.
    Arpack++ class ARdsSymMatrix definition.
@@ -39,8 +39,8 @@ class ARdsSymMatrix: public ARMatrix<ARTYPE> {
 
   bool     factored;
   char     uplo;
-  int      info;
-  int*     ipiv;
+  MKL_INT      info;
+  MKL_INT*     ipiv;
   ARTYPE*  A;
   ARTYPE*  Ainv;
 
@@ -66,12 +66,12 @@ class ARdsSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, ARTYPE* Ap, char uplop = 'L');
+  void DefineMatrix(MKL_INT np, ARTYPE* Ap, char uplop = 'L');
 
   ARdsSymMatrix(): ARMatrix<ARTYPE>() { factored = false; }
   // Short constructor that does nothing.
 
-  ARdsSymMatrix(int np, ARTYPE* Ap, char uplop = 'L');
+  ARdsSymMatrix(MKL_INT np, ARTYPE* Ap, char uplop = 'L');
   // Long constructor.
 
   ARdsSymMatrix(const ARdsSymMatrix& other) { Copy(other); }
@@ -126,10 +126,10 @@ Copy(const ARdsSymMatrix<ARTYPE>& other)
   // Copying vectors.
 
   Ainv = new ARTYPE[(this->n*this->n+this->n)/2];
-  ipiv = new int[this->n];
+  ipiv = new MKL_INT[this->n];
 
   copy((this->n*this->n+this->n)/2, other.Ainv, 1, Ainv, 1);
-  for (int i=0; i<this->n; i++) ipiv[i] = other.ipiv[i];
+  for (MKL_INT i=0; i<this->n; i++) ipiv[i] = other.ipiv[i];
 
 } // Copy.
 
@@ -138,7 +138,7 @@ template<class ARTYPE>
 void ARdsSymMatrix<ARTYPE>::SubtractAsI(ARTYPE sigma)
 {
 
-  int i,j;
+  MKL_INT i,j;
 
   // Copying A to Ainv.
 
@@ -162,7 +162,7 @@ inline void ARdsSymMatrix<ARTYPE>::CreateStructure()
 
   ClearMem();
   Ainv = new ARTYPE[(this->n*this->n+this->n)/2];
-  ipiv = new int[this->n];
+  ipiv = new MKL_INT[this->n];
 
 } // CreateStructure.
 
@@ -249,7 +249,7 @@ template<class ARTYPE>
 void ARdsSymMatrix<ARTYPE>::MultMv(ARTYPE* v, ARTYPE* w)
 {
 
-  int     i, j;
+  MKL_INT     i, j;
 
   ARTYPE  zero = (ARTYPE)0;
 
@@ -312,7 +312,7 @@ void ARdsSymMatrix<ARTYPE>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE>
 inline void ARdsSymMatrix<ARTYPE>::
-DefineMatrix(int np, ARTYPE* Ap, char uplop)
+DefineMatrix(MKL_INT np, ARTYPE* Ap, char uplop)
 {
 
   // Defining member variables.
@@ -331,7 +331,7 @@ DefineMatrix(int np, ARTYPE* Ap, char uplop)
 
 template<class ARTYPE>
 inline ARdsSymMatrix<ARTYPE>::
-ARdsSymMatrix(int np, ARTYPE* Ap, char uplop) : ARMatrix<ARTYPE>(np)
+ARdsSymMatrix(MKL_INT np, ARTYPE* Ap, char uplop) : ARMatrix<ARTYPE>(np)
 {
 
   factored = false;

@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARBNSMat.h.
    Arpack++ class ARbdNonSymMatrix definition.
@@ -38,11 +38,11 @@ class ARbdNonSymMatrix: public ARMatrix<ARTYPE> {
  protected:
 
   bool     factored;
-  int      ndiagL;
-  int      ndiagU;
-  int      lda;
-  int      info;
-  int*     ipiv;
+  MKL_INT      ndiagL;
+  MKL_INT      ndiagU;
+  MKL_INT      lda;
+  MKL_INT      info;
+  MKL_INT*     ipiv;
   ARTYPE*  A;
   ARTYPE*  Ainv;
 
@@ -78,12 +78,12 @@ class ARbdNonSymMatrix: public ARMatrix<ARTYPE> {
 
   void MultInvv(ARTYPE* v, ARTYPE* w);
 
-  void DefineMatrix(int np, int ndiagLp, int ndiagUp, ARTYPE* Ap);
+  void DefineMatrix(MKL_INT np, MKL_INT ndiagLp, MKL_INT ndiagUp, ARTYPE* Ap);
 
   ARbdNonSymMatrix(): ARMatrix<ARTYPE>() { factored = false; }
   // Short constructor that does nothing.
 
-  ARbdNonSymMatrix(int np, int ndiagLp, int ndiagUp, ARTYPE* Ap);
+  ARbdNonSymMatrix(MKL_INT np, MKL_INT ndiagLp, MKL_INT ndiagUp, ARTYPE* Ap);
   // Long constructor.
 
   ARbdNonSymMatrix(const ARbdNonSymMatrix& other) { Copy(other); }
@@ -140,10 +140,10 @@ Copy(const ARbdNonSymMatrix<ARTYPE, ARFLOAT>& other)
   // Copying vectors.
 
   Ainv = new ARTYPE[ this->n*lda];
-  ipiv = new int[ this->n];
+  ipiv = new MKL_INT[ this->n];
 
   copy( this->n*lda, other.Ainv, 1, Ainv, 1);
-  for (int i=0; i< this->n; i++) ipiv[i] = other.ipiv[i];
+  for (MKL_INT i=0; i< this->n; i++) ipiv[i] = other.ipiv[i];
 
 } // Copy.
 
@@ -152,7 +152,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARbdNonSymMatrix<ARTYPE, ARFLOAT>::ExpandA()
 {
 
-  int i, inca;
+  MKL_INT i, inca;
  
   // Copying A to Ainv.
 
@@ -174,7 +174,7 @@ void ARbdNonSymMatrix<ARTYPE, ARFLOAT>::SubtractAsI(ARTYPE sigma)
 
   // Subtracting sigma from diagonal elements.
 
-  for (int i=(ndiagL+ndiagU); i<(lda* this->n); i+=lda) Ainv[i] -= sigma; 
+  for (MKL_INT i=(ndiagL+ndiagU); i<(lda* this->n); i+=lda) Ainv[i] -= sigma; 
 
 } // SubtractAsI.
 
@@ -185,7 +185,7 @@ inline void ARbdNonSymMatrix<ARTYPE, ARFLOAT>::CreateStructure()
 
   ClearMem();
   Ainv = new ARTYPE[lda* this->n];
-  ipiv = new int[ this->n];
+  ipiv = new MKL_INT[ this->n];
 
 } // CreateStructure.
 
@@ -383,7 +383,7 @@ void ARbdNonSymMatrix<ARTYPE, ARFLOAT>::MultInvv(ARTYPE* v, ARTYPE* w)
 
 template<class ARTYPE, class ARFLOAT>
 inline void ARbdNonSymMatrix<ARTYPE, ARFLOAT>::
-DefineMatrix(int np, int ndiagLp, int ndiagUp, ARTYPE* Ap)
+DefineMatrix(MKL_INT np, MKL_INT ndiagLp, MKL_INT ndiagUp, ARTYPE* Ap)
 {
 
   // Defining member variables.
@@ -404,8 +404,8 @@ DefineMatrix(int np, int ndiagLp, int ndiagUp, ARTYPE* Ap)
 
 template<class ARTYPE, class ARFLOAT>
 inline ARbdNonSymMatrix<ARTYPE, ARFLOAT>::
-ARbdNonSymMatrix(int np, int ndiagLp, 
-                 int ndiagUp, ARTYPE* Ap) : ARMatrix<ARTYPE>(np)
+ARbdNonSymMatrix(MKL_INT np, MKL_INT ndiagLp, 
+                 MKL_INT ndiagUp, ARTYPE* Ap) : ARMatrix<ARTYPE>(np)
 {
 
   factored = false;

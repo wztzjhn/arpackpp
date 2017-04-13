@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLSPen.h.
    Arpack++ class ARluSymPencil definition.
@@ -35,8 +35,8 @@ class ARluSymPencil
  protected:
 
   bool                   factored;
-  int*                   permc;
-  int*                   permr;
+  MKL_INT*                   permc;
+  MKL_INT*                   permr;
   char                   part;
   char                   uplo;
   ARluSymMatrix<ARTYPE>* A;
@@ -49,12 +49,12 @@ class ARluSymPencil
 
   void ClearMem();
 
-  void SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-                   int yind[], int ny, ARTYPE z[], int zind[], int& nz);
+  void SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+                   MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz);
 
-  void ExpandAsB(int n, NCformat& AsB);
+  void ExpandAsB(MKL_INT n, NCformat& AsB);
 
-  void SubtractAsB(int n, ARTYPE sigma, NCformat& A, 
+  void SubtractAsB(MKL_INT n, ARTYPE sigma, NCformat& A, 
                    NCformat& B, NCformat& AsB);
 
  public:
@@ -139,12 +139,12 @@ void ARluSymPencil<ARTYPE>::ClearMem()
 
 template<class ARTYPE>
 void ARluSymPencil<ARTYPE>::
-SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-            int yind[], int ny, ARTYPE z[], int zind[], int& nz)
+SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+            MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz)
 // A strongly sequential (and inefficient) sparse saxpy algorithm.
 {
 
-  int ix, iy;
+  MKL_INT ix, iy;
 
   nz = 0;
   if ((nx == 0) || (a == (ARTYPE)0)) {
@@ -192,11 +192,11 @@ SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
 
 
 template<class ARTYPE>
-void ARluSymPencil<ARTYPE>::ExpandAsB(int n, NCformat& AsB)
+void ARluSymPencil<ARTYPE>::ExpandAsB(MKL_INT n, NCformat& AsB)
 {
 
-  int    i, j, k;
-  int    *pcol, *pos, *col, *ind;
+  MKL_INT    i, j, k;
+  MKL_INT    *pcol, *pos, *col, *ind;
   ARTYPE *val;
 
   // simplifying the notation.
@@ -207,8 +207,8 @@ void ARluSymPencil<ARTYPE>::ExpandAsB(int n, NCformat& AsB)
 
   // Initializing vectors.
 
-  pcol   = new int[n+1];
-  pos    = new int[n+1];
+  pcol   = new MKL_INT[n+1];
+  pos    = new MKL_INT[n+1];
   for (i=0; i<=n; i++) pcol[i] = col[i];
   for (i=0; i<=n; i++) pos[i]  = 0;
 
@@ -293,10 +293,10 @@ void ARluSymPencil<ARTYPE>::ExpandAsB(int n, NCformat& AsB)
 
 template<class ARTYPE>
 void ARluSymPencil<ARTYPE>::
-SubtractAsB(int n, ARTYPE sigma, NCformat& matA, NCformat& matB, NCformat& AsB)
+SubtractAsB(MKL_INT n, ARTYPE sigma, NCformat& matA, NCformat& matB, NCformat& AsB)
 {
 
-  int     i, acol, bcol, asbcol, scol;
+  MKL_INT     i, acol, bcol, asbcol, scol;
   ARTYPE* anzval;
   ARTYPE* bnzval;
   ARTYPE* asbnzval;
@@ -358,10 +358,10 @@ SubtractAsB(int n, ARTYPE sigma, NCformat& matA, NCformat& matB, NCformat& AsB)
 // 
 //   // Defining local variables.
 // 
-//   int         nnzi, info;
-//   int*        etree;
-//   int*        irowi;
-//   int*        pcoli;
+//   MKL_INT         nnzi, info;
+//   MKL_INT*        etree;
+//   MKL_INT*        irowi;
+//   MKL_INT*        pcoli;
 //   ARTYPE*     asb;
 //   SuperMatrix AsB;
 //   SuperMatrix AC;
@@ -376,8 +376,8 @@ SubtractAsB(int n, ARTYPE sigma, NCformat& matA, NCformat& matB, NCformat& AsB)
 //   // Setting default values for gstrf parameters.
 // 
 //   ARTYPE drop_tol = (ARTYPE)0;
-//   int  panel_size = sp_ienv(1);
-//   int  relax      = sp_ienv(2);
+//   MKL_INT  panel_size = sp_ienv(1);
+//   MKL_INT  relax      = sp_ienv(2);
 // 
 //   // Defining A and B format.
 // 
@@ -387,8 +387,8 @@ SubtractAsB(int n, ARTYPE sigma, NCformat& matA, NCformat& matB, NCformat& AsB)
 //   // Creating a temporary matrix AsB.
 // 
 //   nnzi  = (Astore->nnz+Bstore->nnz)*2;
-//   irowi = new int[nnzi];
-//   pcoli = new int[A->ncols()+1];
+//   irowi = new MKL_INT[nnzi];
+//   pcoli = new MKL_INT[A->ncols()+1];
 //   asb   = new ARTYPE[nnzi];
 //   Create_CompCol_Matrix(&AsB, A->nrows(), A->ncols(), nnzi, asb,
 //                         irowi, pcoli, NC, GE);
@@ -400,9 +400,9 @@ SubtractAsB(int n, ARTYPE sigma, NCformat& matA, NCformat& matB, NCformat& AsB)
 // 
 //   // Reserving memory for some vectors used in matrix decomposition.
 // 
-//   etree = new int[A->ncols()];
-//   if (permc == NULL) permc = new int[A->ncols()];
-//   if (permr == NULL) permr = new int[A->ncols()];
+//   etree = new MKL_INT[A->ncols()];
+//   if (permc == NULL) permc = new MKL_INT[A->ncols()];
+//   if (permr == NULL) permr = new MKL_INT[A->ncols()];
 // 
 //   // Defining LUStat.
 // 
@@ -468,10 +468,10 @@ void ARluSymPencil<ARTYPE>::FactorAsB(ARTYPE sigma)
 
   // Defining local variables.
 
-  int         nnzi, info;
-  int*        etree;
-  int*        irowi;
-  int*        pcoli;
+  MKL_INT         nnzi, info;
+  MKL_INT*        etree;
+  MKL_INT*        irowi;
+  MKL_INT*        pcoli;
   ARTYPE*     asb;
   SuperMatrix AsB;
   SuperMatrix AC;
@@ -485,8 +485,8 @@ void ARluSymPencil<ARTYPE>::FactorAsB(ARTYPE sigma)
 
   // Setting default values for gstrf parameters.
 
-  int  panel_size = sp_ienv(1);
-  int  relax      = sp_ienv(2);
+  MKL_INT  panel_size = sp_ienv(1);
+  MKL_INT  relax      = sp_ienv(2);
   superlu_options_t options;
   /* Set the default input options:
   options.Fact = DOFACT;
@@ -515,8 +515,8 @@ void ARluSymPencil<ARTYPE>::FactorAsB(ARTYPE sigma)
   // Creating a temporary matrix AsB.
 
   nnzi  = (Astore->nnz+Bstore->nnz)*2;
-  irowi = new int[nnzi];
-  pcoli = new int[A->ncols()+1];
+  irowi = new MKL_INT[nnzi];
+  pcoli = new MKL_INT[A->ncols()+1];
   asb   = new ARTYPE[nnzi];
   Create_CompCol_Matrix(&AsB, A->nrows(), A->ncols(), nnzi, asb,
                         irowi, pcoli, SLU_NC, SLU_GE);
@@ -528,9 +528,9 @@ void ARluSymPencil<ARTYPE>::FactorAsB(ARTYPE sigma)
 
   // Reserving memory for some vectors used in matrix decomposition.
 
-  etree = new int[A->ncols()];
-  if (permc == NULL) permc = new int[A->ncols()];
-  if (permr == NULL) permr = new int[A->ncols()];
+  etree = new MKL_INT[A->ncols()];
+  if (permc == NULL) permc = new MKL_INT[A->ncols()];
+  if (permr == NULL) permr = new MKL_INT[A->ncols()];
 
   // Defining LUStat.
 
@@ -605,7 +605,7 @@ void ARluSymPencil<ARTYPE>::MultInvAsBv(ARTYPE* v, ARTYPE* w)
 
   // Solving AsB.w = v.
 
-  int         info;
+  MKL_INT         info;
   SuperMatrix RHS;
 
   copy(A->nrows(), v, 1, w, 1);

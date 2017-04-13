@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARLSupM.h.
    Unaltered copy of supermatrix.h (from SuperLU package).
@@ -46,7 +46,7 @@ typedef enum {
 } Mtype_t;
 
 typedef struct {
-	Stype_t Stype; /* Storage type: interprets the storage structure 
+	Stype_t Stype; /* Storage type: MKL_INTerprets the storage structure 
 		   	  pointed to by *Store. */
 	Dtype_t Dtype; /* Data type. */
 	Mtype_t Mtype; /* Matrix type: describes the mathematical property of 
@@ -62,10 +62,10 @@ typedef struct {
 
 /* Stype == SLU_NC (Also known as Harwell-Boeing sparse matrix format) */
 typedef struct {
-    int  nnz;	    /* number of nonzeros in the matrix */
+    MKL_INT  nnz;	    /* number of nonzeros in the matrix */
     void *nzval;    /* pointer to array of nonzero values, packed by column */
-    int  *rowind; /* pointer to array of row indices of the nonzeros */
-    int  *colptr; /* pointer to array of beginning of columns in nzval[] 
+    MKL_INT  *rowind; /* pointer to array of row indices of the nonzeros */
+    MKL_INT  *colptr; /* pointer to array of beginning of columns in nzval[] 
 		       and rowind[]  */
                     /* Note:
 		       Zero-based indexing is used;
@@ -75,10 +75,10 @@ typedef struct {
 
 /* Stype == SLU_NR */
 typedef struct {
-    int  nnz;	    /* number of nonzeros in the matrix */
+    MKL_INT  nnz;	    /* number of nonzeros in the matrix */
     void *nzval;    /* pointer to array of nonzero values, packed by raw */
-    int  *colind; /* pointer to array of columns indices of the nonzeros */
-    int  *rowptr; /* pointer to array of beginning of rows in nzval[] 
+    MKL_INT  *colind; /* pointer to array of columns indices of the nonzeros */
+    MKL_INT  *rowptr; /* pointer to array of beginning of rows in nzval[] 
 		       and colind[]  */
                     /* Note:
 		       Zero-based indexing is used;
@@ -88,16 +88,16 @@ typedef struct {
 
 /* Stype == SLU_SC */
 typedef struct {
-  int  nnz;	     /* number of nonzeros in the matrix */
-  int  nsuper;     /* number of supernodes, minus 1 */
+  MKL_INT  nnz;	     /* number of nonzeros in the matrix */
+  MKL_INT  nsuper;     /* number of supernodes, minus 1 */
   void *nzval;       /* pointer to array of nonzero values, packed by column */
-  int *nzval_colptr;/* pointer to array of beginning of columns in nzval[] */
-  int *rowind;     /* pointer to array of compressed row indices of 
+  MKL_INT *nzval_colptr;/* pointer to array of beginning of columns in nzval[] */
+  MKL_INT *rowind;     /* pointer to array of compressed row indices of 
 			rectangular supernodes */
-  int *rowind_colptr;/* pointer to array of beginning of columns in rowind[] */
-  int *col_to_sup;   /* col_to_sup[j] is the supernode number to which column 
+  MKL_INT *rowind_colptr;/* pointer to array of beginning of columns in rowind[] */
+  MKL_INT *col_to_sup;   /* col_to_sup[j] is the supernode number to which column 
 			j belongs; mapping from column to supernode number. */
-  int *sup_to_col;   /* sup_to_col[s] points to the start of the s-th 
+  MKL_INT *sup_to_col;   /* sup_to_col[s] points to the start of the s-th 
 			supernode; mapping from supernode number to column.
 		        e.g.: col_to_sup: 0 1 2 2 3 3 3 4 4 4 4 4 4 (ncol=12)
 		              sup_to_col: 0 1 2 4 7 12           (nsuper=4) */
@@ -113,24 +113,24 @@ typedef struct {
 
 /* Stype == SLU_SCP */
 typedef struct {
-  int  nnz;	     /* number of nonzeros in the matrix */
-  int  nsuper;     /* number of supernodes */
+  MKL_INT  nnz;	     /* number of nonzeros in the matrix */
+  MKL_INT  nsuper;     /* number of supernodes */
   void *nzval;       /* pointer to array of nonzero values, packed by column */
-  int  *nzval_colbeg;/* nzval_colbeg[j] points to beginning of column j
+  MKL_INT  *nzval_colbeg;/* nzval_colbeg[j] points to beginning of column j
 			  in nzval[] */
-  int  *nzval_colend;/* nzval_colend[j] points to one past the last element
+  MKL_INT  *nzval_colend;/* nzval_colend[j] points to one past the last element
 			  of column j in nzval[] */
-  int  *rowind;      /* pointer to array of compressed row indices of 
+  MKL_INT  *rowind;      /* pointer to array of compressed row indices of 
 			  rectangular supernodes */
-  int *rowind_colbeg;/* rowind_colbeg[j] points to beginning of column j
+  MKL_INT *rowind_colbeg;/* rowind_colbeg[j] points to beginning of column j
 			  in rowind[] */
-  int *rowind_colend;/* rowind_colend[j] points to one past the last element
+  MKL_INT *rowind_colend;/* rowind_colend[j] points to one past the last element
 			  of column j in rowind[] */
-  int *col_to_sup;   /* col_to_sup[j] is the supernode number to which column
+  MKL_INT *col_to_sup;   /* col_to_sup[j] is the supernode number to which column
 			  j belongs; mapping from column to supernode. */
-  int *sup_to_colbeg; /* sup_to_colbeg[s] points to the start of the s-th 
+  MKL_INT *sup_to_colbeg; /* sup_to_colbeg[s] points to the start of the s-th 
 			   supernode; mapping from supernode to column.*/
-  int *sup_to_colend; /* sup_to_colend[s] points to one past the end of the
+  MKL_INT *sup_to_colend; /* sup_to_colend[s] points to one past the end of the
 			   s-th supernode; mapping from supernode number to
 			   column.
 		        e.g.: col_to_sup: 0 1 2 2 3 3 3 4 4 4 4 4 4 (ncol=12)
@@ -145,13 +145,13 @@ typedef struct {
 
 /* Stype == SLU_NCP */
 typedef struct {
-    int nnz;	  /* number of nonzeros in the matrix */
+    MKL_INT nnz;	  /* number of nonzeros in the matrix */
     void *nzval;  /* pointer to array of nonzero values, packed by column */
-    int *rowind;/* pointer to array of row indices of the nonzeros */
+    MKL_INT *rowind;/* pointer to array of row indices of the nonzeros */
 		  /* Note: nzval[]/rowind[] always have the same length */
-    int *colbeg;/* colbeg[j] points to the beginning of column j in nzval[] 
+    MKL_INT *colbeg;/* colbeg[j] points to the beginning of column j in nzval[] 
                      and rowind[]  */
-    int *colend;/* colend[j] points to one past the last element of column
+    MKL_INT *colend;/* colend[j] points to one past the last element of column
 		     j in nzval[] and rowind[]  */
 		  /* Note:
 		     Zero-based indexing is used;
@@ -162,19 +162,19 @@ typedef struct {
 
 /* Stype == SLU_DN */
 typedef struct {
-    int lda;    /* leading dimension */
+    MKL_INT lda;    /* leading dimension */
     void *nzval;  /* array of size lda*ncol to represent a dense matrix */
 } DNformat;
 
 /* Stype == SLU_NR_loc (Distributed Compressed Row Format) */
 typedef struct {
-    int nnz_loc;   /* number of nonzeros in the local submatrix */
-    int m_loc;     /* number of rows local to this processor */
-    int fst_row;   /* global index of the first row */
+    MKL_INT nnz_loc;   /* number of nonzeros in the local submatrix */
+    MKL_INT m_loc;     /* number of rows local to this processor */
+    MKL_INT fst_row;   /* global index of the first row */
     void  *nzval;    /* pointer to array of nonzero values, packed by row */
-    int *rowptr;   /* pointer to array of beginning of rows in nzval[] 
+    MKL_INT *rowptr;   /* pointer to array of beginning of rows in nzval[] 
 			and colind[]  */
-    int *colind;   /* pointer to array of column indices of the nonzeros */
+    MKL_INT *colind;   /* pointer to array of column indices of the nonzeros */
                      /* Note:
 			Zero-based indexing is used;
 			rowptr[] has n_loc + 1 entries, the last one pointing

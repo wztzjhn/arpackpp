@@ -1,6 +1,6 @@
 /*
    ARPACK++ v1.2 2/20/2000
-   c++ interface to ARPACK code.
+   c++ MKL_INTerface to ARPACK code.
 
    MODULE ARUNSPen.h.
    Arpack++ class ARumNonSymPencil definition.
@@ -40,13 +40,13 @@ class ARumNonSymPencil
 
   virtual void Copy(const ARumNonSymPencil& other);
 
-  void SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-                   int yind[], int ny, ARTYPE z[], int zind[], int& nz);
+  void SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+                   MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz);
 
 #ifdef ARCOMP_H
-  void SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], int xind[], int nx,
-                   ARFLOAT y[], int yind[], int ny,
-                   arcomplex<ARFLOAT> z[], int zind[], int& nz);
+  void SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], MKL_INT xind[], MKL_INT nx,
+                   ARFLOAT y[], MKL_INT yind[], MKL_INT ny,
+                   arcomplex<ARFLOAT> z[], MKL_INT zind[], MKL_INT& nz);
 #endif
 
   void SubtractAsB(ARTYPE sigma);
@@ -127,12 +127,12 @@ Copy(const ARumNonSymPencil<ARTYPE, ARFLOAT>& other)
 
 template<class ARTYPE, class ARFLOAT>
 void ARumNonSymPencil<ARTYPE, ARFLOAT>::
-SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
-            int yind[], int ny, ARTYPE z[], int zind[], int& nz)
+SparseSaxpy(ARTYPE a, ARTYPE x[], MKL_INT xind[], MKL_INT nx, ARTYPE y[],
+            MKL_INT yind[], MKL_INT ny, ARTYPE z[], MKL_INT zind[], MKL_INT& nz)
 // A strongly sequential (and inefficient) sparse saxpy algorithm.
 {
 
-  int ix, iy;
+  MKL_INT ix, iy;
 
   nz = 0;
   if ((nx == 0) || (a == (ARTYPE)0)) {
@@ -182,13 +182,13 @@ SparseSaxpy(ARTYPE a, ARTYPE x[], int xind[], int nx, ARTYPE y[],
 #ifdef ARCOMP_H
 template<class ARTYPE, class ARFLOAT>
 void ARumNonSymPencil<ARTYPE, ARFLOAT>::
-SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], int xind[], int nx,
-            ARFLOAT y[], int yind[], int ny, 
-            arcomplex<ARFLOAT> z[], int zind[], int& nz)
+SparseSaxpy(arcomplex<ARFLOAT> a, ARFLOAT x[], MKL_INT xind[], MKL_INT nx,
+            ARFLOAT y[], MKL_INT yind[], MKL_INT ny, 
+            arcomplex<ARFLOAT> z[], MKL_INT zind[], MKL_INT& nz)
 // A strongly sequential (and inefficient) sparse saxpy algorithm.
 {
 
-  int ix, iy;
+  MKL_INT ix, iy;
 
   nz = 0;
   if ((nx == 0) || (a == arcomplex<ARFLOAT>(0.0,0.0))) {
@@ -243,7 +243,7 @@ template<class ARTYPE, class ARFLOAT>
 void ARumNonSymPencil<ARTYPE, ARFLOAT>::SubtractAsB(ARTYPE sigma)
 {
 
-  int i, acol, bcol, asbcol, scol;
+  MKL_INT i, acol, bcol, asbcol, scol;
 
   // Subtracting sigma*B from A.
 
@@ -276,7 +276,7 @@ void ARumNonSymPencil<ARTYPE, ARFLOAT>::
 SubtractAsB(ARFLOAT sigmaR, ARFLOAT sigmaI)
 {
 
-  int                i, acol, bcol, asbcol, scol;
+  MKL_INT                i, acol, bcol, asbcol, scol;
   arcomplex<ARFLOAT> sigma;
 
   // Subtracting sigma*B from A.
@@ -328,7 +328,7 @@ void ARumNonSymPencil<ARTYPE, ARFLOAT>::FactorAsB(ARTYPE sigma)
 
   if (!AsB.IsDefined()) {
 
-    int fillin = A->fillin > B->fillin ? A->fillin : B->fillin;
+    MKL_INT fillin = A->fillin > B->fillin ? A->fillin : B->fillin;
     AsB.DefineMatrix(A->ncols(), A->nzeros(), A->a, A->irow, 
                      A->pcol, A->threshold, fillin, 
                      (A->IsSymmetric() && B->IsSymmetric()), 
@@ -384,7 +384,7 @@ FactorAsB(ARFLOAT sigmaR, ARFLOAT sigmaI, char partp)
   if (!AsBc.IsDefined()) {
 
     part        = partp;
-    int  fillin = A->fillin > B->fillin ? A->fillin : B->fillin;
+    MKL_INT  fillin = A->fillin > B->fillin ? A->fillin : B->fillin;
     AsBc.DefineMatrix(A->ncols(), A->nzeros(), 0, 0,
                       A->pcol, A->threshold, fillin, 
                       (A->IsSymmetric() && B->IsSymmetric()), 
@@ -456,7 +456,7 @@ void ARumNonSymPencil<ARTYPE, ARFLOAT>::MultInvAsBv(ARFLOAT* v, ARFLOAT* w)
 
 #ifdef ARCOMP_H
 
-    int                i;
+    MKL_INT                i;
     arcomplex<ARFLOAT> *tv, *tw;
 
     tv = new arcomplex<ARFLOAT>[AsBc.ncols()];
